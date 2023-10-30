@@ -53,3 +53,14 @@ CREATE TABLE usuarios_mesas (
 );
 
 CREATE UNIQUE INDEX idx_usuarios_mesas_usuario_mesa ON usuarios_mesas(usuario_id, mesa_id);
+
+CREATE TABLE telegramas (
+    id serial PRIMARY KEY,
+    mesa_id integer NOT NULL,
+    usuario_id integer NOT NULL,
+    link VARCHAR(255) NOT NULL,
+    notas VARCHAR(255)
+);
+
+CREATE INDEX idx_telegramas_mesa ON telegramas(mesa_id);
+CREATE INDEX idx_telegramas_usuario ON telegramas(usuario_id);
