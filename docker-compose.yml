@@ -1,0 +1,50 @@
+version: '3.9'
+services: 
+  
+  api:
+    build:
+      context: .
+      args:
+        - PORT=3004
+    restart: always
+    ports:
+      - '3005:3005'
+    environment:
+      - APP_PORT=3005
+      - CONTEXT=dev
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=lfdc_ms_local
+      - MINIO_SECRET_KEY=lfdc_ms_local
+      - MINIO_USE_SSL=false
+      - MINIO_BUCKET_NAME=files
+      - MINIO_LOCATION=us-east-1
+      - HTTP_PORT=3005
+    depends_on:
+      - minio
+    
+  minio:
+    image: minio/minio
+    environment:
+      - MINIO_ROOT_USER=lfdc_ms_local
+      - MINIO_ROOT_PASSWORD=lfdc_ms_local
+      - MINIO_SERVER_URL=https://minio.example.net
+    ports:
+      - "9000:9000"
+    volumes:
+      - /volumes/data:/data
+    command: server /data
+
+#  mc:
+#    image: minio/mc
+#    entrypoint: /bin/sh
+#    restart: always
+#    depends_on:
+#      - minio
+#    environment:
+#      - MINIO_SERVER_URL=http://minio:9000
+#      - MINIO_ACCESS_KEY=lfdc_ms_local
+#      - MINIO_SECRET_KEY=lfdc_ms_local
+  
+volumes:
+  minio_data:
+    driver: local
