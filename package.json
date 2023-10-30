@@ -1,0 +1,41 @@
+{
+  "name": "lla-api",
+  "version": "0.0.1",
+  "description": "api serverless api.",
+  "private": true,
+  "scripts": {
+    "test": "jest --env=node",
+    "build": "tsc && tsc-alias",
+    "local": "sls offline start --stage local",
+    "rollback": "sls rollback ",
+    "package": "sls package ",
+    "logs": "sls logs --tail --stage",
+    "preapi:deploy": "rm -rf ./.serverless",
+    "deploy": "sls deploy",
+    "remove": "sls remove"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/aws-lambda": "8.10.114",
+    "@types/node": "20.5.9",
+    "@types/uuid": "9.0.1",
+    "aws-sdk": "2.1171.0",
+    "dotenv": "16.0.3",
+    "serverless": "3.34.0",
+    "serverless-dotenv-plugin": "6.0.0",
+    "serverless-offline": "^13.2.0",
+    "serverless-plugin-typescript": "2.1.5",
+    "serverless-prune-plugin": "2.0.2",
+    "serverless-tscpaths": "0.0.8",
+    "serverless-webpack": "5.13.0",
+    "ts-loader": "9.4.4",
+    "ts-node": "10.9.1",
+    "tsc-alias": "1.8.6",
+    "tsconfig-paths": "4.0.0",
+    "typechain": "8.3.1",
+    "typescript": "5.2.2",
+    "typescript-transform-paths": "3.3.1",
+    "webpack-cli": "5.1.4",
+    "webpack-node-externals": "3.0.0"
+  }
+}
