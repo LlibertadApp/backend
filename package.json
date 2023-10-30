@@ -7,9 +7,9 @@
     "test": "jest --env=node",
     "build": "tsc && tsc-alias",
     "local": "sls offline start --stage local",
-    "rollback": "sls rollback ",
-    "package": "sls package ",
-    "logs": "sls logs --tail --stage",
+    "rollback": "sls rollback",
+    "package": "sls package",
+    "logs": "sls logs --tail",
     "preapi:deploy": "rm -rf ./.serverless",
     "deploy": "sls deploy",
     "remove": "sls remove"
