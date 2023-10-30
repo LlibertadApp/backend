@@ -2,7 +2,7 @@
 
 ## DB setup
 
-Crear localmente el archivo de environment archivo .env y agregar la contraseña del usuario PG
+Crear localmente el archivo de environment .env y agregar la contraseña del usuario PG
 
 ```bash
 touch .env
