@@ -1,43 +1,35 @@
 CREATE TABLE provincias (
-    id serial primary key,
-    uuid integer,
+    id integer primary key,
     provincia_nombre varchar(255) not null
 );
-CREATE INDEX idx_provincia_uuid ON provincias(uuid);
 
 CREATE TABLE seccionprovinciales (
-    id serial primary key,
-    uuid integer,
+    id integer,
     provincia_id integer,
-    seccionprovincial_nombre varchar(255) not null
+    seccionprovincial_nombre varchar(255) not null,
+    PRIMARY KEY (id, provincia_id)
 );
-CREATE INDEX idx_seccionprovincial_uuid ON seccionprovinciales(uuid);
 
 CREATE TABLE secciones (
-    id serial primary key,
-    uuid integer,
-    seccionprovincial_id integer DEFAULT NULL,
-    provincia_id integer DEFAULT NULL,
+    id integer,
+    seccionprovincial_id integer,
     seccion_nombre varchar(255) not null,
-    CHECK ((seccionprovincial_id IS NOT NULL AND provincia_id IS NULL) OR (seccionprovincial_id IS NULL AND provincia_id IS NOT NULL))
+    PRIMARY KEY (id, seccionprovincial_id)
 );
-CREATE INDEX idx_seccion_uuid ON secciones(uuid);
 
 CREATE TABLE circuitos (
-    id serial primary key,
-    uuid integer,
+    circuito_id varchar(10),
     seccion_id integer,
-    circuito_nombre varchar(255) not null
+    circuito_nombre varchar(255) not null,
+    PRIMARY KEY (circuito_id, seccion_id)
 );
-CREATE INDEX idx_circuito_uuid ON circuitos(uuid);
 
 CREATE TABLE mesas (
-    id serial primary key,
-    uuid integer,
-    circuito_id integer,
+    id varchar(40) primary key,
+    mesa_id varchar(10),
+    circuito_id varchar(10),
     mesa_tipo varchar(50) not null
 );
-CREATE INDEX idx_mesa_uuid ON mesas(uuid);
 
 CREATE TABLE usuarios (
     id serial primary key,
@@ -64,3 +56,9 @@ CREATE TABLE telegramas (
 
 CREATE INDEX idx_telegramas_mesa ON telegramas(mesa_id);
 CREATE INDEX idx_telegramas_usuario ON telegramas(usuario_id);
+
+\COPY provincias FROM 'provincias.csv' DELIMITER ',' CSV HEADER;
+\COPY seccionprovinciales FROM 'seccionprovinciales.csv' DELIMITER ',' CSV HEADER;
+\COPY secciones FROM 'secciones.csv' DELIMITER ',' CSV HEADER;
+\COPY circuitos FROM 'circuitos.csv' DELIMITER ',' CSV HEADER;
+\COPY mesas FROM 'mesas.csv' DELIMITER ',' CSV HEADER;
