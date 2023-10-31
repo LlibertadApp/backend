@@ -1,1 +1,529 @@
-id,seccionprovincial_id,seccion_nombre
+id,provincia_id,seccionprovincial_id,seccion_nombre
+1,1,0,Comuna 01
+1,3,0,Capital
+1,4,0,Capital
+1,5,0,Capital
+1,6,0,San Fernando
+1,7,0,Rawson
+1,8,0,Paraná
+1,9,0,Formosa
+1,10,0,Dr. Manuel Belgrano
+1,11,0,Atreucó
+1,12,0,Capital
+1,14,0,Capital
+1,15,0,Confluencia
+1,16,0,Adolfo Alsina
+1,17,0,Capital
+1,18,0,Capital
+1,19,0,Juan Martín de Pueyrredón
+1,20,0,Deseado
+1,21,0,La Capital
+1,22,0,Capital
+1,24,0,Ushuaia
+1,13,1,Capital
+1,23,1,Capital
+1,2,6,Adolfo Alsina
+2,1,0,Comuna 02
+2,3,0,Capayán
+2,4,0,Calamuchita
+2,5,0,Goya
+2,6,0,1º de Mayo
+2,7,0,Biedma
+2,9,0,Laishí
+2,10,0,Palpalá
+2,11,0,Capital
+2,12,0,Sanagasta
+2,14,0,Apóstoles
+2,15,0,Zapala
+2,16,0,Conesa
+2,17,0,La Caldera
+2,18,0,Santa Lucía
+2,19,0,Coronel Pringles
+2,20,0,Lago Buenos Aires
+2,21,0,Las Colonias
+2,22,0,Avellaneda
+2,24,0,Río Grande
+2,13,3,Godoy Cruz
+2,23,3,Lules
+2,2,4,Alberti
+3,1,0,Comuna 03
+3,3,0,La Paz
+3,4,0,Colón
+3,5,0,Curuzú Cuatiá
+3,6,0,Libertad
+3,7,0,Telsen
+3,8,0,La Paz
+3,9,0,Pilcomayo
+3,10,0,San Antonio
+3,11,0,Caleu Caleu
+3,12,0,Castro Barros
+3,14,0,Candelaria
+3,15,0,Añelo
+3,16,0,San Antonio
+3,17,0,General Güemes
+3,18,0,Chimbas
+3,19,0,General Pedernera
+3,20,0,Magallanes
+3,21,0,San Jerónimo
+3,22,0,Aguirre
+3,24,0,Antártida Argentina
+3,13,1,Guaymallén
+3,2,3,Almirante Brown
+3,23,3,Famaillá
+4,1,0,Comuna 04
+4,3,0,Ancasti
+4,4,0,Cruz del Eje
+4,5,0,Mercedes
+4,6,0,General Donovan
+4,7,0,Gastre
+4,8,0,Diamante
+4,9,0,Pirané
+4,10,0,El Carmen
+4,11,0,Catriló
+4,12,0,Arauco
+4,14,0,Leandro N. Alem
+4,15,0,Pehuenches
+4,16,0,Valcheta
+4,17,0,Metán
+4,18,0,Rivadavia
+4,19,0,Chacabuco
+4,20,0,Río Chico
+4,21,0,Garay
+4,22,0,Alberdi
+4,13,1,Las Heras
+4,2,3,Avellaneda
+4,23,3,Monteros
+5,1,0,Comuna 05
+5,3,0,El Alto
+5,4,0,General Roca
+5,5,0,Esquina
+5,6,0,Sargento Cabral
+5,7,0,Cushamen
+5,8,0,Victoria
+5,9,0,Pilagás
+5,10,0,San Pedro
+5,11,0,Chalileo
+5,12,0,San Blas de los Sauces
+5,14,0,Concepción
+5,15,0,Chos Malal
+5,16,0,9 de Julio
+5,17,0,Anta
+5,18,0,Zonda
+5,19,0,Libertador General San Martín
+5,20,0,Corpen Aike
+5,21,0,Castellanos
+5,22,0,Atamisqui
+5,24,0,Tolhuin
+5,13,1,Lavalle
+5,23,3,Chicligasta
+5,2,5,Ayacucho
+6,1,0,Comuna 06
+6,3,0,Santa Rosa
+6,4,0,General San Martín
+6,5,0,Lavalle
+6,6,0,Presidencia de la Plaza
+6,7,0,Futaleufú
+6,8,0,Nogoyá
+6,9,0,Patiño
+6,10,0,Santa Bárbara
+6,11,0,Chapaleufú
+6,12,0,Chilecito
+6,14,0,San Javier
+6,15,0,Minas
+6,16,0,25 de Mayo
+6,17,0,Rivadavia
+6,18,0,Rawson
+6,19,0,Junín
+6,20,0,Lago Argentino
+6,21,0,San Martín
+6,22,0,Banda
+6,13,2,Maipú
+6,23,3,Río Chico
+6,2,7,Azul
+7,1,0,Comuna 07
+7,3,0,Paclín
+7,4,0,Ischilín
+7,5,0,Santo Tomé
+7,6,0,Bermejo
+7,7,0,Languiñeo
+7,8,0,Gualeguay
+7,9,0,Bermejo
+7,10,0,Ledesma
+7,11,0,Chical Có
+7,12,0,Famatina
+7,14,0,San Ignacio
+7,15,0,Ñorquín
+7,16,0,Ñorquinco
+7,17,0,Orán
+7,18,0,9 de Julio
+7,19,0,Ayacucho
+7,20,0,Güer Aike
+7,21,0,San Cristóbal
+7,22,0,Belgrano
+7,13,3,Luján de Cuyo
+7,23,3,Juan Bautista Alberdi
+7,2,6,Bahía Blanca
+8,1,0,Comuna 08
+8,3,0,Valle Viejo
+8,4,0,Juárez Celman
+8,5,0,Paso de los Libres
+8,6,0,Libertador General San Martín
+8,7,0,Tehuelches
+8,8,0,Tala
+8,9,0,Matacos
+8,10,0,Valle Grande
+8,11,0,Conhelo
+8,12,0,Coronel Felipe Varela
+8,14,0,Oberá
+8,15,0,Loncopué
+8,16,0,Pilcaniyeu
+8,17,0,General José de San Martín
+8,18,0,San Martín
+8,19,0,Belgrano
+8,21,0,San Justo
+8,22,0,Copo
+8,13,3,Tupungato
+8,23,3,La Cocha
+8,2,5,Balcarce
+9,1,0,Comuna 09
+9,3,0,Fray Mamerto Esquiú
+9,4,0,Marcos Juárez
+9,5,0,Monte Caseros
+9,6,0,Tapenagá
+9,7,0,Paso de Indios
+9,8,0,Uruguay
+9,9,0,Ramón Lista
+9,10,0,Tumbaya
+9,11,0,Curacó
+9,12,0,General Lamadrid
+9,14,0,Libertador General San Martín
+9,15,0,Picunches
+9,16,0,Bariloche
+9,17,0,Iruya
+9,18,0,Angaco
+9,19,0,Gobernador Dupuy
+9,21,0,General Obligado
+9,22,0,Choya
+9,2,2,Baradero
+9,13,2,San Martín
+9,23,2,Graneros
+10,1,0,Comuna 10
+10,3,0,Ambato
+10,4,0,Minas
+10,5,0,San Luis del Palmar
+10,6,0,San Lorenzo
+10,7,0,Mártires
+10,8,0,Gualeguaychú
+10,10,0,Tilcara
+10,11,0,Guatraché
+10,12,0,Vinchina
+10,14,0,Cainguás
+10,15,0,Aluminé
+10,16,0,Pichi Mahuida
+10,17,0,Santa Victoria
+10,18,0,Albardón
+10,21,0,Vera
+10,22,0,Figueroa
+10,2,2,Arrecifes
+10,13,2,Junín
+10,23,2,Simoca
+11,1,0,Comuna 11
+11,3,0,Pomán
+11,4,0,Pocho
+11,5,0,Bella Vista
+11,6,0,Mayor Luis J. Fontana
+11,7,0,Florentino Ameghino
+11,8,0,Islas del Ibicuy
+11,10,0,Humahuaca
+11,11,0,Hucal
+11,12,0,Independencia
+11,14,0,25 de Mayo
+11,15,0,Catán Lil
+11,16,0,Avellaneda
+11,17,0,Cerrillos
+11,18,0,Ullum
+11,21,0,San Javier
+11,22,0,Guasayán
+11,13,2,Rivadavia
+11,23,2,Leales
+11,2,3,Berazategui
+12,1,0,Comuna 12
+12,3,0,Andalgalá
+12,4,0,Punilla
+12,5,0,Empedrado
+12,6,0,O'Higgins
+12,7,0,Gaiman
+12,8,0,Villaguay
+12,10,0,Cochinoca
+12,11,0,Loventué
+12,12,0,Chamical
+12,14,0,Montecarlo
+12,15,0,Picún Leufú
+12,16,0,General Roca
+12,17,0,Chicoana
+12,18,0,Pocito
+12,21,0,9 de Julio
+12,22,0,Jiménez
+12,23,2,Cruz Alta
+12,2,3,Berisso
+12,13,3,Tunuyán
+13,1,0,Comuna 13
+13,3,0,Belén
+13,4,0,Río Cuarto
+13,5,0,San Roque
+13,6,0,Comandante Fernández
+13,7,0,Río Senguer
+13,8,0,Concordia
+13,10,0,Rinconada
+13,11,0,Lihuel Calel
+13,12,0,Ángel Vicente Peñaloza
+13,14,0,Guaraní
+13,15,0,Collón Curá
+13,16,0,El Cuy
+13,17,0,La Viña
+13,18,0,Sarmiento
+13,21,0,Rosario
+13,22,0,Loreto
+13,23,2,Burruyacú
+13,13,3,San Carlos
+13,2,7,Bolívar
+14,1,0,Comuna 14
+14,3,0,Antofagasta de la Sierra
+14,4,0,Río Primero
+14,5,0,General Paz
+14,6,0,Quitilipi
+14,7,0,Sarmiento
+14,8,0,Federal
+14,10,0,Santa Catalina
+14,11,0,Limay Mahuida
+14,12,0,General Belgrano
+14,14,0,Eldorado
+14,15,0,Huiliches
+14,17,0,Guachipas
+14,18,0,25 de Mayo
+14,21,0,Caseros
+14,22,0,Juan F. Ibarra
+14,13,2,Santa Rosa
+14,23,2,Trancas
+14,2,4,Bragado
+15,1,0,Comuna 15
+15,3,0,Tinogasta
+15,4,0,Río Seco
+15,5,0,Saladas
+15,6,0,25 de Mayo
+15,7,0,Escalante
+15,8,0,Colón
+15,10,0,Yavi
+15,11,0,Maracó
+15,12,0,General Juan Facundo Quiroga
+15,14,0,San Pedro
+15,15,0,Lácar
+15,17,0,Rosario de la Frontera
+15,18,0,Caucete
+15,21,0,Constitución
+15,22,0,Mitre
+15,13,2,La Paz
+15,2,3,Brandsen
+15,23,3,Yerba Buena
+16,3,0,Santa María
+16,4,0,Río Segundo
+16,5,0,San Martín
+16,6,0,Maipú
+16,8,0,Feliciano
+16,10,0,Susques
+16,11,0,Puelén
+16,12,0,General Ortiz de Ocampo
+16,14,0,Iguazú
+16,15,0,Los Lagos
+16,17,0,La Candelaria
+16,18,0,Valle Fértil
+16,21,0,General López
+16,22,0,Moreno
+16,2,1,Campana
+16,23,3,Tafí Viejo
+16,13,4,San Rafael
+17,4,0,Presidente Roque Sáenz Peña
+17,5,0,Concepción
+17,6,0,Independencia
+17,8,0,Federación
+17,11,0,Quemú Quemú
+17,12,0,Rosario Vera Peñaloza
+17,14,0,General Manuel Belgrano
+17,17,0,Cafayate
+17,18,0,Jáchal
+17,21,0,Belgrano
+17,22,0,Ojo de Agua
+17,2,3,Cañuelas
+17,23,3,Tafí del Valle
+17,13,4,Malargüe
+18,4,0,San Alberto
+18,5,0,Mburucuyá
+18,6,0,General Belgrano
+18,8,0,San Salvador
+18,11,0,Rancul
+18,12,0,General San Martín
+18,17,0,San Carlos
+18,18,0,Iglesia
+18,21,0,Iriondo
+18,22,0,Pellegrini
+18,2,2,Capitán Sarmiento
+18,13,4,General Alvear
+19,4,0,San Javier
+19,5,0,Ituzaingó
+19,6,0,9 de Julio
+19,11,0,Realicó
+19,17,0,Molinos
+19,18,0,Calingasta
+19,21,0,San Lorenzo
+19,22,0,Quebrachos
+19,2,4,Carlos Casares
+20,4,0,San Justo
+20,5,0,Sauce
+20,6,0,Chacabuco
+20,11,0,Toay
+20,17,0,Cachi
+20,22,0,Rivadavia
+20,2,4,Carlos Tejedor
+21,4,0,Santa María
+21,5,0,San Cosme
+21,6,0,12 de Octubre
+21,11,0,Trenel
+21,17,0,Rosario de Lerma
+21,22,0,Robles
+21,2,2,Carmen de Areco
+22,4,0,Sobremonte
+22,5,0,General Alvear
+22,6,0,2 de Abril
+22,11,0,Utracán
+22,17,0,La Poma
+22,22,0,Río Hondo
+22,2,6,Patagones
+23,4,0,Tercero Arriba
+23,5,0,San Miguel
+23,6,0,Fray Justo Santa María de Oro
+23,17,0,Los Andes
+23,22,0,Silípica
+23,2,5,Castelli
+24,4,0,Totoral
+24,5,0,Itatí
+24,6,0,Almirante Brown
+24,22,0,San Martín
+24,2,2,Colón
+25,4,0,Tulumba
+25,5,0,Berón de Astrada
+25,6,0,General Güemes
+25,22,0,Salavina
+25,2,6,Coronel Dorrego
+26,4,0,Unión
+26,22,0,Sarmiento
+26,2,6,Coronel Pringles
+27,22,0,General Taboada
+27,2,6,Coronel de Marina L. Rosales
+28,2,6,Coronel Suárez
+29,2,4,Chacabuco
+30,2,5,Chascomús
+31,2,4,Chivilcoy
+32,2,6,Daireaux
+33,2,5,Dolores
+34,2,3,Ensenada
+35,2,1,Escobar
+36,2,3,Esteban Echeverría
+37,2,2,Exaltación de la Cruz
+38,2,3,Florencio Varela
+39,2,5,General Alvarado
+40,2,7,General Alvear
+41,2,4,General Arenales
+42,2,5,General Belgrano
+43,2,5,General Guido
+44,2,6,General La Madrid
+45,2,1,General Las Heras
+46,2,5,General Lavalle
+47,2,5,General Juan Madariaga
+48,2,5,General Paz
+49,2,4,General Pinto
+50,2,5,General Pueyrredón
+51,2,1,General Rodríguez
+52,2,1,General San Martín
+53,2,1,San Miguel
+54,2,4,General Viamonte
+55,2,4,General Villegas
+56,2,6,Adolfo Gonzales Chaves
+57,2,6,Guaminí
+58,2,4,Hipólito Yrigoyen
+59,2,6,Benito Juárez
+60,2,4,Junín
+61,2,3,La Matanza
+62,2,3,Lanús
+63,2,8,La Plata
+64,2,6,Laprida
+65,2,5,Las Flores
+66,2,4,Leandro N. Alem
+67,2,4,Lincoln
+68,2,5,Lobería
+69,2,3,Lobos
+70,2,3,Lomas de Zamora
+71,2,1,Luján
+72,2,3,Magdalena
+73,2,5,Maipú
+74,2,5,Mar Chiquita
+75,2,1,Marcos Paz
+76,2,1,Mercedes
+77,2,1,Merlo
+78,2,5,Monte
+79,2,1,Moreno
+80,2,1,Morón
+81,2,1,Navarro
+82,2,5,Necochea
+83,2,4,9 de Julio
+84,2,7,Olavarría
+85,2,4,Pehuajó
+86,2,6,Pellegrini
+87,2,2,Pergamino
+88,2,5,Pila
+89,2,1,Pilar
+90,2,5,Pinamar
+91,2,6,Puan
+92,2,3,Quilmes
+93,2,2,Ramallo
+94,2,5,Rauch
+95,2,4,Rivadavia
+96,2,2,Rojas
+97,2,7,Roque Pérez
+98,2,6,Saavedra
+99,2,7,Saladillo
+100,2,6,Salliqueló
+101,2,2,Salto
+102,2,2,San Andrés de Giles
+103,2,2,San Antonio de Areco
+104,2,5,San Cayetano
+105,2,1,San Fernando
+106,2,1,San Isidro
+107,2,2,San Nicolás
+108,2,2,San Pedro
+109,2,3,San Vicente
+110,2,1,Suipacha
+111,2,5,Tandil
+112,2,7,Tapalqué
+113,2,1,Tigre
+114,2,6,Tornquist
+115,2,4,Trenque Lauquen
+116,2,5,Tordillo
+117,2,6,Tres Arroyos
+118,2,1,Tres de Febrero
+119,2,5,La Costa
+120,2,6,Monte Hermoso
+121,2,7,25 de Mayo
+122,2,1,Vicente López
+123,2,5,Villa Gesell
+124,2,6,Villarino
+125,2,2,Zárate
+126,2,6,Tres Lomas
+127,2,4,Florentino Ameghino
+128,2,3,Presidente Perón
+129,2,1,José C. Paz
+130,2,1,Malvinas Argentinas
+131,2,3,Punta Indio
+132,2,3,Ezeiza
+133,2,1,Ituzaingó
+134,2,1,Hurlingham
+135,2,5,Lezama
