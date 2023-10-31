@@ -1,43 +1,41 @@
 #!/bin/bash
 
-# Variables
-export $(grep -v '^#' ../.env | xargs)
 export PGPASSWORD=$POSTGRES_PASSWORD
 
 DB_NAME="la_libertad_app"
 SCRIPT_PATH="schema.sql"
 PORT=$1
 
-# Verificar si se proporcionó el puerto
 if [ -z "$PORT" ]; then
     echo "Por favor, proporciona el puerto para PostgreSQL como argumento."
     exit 1
 fi
 
-# Verificar si la base de datos ya existe
-DB_EXISTS=$(psql -U postgres -t -p $PORT -l | grep $DB_NAME | wc -l)
+DB_CONTAINER_EXISTS=$(docker ps -q --filter "name=lfdc_postgres_local")
 
-if [ $DB_EXISTS -eq 1 ]; then
-    read -p "La base de datos $DB_NAME ya existe. ¿Deseas eliminarla? (escribe YES para confirmar): " CONFIRM
+if [ -n "$DB_CONTAINER_EXISTS" ]; then
+    read -p "El contenedor de la base de datos ya está en ejecución. ¿Deseas eliminarlo y crear uno nuevo? (escribe YES para confirmar): " CONFIRM
     if [ "$CONFIRM" = "YES" ]; then
-        dropdb -p $PORT $DB_NAME -U postgres 
-        echo "Base de datos $DB_NAME eliminada."
+        echo "DROP DATABASE $DB_NAME;" | docker exec -i lfdc_postgres_local psql -U postgres
+        echo "CREATE DATABASE $DB_NAME;" | docker exec -i lfdc_postgres_local psql -U postgres
+        docker stop lfdc_postgres_local
+        docker rm lfdc_postgres_local
+        echo "Contenedor de la base de datos eliminado."
     else
         echo "No se realizan acciones."
         exit 0
     fi
 fi
 
-echo "Creando la base de datos $DB_NAME..."
+echo "Creando y ejecutando el contenedor de la base de datos..."
 
-# Crear la base de datos
-createdb -p $PORT $DB_NAME -U postgres
+docker-compose up -d
 
-# Ejecutar el script .sql para inicializar la base de datos
-psql -p $PORT -d $DB_NAME -a -f $SCRIPT_PATH -U postgres
-psql -p $PORT -d $DB_NAME -a -f 'update_mesas_activas.sql' -U postgres
+sleep 10
+
+docker exec -i lfdc_postgres_local psql -U postgres -d $DB_NAME -a -f /docker-entrypoint-initdb.d/$SCRIPT_PATH
+docker exec -i lfdc_postgres_local psql -U postgres -d $DB_NAME -a -f /docker-entrypoint-initdb.d/update_mesas_activas.sql
 
 unset PGPASSWORD
 
-echo "Base de datos $DB_NAME creada y script ejecutado exitosamente."
-
+echo "Contenedor de la base de datos creado y script ejecutado exitosamente."

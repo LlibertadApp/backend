@@ -13,7 +13,13 @@ services:
         - 5432:5432
         volumes: 
         - postgres_data:/var/lib/postgresql/data
+        - ./update_mesas_activas.sql:/docker-entrypoint-initdb.d/update_mesas_activas.sql
         - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+        - ./provincias.csv:/docker-entrypoint-initdb.d/provincias.csv
+        - ./secciones.csv:/docker-entrypoint-initdb.d/secciones.csv
+        - ./seccionprovinciales.csv:/docker-entrypoint-initdb.d/seccionprovinciales.csv
+        - ./circuitos.csv:/docker-entrypoint-initdb.d/circuitos.csv
+        - ./mesas.csv:/docker-entrypoint-initdb.d/mesas.csv
     minio:
         image: docker.io/bitnami/minio:2023
         container_name: lfdc_minio_local

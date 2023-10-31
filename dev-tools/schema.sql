@@ -85,8 +85,8 @@ CREATE TABLE resultados (
     ocr_recurrido integer
 );
 
-\COPY provincias FROM 'provincias.csv' DELIMITER ',' CSV HEADER;
-\COPY seccionprovinciales FROM 'seccionprovinciales.csv' DELIMITER ',' CSV HEADER;
-\COPY secciones FROM 'secciones.csv' DELIMITER ',' CSV HEADER;
-\COPY circuitos FROM 'circuitos.csv' DELIMITER ',' CSV HEADER;
-\COPY mesas FROM 'mesas.csv' DELIMITER ',' CSV HEADER;
+\COPY provincias FROM '/docker-entrypoint-initdb.d/provincias.csv' DELIMITER ',' CSV HEADER;
+\COPY seccionprovinciales FROM '/docker-entrypoint-initdb.d/seccionprovinciales.csv' DELIMITER ',' CSV HEADER;
+\COPY secciones FROM '/docker-entrypoint-initdb.d/secciones.csv' DELIMITER ',' CSV HEADER;
+\COPY circuitos FROM '/docker-entrypoint-initdb.d/circuitos.csv' DELIMITER ',' CSV HEADER;
+\COPY mesas FROM '/docker-entrypoint-initdb.d/mesas.csv' DELIMITER ',' CSV HEADER;
