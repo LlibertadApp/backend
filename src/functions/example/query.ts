@@ -3,7 +3,8 @@ import { DatabaseConnection } from "@/helpers/database/connection";
 import { APIGatewayEvent, Callback, Context } from "aws-lambda";
 import response from "@/helpers/response";
 import HttpStatus from "@/helpers/enum/http";
-import GetUsersResponse from "@/helpers/models/response/getUsersResponse";
+import { GetUsersResponse } from "@/helpers/models/response/getUsersResponse";
+
 
 /**
  * Example of a query function
@@ -23,14 +24,18 @@ export const handler = async (
     try {
         const result = await dbConnection.queryRead(query);
         usersResponse = result.rows.map((user: any) => {
-            return new GetUsersResponse(user.email, user.rol, user.fecha_creacion);
+            return {
+                email: user.email,
+                rol: user.rol,
+                fecha_creacion: user.fecha_creacion
+            }
         });
         return response({
             code: HttpStatus.OK,
             data: usersResponse
         });
     } catch (err: any) {
-        throw response({
+        return response({
             code: HttpStatus.BAD_REQUEST,
             err: err
         });
