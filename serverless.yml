@@ -1,0 +1,68 @@
+service: lla-api
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  deploymentMethod: direct
+  region: us-east-1
+  runtime: nodejs18.x
+  logRetentionInDays: 30
+  iam:
+    role:
+      name: lla-api-lambda-role
+      statements:
+        - Effect: Allow
+          Action:
+            - "s3:*"
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - "cloudwatch:*"
+            - "logs:*"
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - "lambda:InvokeFunction"
+          Resource: "*"
+  deploymentBucket:
+    blockPublicAccess: true
+    serverSideEncryption: AES256
+  httpApi:
+    name: "LLA"
+    cors: true
+
+plugins:
+  - serverless-prune-plugin
+  - serverless-webpack
+  - serverless-dotenv-plugin
+  - serverless-offline
+
+custom:
+  prune:
+    automatic: true
+    number: 3
+  webpack:
+    excludeRegex: \.ts|test|\.map
+    includeModules:
+      forceExclude:
+        - aws-sdk
+
+package:
+  excludeDevDependencies: true
+  exclude:
+    - ./**
+  include:
+    - ./src/**.ts
+
+functions:
+  authorizer:
+    handler: src/functions/authorizer/handler.handler
+    description: Authorizer for JWT integration using Firebase
+  get-config:
+    name: "get-config"
+    description: Get initial app config
+    handler: src/functions/config/get.handler
+    events:
+      - httpApi:
+          method: GET
+          path: /config
