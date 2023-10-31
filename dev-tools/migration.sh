@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Variables
-export $(grep -v '^#' .env | xargs)
+export $(grep -v '^#' ../.env | xargs)
 export PGPASSWORD=$POSTGRES_PASSWORD
 
 DB_NAME="la_libertad_app"
