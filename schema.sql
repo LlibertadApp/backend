@@ -12,9 +12,10 @@ CREATE TABLE seccionprovinciales (
 
 CREATE TABLE secciones (
     id integer,
+    provincia_id integer,
     seccionprovincial_id integer,
     seccion_nombre varchar(255) not null,
-    PRIMARY KEY (id, seccionprovincial_id)
+    PRIMARY KEY (id, seccionprovincial_id, provincia_id)
 );
 
 CREATE TABLE circuitos (
