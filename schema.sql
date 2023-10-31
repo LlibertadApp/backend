@@ -29,7 +29,8 @@ CREATE TABLE mesas (
     id varchar(40) primary key,
     mesa_id varchar(10),
     circuito_id varchar(10),
-    mesa_tipo varchar(50) not null
+    mesa_tipo varchar(50) not null,
+    activo boolean default false
 );
 
 CREATE TABLE usuarios (

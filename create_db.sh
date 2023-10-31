@@ -35,6 +35,7 @@ createdb -p $PORT $DB_NAME -U postgres
 
 # Ejecutar el script .sql para inicializar la base de datos
 psql -p $PORT -d $DB_NAME -a -f $SCRIPT_PATH -U postgres
+psql -p $PORT -d $DB_NAME -a -f 'update_mesas_activas.sql' -U postgres
 
 unset PGPASSWORD
 
