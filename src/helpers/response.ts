@@ -1,3 +1,5 @@
+import logger from "@/helpers/logger";
+
 const response = ({
   code = 200,
   data = null,
@@ -9,6 +11,7 @@ const response = ({
   err?: Error | [] | null | unknown;
   headers?: any;
 }) => {
+  const log = logger("RESPONSE");
   headers["Content-Type"] = "application/json";
   if (!headers["Cache-Control"] && code != 404) {
     headers["Cache-Control"] = process.env.CACHE_TTL;
@@ -16,6 +19,7 @@ const response = ({
   // determinate the type of the args
   let body: { data?: null | [] | {}; errors?: any[] | any } = { data };
   if (err) {
+    log.error(err);
     delete body.data;
     code = code && code != 200 ? code : 400;
     body.errors = err instanceof Error ? { message: err.message } : err;

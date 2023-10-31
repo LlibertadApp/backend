@@ -66,3 +66,12 @@ functions:
       - httpApi:
           method: GET
           path: /config
+
+  post-actas:
+    name: "post-actas"
+    description: Guarda y procesa la imagen que suben los fiscales
+    handler: src/functions/actas/post.handler
+    events:
+      - httpApi:
+          method: POST
+          path: /actas

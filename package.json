@@ -14,7 +14,9 @@
     "deploy": "sls deploy",
     "remove": "sls remove"
   },
-  "dependencies": {},
+  "dependencies": {
+    "pino": "^8.16.1"
+  },
   "devDependencies": {
     "@types/aws-lambda": "8.10.114",
     "@types/node": "20.5.9",
