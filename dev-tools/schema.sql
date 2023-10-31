@@ -59,6 +59,32 @@ CREATE TABLE telegramas (
 CREATE INDEX idx_telegramas_mesa ON telegramas(mesa_id);
 CREATE INDEX idx_telegramas_usuario ON telegramas(usuario_id);
 
+CREATE TABLE resultados (
+    id serial PRIMARY KEY,
+    mesa_id varchar(40),
+    fiscal_lla integer,
+    fiscal_uxp integer,
+    fiscal_blanco integer,
+    fiscal_comando integer,
+    fiscal_impugnado integer,
+    fiscal_nulo integer,
+    fiscal_recurrido integer,
+    gobierno_lla integer,
+    gobierno_uxp integer,
+    gobierno_blanco integer,
+    gobierno_comando integer,
+    gobierno_impugnado integer,
+    gobierno_nulo integer,
+    gobierno_recurrido integer,
+    ocr_lla integer,
+    ocr_uxp integer,
+    ocr_blanco integer,
+    ocr_comando integer,
+    ocr_impugnado integer,
+    ocr_nulo integer,
+    ocr_recurrido integer
+);
+
 \COPY provincias FROM 'provincias.csv' DELIMITER ',' CSV HEADER;
 \COPY seccionprovinciales FROM 'seccionprovinciales.csv' DELIMITER ',' CSV HEADER;
 \COPY secciones FROM 'secciones.csv' DELIMITER ',' CSV HEADER;
