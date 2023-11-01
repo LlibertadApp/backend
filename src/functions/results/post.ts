@@ -42,69 +42,63 @@ export const handler = async (
   context: Context,
   callback: Callback
 ): Promise<any> => {
-  global.cb = callback;
-  /* const { BUCKET_NAME } = process.env; */
-  const payload = JSON.parse(event.body!) as ActasInput;
-
-  const schema = object({
-    mesa_id: string().required(),
-    fiscal_lla: number().required().positive().integer(),
-    fiscal_uxp: number().required().positive().integer(),
-    fiscal_blanco: number().required().positive().integer(),
-    fiscal_comando: number().required().positive().integer(),
-    fiscal_impugnado: number().required().positive().integer(),
-    fiscal_nulo: number().required().positive().integer(),
-    fiscal_recurrido: number().required().positive().integer(),
-  });
-
-  // valida
-  const {
-    mesa_id,
-    fiscal_lla,
-    fiscal_uxp,
-    fiscal_blanco,
-    fiscal_comando,
-    fiscal_impugnado,
-    fiscal_nulo,
-    fiscal_recurrido,
-  } = payload;
-  await schema.validate(payload);
-
-  // escritura
-  const dbConnection = DatabaseConnection.getInstance();
-  const query = `
-    INSERT INTO resultados
-        mesa_id = $1
-        fiscal_lla = $2,
-        fiscal_uxp = $3,
-        fiscal_blanco = $4,
-        fiscal_comando = $5,
-        fiscal_impugnado = $6,
-        fiscal_nulo = $7,
-        fiscal_recurrido = $8
-`;
-
-  let values = [
-    mesa_id,
-    fiscal_lla,
-    fiscal_uxp,
-    fiscal_blanco,
-    fiscal_comando,
-    fiscal_impugnado,
-    fiscal_nulo,
-    fiscal_recurrido,
-  ];
-
   try {
+    global.cb = callback;
+    /* const { BUCKET_NAME } = process.env; */
+    const payload = JSON.parse(event.body!) as ActasInput;
+
+    const schema = object({
+      mesa_id: string().required(),
+      fiscal_lla: number().required().positive().integer(),
+      fiscal_uxp: number().required().positive().integer(),
+      fiscal_blanco: number().required().positive().integer(),
+      fiscal_comando: number().required().positive().integer(),
+      fiscal_impugnado: number().required().positive().integer(),
+      fiscal_nulo: number().required().positive().integer(),
+      fiscal_recurrido: number().required().positive().integer(),
+    });
+
+    // valida
+    const {
+      mesa_id,
+      fiscal_lla,
+      fiscal_uxp,
+      fiscal_blanco,
+      fiscal_comando,
+      fiscal_impugnado,
+      fiscal_nulo,
+      fiscal_recurrido,
+    } = payload;
+    await schema.validate(payload);
+
+    // escritura
+    const dbConnection = DatabaseConnection.getInstance();
+    const query = `
+    INSERT INTO resultados (mesa_id, fiscal_lla, fiscal_uxp, fiscal_blanco, fiscal_comando, fiscal_impugnado, fiscal_nulo, fiscal_recurrido)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    `;
+    
+    let values = [
+      mesa_id,
+      fiscal_lla,
+      fiscal_uxp,
+      fiscal_blanco,
+      fiscal_comando,
+      fiscal_impugnado,
+      fiscal_nulo,
+      fiscal_recurrido,
+    ];
+
     await dbConnection.queryWrite(query, values);
 
     let successfulProcess: postReultsResponse = {
       result: "successful",
+      mesa_id,
     };
 
     log.info(`resultados de mesa ${mesa_id} cargados correctamente`);
     return response({
-      code: HttpStatus.OK,
+      code: HttpStatus.CREATED,
       data: successfulProcess,
     });
   } catch (err: any) {
