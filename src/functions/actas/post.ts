@@ -65,8 +65,7 @@ export const handler = async (
 
     const dbConnection = DatabaseConnection.getInstance();
     const query: string = 'INSERT INTO telegramas(mesa_id, link) VALUES ( \
-      (SELECT id from mesas where identificador_unico_mesa = $1 LIMIT 1), $2) \
-      ON CONFLICT (mesa_id) DO UPDATE SET link = $2';
+      (SELECT id from mesas where identificador_unico_mesa = $1 LIMIT 1), $2)'
     const insertValues = [mesaId, url];
     dbConnection.queryWrite(query, insertValues);
 
