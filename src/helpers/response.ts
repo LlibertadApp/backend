@@ -1,5 +1,7 @@
+import HttpStatus from "./enum/http";
+
 const response = ({
-  code = 200,
+  code = HttpStatus.OK,
   data = null,
   err = null,
   headers = {},
@@ -17,7 +19,7 @@ const response = ({
   let body: { data?: null | [] | {}; errors?: any[] | any } = { data };
   if (err) {
     delete body.data;
-    code = code && code != 200 ? code : 400;
+    code = code && code != HttpStatus.OK ? code : HttpStatus.BAD_REQUEST;
     body.errors = err instanceof Error ? { message: err.message } : err;
   }
 
