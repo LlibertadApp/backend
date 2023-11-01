@@ -17,20 +17,6 @@ type ActasInput = {
   fiscal_impugnado: number;
   fiscal_nulo: number;
   fiscal_recurrido: number;
-  //api_lla: number,
-  //api_uxp: number,
-  //api_blanco: number,
-  //api_comando: number,
-  //api_impugnado: number,
-  //api_nulo: number,
-  //api_recurrido: number,
-  //ocr_lla: number,
-  //ocr_uxp: number,
-  //ocr_blanco: number,
-  //ocr_comando: number,
-  //ocr_impugnado: number,
-  //ocr_nulo: number,
-  //ocr_recurrido: number
 };
 
 type ActasResponse = {
@@ -87,19 +73,19 @@ export const handler = async (
   // escritura
   const dbConnection = DatabaseConnection.getInstance();
   const query = `
-    UPDATE resultados
-    SET
-        fiscal_lla = $1,
-        fiscal_uxp = $2,
-        fiscal_blanco = $3,
-        fiscal_comando = $4,
-        fiscal_impugnado = $5,
-        fiscal_nulo = $6,
-        fiscal_recurrido = $7
-    WHERE mesa_id = $8
+    INSERT INTO resultados
+        mesa_id = $1
+        fiscal_lla = $2,
+        fiscal_uxp = $3,
+        fiscal_blanco = $4,
+        fiscal_comando = $5,
+        fiscal_impugnado = $6,
+        fiscal_nulo = $7,
+        fiscal_recurrido = $8
 `;
 
   let values = [
+    mesa_id,
     fiscal_lla,
     fiscal_uxp,
     fiscal_blanco,
@@ -107,7 +93,6 @@ export const handler = async (
     fiscal_impugnado,
     fiscal_nulo,
     fiscal_recurrido,
-    mesa_id,
   ];
 
   try {
