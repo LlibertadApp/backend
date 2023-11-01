@@ -3,6 +3,7 @@ import { APIGatewayEvent, Callback, Context } from "aws-lambda";
 import * as AWS from "aws-sdk";
 import response from "@/helpers/response";
 import logger from "@/helpers/logger";
+import { object, string } from "yup";
 
 type ActasInput = {
   mesaId: string;
@@ -28,8 +29,18 @@ export const handler = async (
 ) => {
   global.cb = callback;
   const { BUCKET_NAME } = process.env;
-  const { imagenActa, mesaId } = event.pathParameters as ActasInput;
+  const payload = JSON.parse(event.body!) as ActasInput;
   try {
+    const schema = object({
+      mesaId: string().required(),
+      imagenActa: string().required(),
+    });
+
+    // valida
+    const { imagenActa, mesaId } = payload;
+    await schema.validate(payload);
+
+    // manda acta a S3
     const base64 = Buffer.from(
       imagenActa.replace(/^data:image\/\w+;base64,/, ""),
       "base64"

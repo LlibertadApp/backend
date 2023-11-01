@@ -15,7 +15,8 @@
     "remove": "sls remove"
   },
   "dependencies": {
-    "pino": "^8.16.1"
+    "pino": "^8.16.1",
+    "yup": "^1.3.2"
   },
   "devDependencies": {
     "@types/aws-lambda": "8.10.114",
