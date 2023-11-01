@@ -10,6 +10,7 @@ CREATE TABLE seccionprovinciales (
     seccionprovincial_id integer,
     seccionprovincial_nombre varchar(255)
 );
+CREATE INDEX idx_seccionprovinciales_provincia ON seccionprovinciales(provincia_id);
 
 CREATE TABLE secciones (
     id serial PRIMARY KEY,
@@ -17,6 +18,7 @@ CREATE TABLE secciones (
     seccion_id integer,
     seccion_nombre varchar(255) NOT NULL
 );
+CREATE INDEX idx_secciones_seccionprovincial ON secciones(seccionprovincial_id);
 
 CREATE TABLE circuitos (
     id serial PRIMARY KEY,
@@ -24,6 +26,7 @@ CREATE TABLE circuitos (
     circuito_id varchar(10),
     circuito_nombre varchar(255)
 );
+CREATE INDEX idx_circuitos_seccion ON circuitos(seccion_id);
 
 CREATE TABLE escuelas (
     id serial PRIMARY KEY,
@@ -31,6 +34,7 @@ CREATE TABLE escuelas (
     escuela_id varchar(40),
     escuela varchar(255) NOT NULL
 );
+CREATE INDEX idx_escuelas_circuito ON escuelas(circuito_id);
 
 CREATE TABLE mesas (
     id serial PRIMARY KEY,
@@ -39,6 +43,8 @@ CREATE TABLE mesas (
     mesa_id varchar(10),
     activo boolean DEFAULT false
 );
+CREATE INDEX idx_mesas_escuela ON mesas(escuela_id);
+CREATE INDEX idx_mesas_identificador_unico_mesa ON mesas(identificador_unico_mesa);
 
 CREATE TABLE usuarios (
     id serial primary key,
