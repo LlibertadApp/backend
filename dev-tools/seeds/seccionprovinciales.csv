@@ -1,37 +1,37 @@
-id,provincia_id,seccionprovincial_nombre
-6,2,Sección Sexta
-7,2,Sección Séptima
-1,2,Sección Primera
-2,23,Este
-0,9,""
-0,5,""
-2,13,Sección Segunda
-3,2,Sección Tercera
-5,2,Sección Quinta
-0,19,""
-3,13,Sección Tercera
-0,15,""
-0,20,""
-0,11,""
-2,2,Sección Segunda
-0,10,""
-0,12,""
-1,23,Capital
-0,21,""
-0,16,""
-0,18,""
-0,8,""
-4,2,Sección Cuarta
-0,14,""
-0,4,""
-0,24,""
-0,6,""
-0,22,""
-8,2,Sección Capital
-0,7,""
-0,17,""
-4,13,Sección Cuarta
-3,23,Oeste
-0,3,""
-1,13,Sección Primera
-0,1,""
+id,provincia_id,seccionprovincial_id,seccionprovincial_nombre
+1,11,0,NA
+2,18,7,Sección Séptima
+3,22,3,Sección Tercera
+4,9,0,NA
+5,8,3,Oeste
+6,22,1,Sección Primera
+7,14,0,NA
+8,18,1,Sección Primera
+9,7,0,NA
+10,16,0,NA
+11,2,0,NA
+12,10,0,NA
+13,5,0,NA
+14,18,8,Sección Capital
+15,4,0,NA
+16,17,0,NA
+17,8,1,Capital
+18,18,4,Sección Cuarta
+19,24,0,NA
+20,23,0,NA
+21,18,5,Sección Quinta
+22,1,0,NA
+23,12,0,NA
+24,19,0,NA
+25,15,0,NA
+26,6,0,NA
+27,18,6,Sección Sexta
+28,21,0,NA
+29,3,0,NA
+30,18,3,Sección Tercera
+31,18,2,Sección Segunda
+32,20,0,NA
+33,22,2,Sección Segunda
+34,13,0,NA
+35,22,4,Sección Cuarta
+36,8,2,Este

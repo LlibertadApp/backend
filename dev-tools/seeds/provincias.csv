@@ -1,25 +1,25 @@
-id,provincia_nombre
-7,Chubut
-22,Santiago del Estero
-15,Neuquén
-12,La Rioja
-19,San Luis
-11,La Pampa
-4,Córdoba
-23,Tucumán
-5,Corrientes
-16,Río Negro
-10,Jujuy
-20,Santa Cruz
-14,Misiones
-8,Entre Ríos
-9,Formosa
-6,Chaco
-24,"Tierra del Fuego, Antártida e Islas del Atlántico Sur"
-2,Buenos Aires
-17,Salta
-18,San Juan
-1,Ciudad Autónoma de Buenos Aires
-13,Mendoza
-21,Santa Fe
-3,Catamarca
+id,provincia_id,provincia_nombre
+1,7,Chubut
+2,22,Santiago del Estero
+3,15,Neuquén
+4,12,La Rioja
+5,19,San Luis
+6,11,La Pampa
+7,4,Córdoba
+8,23,Tucumán
+9,5,Corrientes
+10,16,Río Negro
+11,10,Jujuy
+12,20,Santa Cruz
+13,14,Misiones
+14,8,Entre Ríos
+15,9,Formosa
+16,6,Chaco
+17,24,"Tierra del Fuego, Antártida e Islas del Atlántico Sur"
+18,2,Buenos Aires
+19,17,Salta
+20,18,San Juan
+21,1,Ciudad Autónoma de Buenos Aires
+22,13,Mendoza
+23,21,Santa Fe
+24,3,Catamarca

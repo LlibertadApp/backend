@@ -19,6 +19,7 @@ services:
         - ./seeds/secciones.csv:/docker-entrypoint-initdb.d/secciones.csv
         - ./seeds/seccionprovinciales.csv:/docker-entrypoint-initdb.d/seccionprovinciales.csv
         - ./seeds/circuitos.csv:/docker-entrypoint-initdb.d/circuitos.csv
+        - ./seeds/escuelas.csv:/docker-entrypoint-initdb.d/escuelas.csv
         - ./seeds/mesas.csv:/docker-entrypoint-initdb.d/mesas.csv
     minio:
         image: docker.io/bitnami/minio:2023

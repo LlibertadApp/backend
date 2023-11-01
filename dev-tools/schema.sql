@@ -1,36 +1,43 @@
 CREATE TABLE provincias (
-    id integer primary key,
-    provincia_nombre varchar(255) not null
+    id serial PRIMARY KEY,
+    provincia_id integer,
+    provincia_nombre varchar(255) NOT NULL
 );
 
 CREATE TABLE seccionprovinciales (
-    id integer,
+    id serial PRIMARY KEY,
     provincia_id integer,
-    seccionprovincial_nombre varchar(255) not null,
-    PRIMARY KEY (id, provincia_id)
+    seccionprovincial_id integer,
+    seccionprovincial_nombre varchar(255)
 );
 
 CREATE TABLE secciones (
-    id integer,
-    provincia_id integer,
+    id serial PRIMARY KEY,
     seccionprovincial_id integer,
-    seccion_nombre varchar(255) not null,
-    PRIMARY KEY (id, seccionprovincial_id, provincia_id)
+    seccion_id integer,
+    seccion_nombre varchar(255) NOT NULL
 );
 
 CREATE TABLE circuitos (
-    circuito_id varchar(10),
+    id serial PRIMARY KEY,
     seccion_id integer,
-    circuito_nombre varchar(255) not null,
-    PRIMARY KEY (circuito_id, seccion_id)
+    circuito_id varchar(10),
+    circuito_nombre varchar(255)
+);
+
+CREATE TABLE escuelas (
+    id serial PRIMARY KEY,
+    circuito_id integer,
+    escuela_id varchar(40),
+    escuela varchar(255) NOT NULL
 );
 
 CREATE TABLE mesas (
-    id varchar(40) primary key,
+    id serial PRIMARY KEY,
+    escuela_id integer,
+    identificador_unico_mesa varchar(40),
     mesa_id varchar(10),
-    circuito_id varchar(10),
-    mesa_tipo varchar(50) not null,
-    activo boolean default false
+    activo boolean DEFAULT false
 );
 
 CREATE TABLE usuarios (
@@ -89,4 +96,5 @@ CREATE TABLE resultados (
 \COPY seccionprovinciales FROM '/docker-entrypoint-initdb.d/seccionprovinciales.csv' DELIMITER ',' CSV HEADER;
 \COPY secciones FROM '/docker-entrypoint-initdb.d/secciones.csv' DELIMITER ',' CSV HEADER;
 \COPY circuitos FROM '/docker-entrypoint-initdb.d/circuitos.csv' DELIMITER ',' CSV HEADER;
+\COPY escuelas FROM '/docker-entrypoint-initdb.d/escuelas.csv' DELIMITER ',' CSV HEADER;
 \COPY mesas FROM '/docker-entrypoint-initdb.d/mesas.csv' DELIMITER ',' CSV HEADER;
