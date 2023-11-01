@@ -7,7 +7,7 @@ type HttpResponse = {
 };
 
 const response = ({
-  code = 200,
+  code = HttpStatus.OK,
   data = null,
   err = null,
   headers = {},

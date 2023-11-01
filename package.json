@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --env=node",
     "build": "tsc && tsc-alias",
-    "local": "sls offline start --stage local",
+    "local": "LBERTAPP_ENV=local sls offline start --stage local",
     "rollback": "sls rollback",
     "package": "sls package",
     "logs": "sls logs --tail",
@@ -21,6 +21,7 @@
   "devDependencies": {
     "@types/aws-lambda": "8.10.114",
     "@types/node": "20.5.9",
+    "@types/pg": "^8.10.7",
     "@types/uuid": "9.0.1",
     "aws-sdk": "2.1171.0",
     "dotenv": "16.0.3",
