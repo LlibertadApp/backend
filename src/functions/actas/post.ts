@@ -35,7 +35,7 @@ export const handler = async (
       "base64"
     );
     const asset = `actas/${mesaId}.jpeg`;
-    const opts = {
+    const opts: AWS.S3.PutObjectRequest = {
       Bucket: BUCKET_NAME!,
       Key: asset,
       ContentEncoding: "base64",
@@ -52,7 +52,6 @@ export const handler = async (
     };
 
     // @TODO: guardar en db, encolar evento para OCRs
-
     return response({
       data,
     });

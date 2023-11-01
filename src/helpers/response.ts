@@ -1,5 +1,11 @@
 import logger from "@/helpers/logger";
 
+type HttpResponse = {
+  statusCode: number;
+  body: any;
+  headers: [key: string];
+};
+
 const response = ({
   code = 200,
   data = null,
@@ -10,7 +16,7 @@ const response = ({
   data?: any;
   err?: Error | [] | null | unknown;
   headers?: any;
-}) => {
+}): HttpResponse => {
   const log = logger("RESPONSE");
   headers["Content-Type"] = "application/json";
   if (!headers["Cache-Control"] && code != 404) {
