@@ -1,4 +1,5 @@
 import logger from "@/helpers/logger";
+import HttpStatus from "./enum/http";
 
 type HttpResponse = {
   statusCode: number;
