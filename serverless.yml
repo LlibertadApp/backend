@@ -66,3 +66,11 @@ functions:
       - httpApi:
           method: GET
           path: /config
+  example:
+    name: "example"
+    description: Example function for testing
+    handler: src/functions/example/query.handler
+    events:
+      - httpApi:
+          method: GET
+          path: /example
