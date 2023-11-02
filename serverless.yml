@@ -75,3 +75,12 @@ functions:
       - httpApi:
           method: POST
           path: /actas
+
+  get-user:
+    name: "get-user"
+    description: Get user data
+    handler: src/functions/users/createUser.handler
+    events:
+      - httpApi:
+          method: GET
+          path: /users/{id}
