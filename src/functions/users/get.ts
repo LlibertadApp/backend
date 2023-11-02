@@ -1,28 +1,34 @@
 /// <reference path="../../symbols.d.ts" />
 // import { DatabaseConnection } from "@/helpers/database/connection";
-import 'reflect-metadata'
+import "reflect-metadata";
 import { APIGatewayEvent, Callback, Context } from "aws-lambda";
 import { findUserByUuid } from "@/helpers/daos/userDao";
-import response from '@/helpers/response';
+import response from "@/helpers/response";
+import { httpErrors, httpStatusCodes } from "@/helpers/configs/errorConstants";
 
 export const handler = async (
-    event: APIGatewayEvent,
-    context: Context,
-    callback: Callback
+  event: APIGatewayEvent,
+  context: Context,
+  callback: Callback
 ): Promise<any> => {
-    global.cb = callback;
-    try {
-        const uuid = event.pathParameters?.id;
-        if (!uuid) {
-            return response({ code: 400, err: JSON.stringify(event.pathParameters) });
-        }
-
-        const user = await findUserByUuid(uuid);
-        return response({ code: 200, data: user });
-    } catch (error) {
-        console.error(error);
-        return response({ code: 500, err: 'Internal Server Error' });
+  global.cb = callback;
+  try {
+    const uuid = event.pathParameters?.id;
+    if (!uuid) {
+      return response({
+        code: httpStatusCodes.BAD_REQUEST,
+        err: JSON.stringify(event.pathParameters),
+      });
     }
-}
+
+    const user = await findUserByUuid(uuid);
+    return response({ code: httpStatusCodes.OK, data: user });
+  } catch (error) {
+    return response({
+      code: httpStatusCodes.INTERNAL_SERVER_ERROR,
+      err: httpErrors.INTERNAL_SERVER_ERROR,
+    });
+  }
+};
 
 export default handler;

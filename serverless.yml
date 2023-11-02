@@ -84,3 +84,10 @@ functions:
       - httpApi:
           method: GET
           path: /users/{id}
+  post-user:
+    handler: src/functions/users/post.handler
+    description: Create a new user
+    events:
+      - httpApi:
+          method: POST
+          path: /users        
