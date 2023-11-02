@@ -79,7 +79,7 @@ functions:
   get-user:
     name: "get-user"
     description: Get user data
-    handler: src/functions/users/createUser.handler
+    handler: src/functions/users/get.handler
     events:
       - httpApi:
           method: GET
