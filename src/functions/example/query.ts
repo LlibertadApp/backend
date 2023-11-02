@@ -3,7 +3,7 @@ import { DatabaseConnection } from "@/helpers/database/connection";
 import { APIGatewayEvent, Callback, Context } from "aws-lambda";
 import response from "@/helpers/response";
 import HttpStatus from "@/helpers/enum/http";
-import { GetUsersResponse } from "@/helpers/models/response/getUsersResponse";
+import { GetUsersResponse } from "@/types";
 
 
 /**
