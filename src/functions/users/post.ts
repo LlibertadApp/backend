@@ -38,10 +38,7 @@ export const handler = async (
 
     return response({ code: httpStatusCodes.CREATED, data: newUser });
   } catch (error) {
-    return response({
-      code: httpStatusCodes.INTERNAL_SERVER_ERROR,
-      err: httpErrors.INTERNAL_SERVER_ERROR,
-    });
+    return response(error);
   }
 };
 

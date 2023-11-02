@@ -24,10 +24,7 @@ export const handler = async (
     const user = await findUserByUuid(uuid);
     return response({ code: httpStatusCodes.OK, data: user });
   } catch (error) {
-    return response({
-      code: httpStatusCodes.INTERNAL_SERVER_ERROR,
-      err: httpErrors.INTERNAL_SERVER_ERROR,
-    });
+    return response(error);
   }
 };
 
