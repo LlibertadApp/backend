@@ -76,11 +76,11 @@ functions:
           method: POST
           path: /actas
   
-  post-results:
-    name: "post-actas"
+  post-resultados:
+    name: "post-resultados"
     description: Guarda los resultados que suben los fiscales manualmente
     handler: src/functions/results/post.handler
     events:
       - httpApi:
           method: POST
-          path: /results
+          path: /resultados
