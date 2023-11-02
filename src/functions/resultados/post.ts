@@ -1,28 +1,11 @@
 /// <reference path="../../symbols.d.ts" />
 import { APIGatewayEvent, Callback, Context } from "aws-lambda";
-import * as AWS from "aws-sdk";
 import response from "@/helpers/response";
 import logger from "@/helpers/logger";
 import { object, string, number } from "yup";
 import { DatabaseConnection } from "@/helpers/database/connection";
 import HttpStatus from "@/helpers/enum/http";
-import { postReultsResponse } from "@/helpers/models/response/postResultsResponse";
-
-type ActasInput = {
-  mesa_id: string;
-  fiscal_lla: number;
-  fiscal_uxp: number;
-  fiscal_blanco: number;
-  fiscal_comando: number;
-  fiscal_impugnado: number;
-  fiscal_nulo: number;
-  fiscal_recurrido: number;
-};
-
-type ActasResponse = {
-  mesaId: string;
-  url: string;
-};
+import { PostResultadosResponse, ResultadosInput } from "@/types";
 
 /**
  * Usage
@@ -36,7 +19,7 @@ type ActasResponse = {
  * @param fiscal_nulo
  * @param fiscal_recurrido
  */
-const log = logger("POST_RESULTS");
+const log = logger("POST_RESULTADOS");
 export const handler = async (
   event: APIGatewayEvent,
   context: Context,
@@ -44,8 +27,7 @@ export const handler = async (
 ): Promise<any> => {
   try {
     global.cb = callback;
-    /* const { BUCKET_NAME } = process.env; */
-    const payload = JSON.parse(event.body!) as ActasInput;
+    const payload = JSON.parse(event.body!) as ResultadosInput;
 
     const schema = object({
       mesa_id: string().required(),
@@ -77,7 +59,7 @@ export const handler = async (
     INSERT INTO resultados (mesa_id, fiscal_lla, fiscal_uxp, fiscal_blanco, fiscal_comando, fiscal_impugnado, fiscal_nulo, fiscal_recurrido)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
     `;
-    
+
     let values = [
       mesa_id,
       fiscal_lla,
@@ -91,7 +73,7 @@ export const handler = async (
 
     await dbConnection.queryWrite(query, values);
 
-    let successfulProcess: postReultsResponse = {
+    let successfulProcess: PostResultadosResponse = {
       result: "successful",
       mesa_id,
     };
@@ -102,10 +84,7 @@ export const handler = async (
       data: successfulProcess,
     });
   } catch (err: any) {
-    return response({
-      code: HttpStatus.BAD_REQUEST,
-      err: err,
-    });
+    return response(err);
   }
 };
 
