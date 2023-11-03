@@ -1,18 +1,15 @@
-import { PolicyDocument } from "aws-lambda";
+import { APIGatewayAuthorizerResult, PolicyDocument } from "aws-lambda";
 import { EffectType, generatePolicyDocument } from "./policy-document";
 
-export type AuthorizeOutputType = {
-  principalId: string | (() => string);
-  policyDocument: PolicyDocument;
-};
+export const unauthorizedPrincipalId = "unauthorized-user";
 
 export function generateAuthorizeOutput(
-  principalId: string | (() => string),
+  principalId: string,
   effect: EffectType,
   routeArn: string
-): AuthorizeOutputType {
+): APIGatewayAuthorizerResult {
   return {
-    principalId: principalId,
+    principalId,
     policyDocument: generatePolicyDocument(effect, routeArn),
   };
 }

@@ -1,6 +1,11 @@
 import { PolicyDocument } from "aws-lambda";
 
-export type EffectType = "Allow" | "Deny"
+export enum PolicyEffect {
+  Allow = "Allow",
+  Deny = "Deny",
+}
+
+export type EffectType = PolicyEffect.Allow | PolicyEffect.Deny
 
 export function generatePolicyDocument(effect: EffectType, resource: string): PolicyDocument {
   return {
