@@ -37,27 +37,6 @@ export const handler = async (
   callback: Callback
 ): Promise<void> => {
   try {
-    const environment = process.env.ALBERTAPP_ENV;
-
-    if (environment === EnumEnv.LOCAL) {
-      const policyDocument = {
-        Version: "2012-10-17",
-        Statement: [
-          {
-            Action: "execute-api:Invoke",
-            Effect: "Allow",
-            Resource: "*",
-          },
-        ],
-      };
-
-      callback(null, {
-        principalId: "local-user",
-        policyDocument,
-      });
-      return;
-    }
-
     const token = event.headers["Authorization"];
 
     if (!token) {
