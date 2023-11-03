@@ -4,7 +4,6 @@ import {
   Context,
 } from "aws-lambda";
 import jwt from "jsonwebtoken";
-import { generatePolicyDocument } from "@/helpers/auth/policy-document";
 import {
   FirebasePublicKeysType,
   fetchFirebasePublicKeys,

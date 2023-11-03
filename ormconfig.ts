@@ -33,7 +33,3 @@ export const ConnectionSource = new DataSource({
         FirstMigration1698943496462
 	],
 });
-
-ConnectionSource.initialize()
-	.then(() => console.log('Database connected'))
-	.catch((error) => console.log('Typeorm connection error: ', error));
