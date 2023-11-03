@@ -2,7 +2,6 @@ import axios from "axios";
 import { APIGatewayEvent, Callback, Context } from "aws-lambda";
 import jwt from "jsonwebtoken";
 import { httpErrors } from "@/helpers/configs/errorConstants";
-import EnumEnv from "@/helpers/enum/environments";
 
 const firebasePublicKeyUrl = process.env.FIREBASE_PUBLIC_KEYS_URL;
 
@@ -41,13 +40,13 @@ export const handler = async (
 
     if (!token) {
       callback(null, {
-        principalId: "unauthorized-user", // or some other placeholder
+        principalId: "unauthorized-user",
         policyDocument: {
           Version: "2012-10-17",
           Statement: [
             {
               Action: "execute-api:Invoke",
-              Effect: "Deny", // Notice we deny the access
+              Effect: "Deny",
               Resource: "*",
             },
           ],
@@ -70,13 +69,13 @@ export const handler = async (
       function (err, payload) {
         if (err) {
           callback(null, {
-            principalId: "unauthorized-user", // or some other placeholder
+            principalId: "unauthorized-user",
             policyDocument: {
               Version: "2012-10-17",
               Statement: [
                 {
                   Action: "execute-api:Invoke",
-                  Effect: "Deny", // Notice we deny the access
+                  Effect: "Deny",
                   Resource: "*",
                 },
               ],
@@ -102,13 +101,13 @@ export const handler = async (
             });
           } else {
             callback(null, {
-              principalId: "unauthorized-user", // or some other placeholder
+              principalId: "unauthorized-user",
               policyDocument: {
                 Version: "2012-10-17",
                 Statement: [
                   {
                     Action: "execute-api:Invoke",
-                    Effect: "Deny", // Notice we deny the access
+                    Effect: "Deny",
                     Resource: "*",
                   },
                 ],
