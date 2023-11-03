@@ -17,6 +17,7 @@
     "typeorm:local": "LBERTAPP_ENV=local typeorm-ts-node-commonjs -d ./ormconfig.ts"
   },
   "dependencies": {
+    "firebase-admin": "^11.11.0",
     "pg": "^8.11.3",
     "pino": "^8.16.1",
     "reflect-metadata": "^0.1.13",
