@@ -5,6 +5,7 @@ import response from "@/helpers/response";
 import logger from "@/helpers/logger";
 import { object, string } from "yup";
 import { DatabaseConnection } from "@/helpers/database/connection";
+import HttpStatus from "@/helpers/enum/http";
 
 type ActasInput = {
   mesaId: string;
@@ -74,7 +75,8 @@ export const handler = async (
 
     // @TODO: encolar evento para OCRs
     return response({
-      data,
+      code: HttpStatus.CREATED,
+      data: data,
     });
   } catch (err: any) {
     return response({ err });
