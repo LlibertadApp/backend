@@ -1,24 +1,37 @@
-import { APIGatewayEvent, Callback, Context } from "aws-lambda";
+import { APIGatewayRequestAuthorizerEventV2, Callback, Context } from "aws-lambda";
 import jwt from "jsonwebtoken";
 import { generatePolicyDocument } from "@/helpers/auth/policy-document";
 import { fetchFirebasePublicKeys } from "@/helpers/auth/fetch-firebase-public-keys";
+import { authorizerErrors } from "@/helpers/configs/errorConstants";
 
 let cachedKeys: { [key: string]: string } | null = null;
 let lastFetchTime: number | null = null;
 
+const unauthorizedPrincipalId = "unauthorized-user"
+
 export const handler = async (
-  event: APIGatewayEvent,
-  context: Context,
+  event: APIGatewayRequestAuthorizerEventV2,
+  _context: Context,
   callback: Callback
 ): Promise<void> => {
+  const routeArn = event.routeArn;
   try {
+    if (!event.headers) {
+      console.error(authorizerErrors.NO_HEADERS_PRESENT);
+      callback(null, {
+        principalId: unauthorizedPrincipalId,
+        policyDocument: generatePolicyDocument("Deny", routeArn),
+      });
+      return;
+    }
+
     const token = event.headers["Authorization"];
 
     if (!token) {
-      console.error('Authorization header is Undefined');
+      console.error(authorizerErrors.UNDEFINED_AUTHORIZATION_HEADER);
       callback(null, {
-        principalId: "unauthorized-user",
-        policyDocument: generatePolicyDocument("Deny", "*"),
+        principalId: unauthorizedPrincipalId,
+        policyDocument: generatePolicyDocument("Deny", routeArn),
       });
       return;
     }
@@ -36,35 +49,35 @@ export const handler = async (
       { algorithms: ["RS256"] },
       function (err, payload) {
         if (err) {
-          console.error('Firebase Auth Token Verify Error: ', err);
+          console.error(authorizerErrors.FIREBASE_AUTH_VERIFICATION_ERROR, err);
           callback(null, {
-            principalId: "unauthorized-user",
-            policyDocument: generatePolicyDocument("Deny", "*"),
+            principalId: unauthorizedPrincipalId,
+            policyDocument: generatePolicyDocument("Deny", routeArn),
           });
         } else {
           if (payload) {
             const principalId = payload.sub;
-            const policyDocument = generatePolicyDocument("Allow", "*");
+            const policyDocument = generatePolicyDocument("Allow", routeArn);
 
             callback(null, {
               principalId,
               policyDocument,
             });
           } else {
-            console.error('Firebase Auth Payload is Undefined');
+            console.error(authorizerErrors.UNDEFINED_FIREBASE_AUTH_PAYLOAD);
             callback(null, {
-              principalId: "unauthorized-user",
-              policyDocument: generatePolicyDocument("Deny", "*"),
+              principalId: unauthorizedPrincipalId,
+              policyDocument: generatePolicyDocument("Deny", routeArn),
             });
           }
         }
       }
     );
   } catch (error) {
-    console.error('Authorizer Error: ', error);
+    console.error(authorizerErrors.UNEXPECTED_AUTHORIZE_ERROR, error);
     callback(null, {
-      principalId: "unauthorized-user",
-      policyDocument: generatePolicyDocument("Deny", "*"),
+      principalId: unauthorizedPrincipalId,
+      policyDocument: generatePolicyDocument("Deny", routeArn),
     });
   }
 };

@@ -71,6 +71,18 @@ export const httpErrors = {
   BAD_REQUEST_ERROR_NO_DATA_PROVIDED: "Bad Request: No data provided",
   BAD_REQUEST_ERROR_USER_COULD_NOT_BE_CREATED:
     "Bad Request: User could not be created",
-  ENVIRONMENT_VARIABLE_NOT_FOUND: (variableName: string) => `${variableName} not defined`,
-  UNAUTHORIZED: 'Unauthorized'
+  UNAUTHORIZED: "Unauthorized",
+};
+
+export const infraestructureErrors = {
+  ENVIRONMENT_VARIABLE_NOT_FOUND: (variableName: string) =>
+    `${variableName} not defined`,
+};
+
+export const authorizerErrors = {
+  NO_HEADERS_PRESENT: "No headers present on the event",
+  UNDEFINED_AUTHORIZATION_HEADER: "Authorization header is Undefined",
+  FIREBASE_AUTH_VERIFICATION_ERROR: "Firebase Auth Token Verify Error: ",
+  UNDEFINED_FIREBASE_AUTH_PAYLOAD: "Firebase Auth Payload is Undefined",
+  UNEXPECTED_AUTHORIZE_ERROR: "Unexpected Authorizer Error: ",
 };

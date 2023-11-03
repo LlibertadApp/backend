@@ -1,5 +1,5 @@
 import axios from "axios";
-import { httpErrors } from "../configs/errorConstants";
+import { httpErrors, infraestructureErrors } from "../configs/errorConstants";
 
 export async function fetchFirebasePublicKeys(
   cachedKeys: { [key: string]: string } | null = null,
@@ -9,7 +9,7 @@ export async function fetchFirebasePublicKeys(
   
   if (!firebasePublicKeyUrl) {
     throw new Error(
-      httpErrors.ENVIRONMENT_VARIABLE_NOT_FOUND("FIREBASE_PUBLIC_KEYS_URL")
+      infraestructureErrors.ENVIRONMENT_VARIABLE_NOT_FOUND("FIREBASE_PUBLIC_KEYS_URL")
     );
   }
 

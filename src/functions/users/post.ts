@@ -9,7 +9,7 @@ import { httpErrors, httpStatusCodes } from "@/helpers/configs/errorConstants";
 
 export const handler = async (
   event: APIGatewayEvent,
-  context: Context,
+  _context: Context,
   callback: Callback
 ): Promise<any> => {
   global.cb = callback;
