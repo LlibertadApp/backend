@@ -54,6 +54,7 @@ export const handler = async (
       Body: base64,
       ACL: "public-read",
     };
+
     const bucket = new AWS.S3();
     await bucket.putObject(opts).promise();
     log.info("telegrama subido a s3 correctamente");
@@ -65,7 +66,9 @@ export const handler = async (
 
     const dbConnection = DatabaseConnection.getInstance();
     const query: string = 'INSERT INTO telegramas(mesa_id, link) VALUES ( \
-      (SELECT id from mesas where identificador_unico_mesa = $1 LIMIT 1), $2)'
+      (SELECT id from mesas where identificador_unico_mesa = $1 LIMIT 1), $2) \
+      ON CONFLICT (mesa_id) DO UPDATE SET link = EXCLUDED.link';
+
     const insertValues = [mesaId, url];
     dbConnection.queryWrite(query, insertValues);
 

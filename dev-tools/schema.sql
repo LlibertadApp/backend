@@ -65,16 +65,15 @@ CREATE UNIQUE INDEX idx_usuarios_mesas_usuario_mesa ON usuarios_mesas(usuario_id
 
 CREATE TABLE telegramas (
     id serial PRIMARY KEY,
-    mesa_id integer NOT NULL,
+    mesa_id integer NOT NULL UNIQUE,
     link VARCHAR(255) NOT NULL
 );
 
 CREATE INDEX idx_telegramas_mesa ON telegramas(mesa_id);
-CREATE INDEX idx_telegramas_usuario ON telegramas(usuario_id);
 
 CREATE TABLE resultados (
     id serial PRIMARY KEY,
-    mesa_id integer NOT NULL,
+    mesa_id integer NOT NULL UNIQUE,
     fiscal_lla integer,
     fiscal_uxp integer,
     fiscal_blanco integer,
