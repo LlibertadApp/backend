@@ -75,17 +75,24 @@ functions:
       - httpApi:
           method: POST
           path: /actas
-
+  get-users:
+    name: "get-users"
+    description: Get users data with optional pagination
+    handler: src/functions/users/get.handler
+    events:
+      - httpApi:
+          method: GET
+          path: /users
   get-user:
     name: "get-user"
     description: Get user data
-    handler: src/functions/users/get.handler
+    handler: src/functions/users/user/get.handler
     events:
       - httpApi:
           method: GET
           path: /users/{id}
   post-user:
-    handler: src/functions/users/post.handler
+    handler: src/functions/users/user/post.handler
     description: Create a new user
     events:
       - httpApi:

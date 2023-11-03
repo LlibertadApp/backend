@@ -46,3 +46,27 @@ export const createUser = async (userData: Partial<User>): Promise<User | null> 
         return null;
     }
 };
+
+export const findUsersWithPagination = async (page: number, pageSize: number): Promise<{ data: User[], count: number } | null> => {
+    try {
+        if (!ConnectionSource.isInitialized) {
+            await ConnectionSource.initialize();
+        }
+
+        const userRepository: Repository<User> = ConnectionSource.getRepository(User);
+        
+        const take = pageSize || 10; 
+        const skip = page && page > 0 ? (page - 1) * take : 0; 
+
+        const [users, count] = await userRepository.findAndCount({
+            take: take,
+            skip: skip,
+        });
+
+        return { data: users, count: count };
+
+    } catch (error) {
+        console.error('Error in findUsersWithPagination:', error);
+        return null;
+    }
+};

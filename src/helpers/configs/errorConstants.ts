@@ -71,4 +71,5 @@ export const httpErrors = {
   BAD_REQUEST_ERROR_NO_DATA_PROVIDED: "Bad Request: No data provided",
   BAD_REQUEST_ERROR_USER_COULD_NOT_BE_CREATED:
     "Bad Request: User could not be created",
+  BAD_REQUEST_ERROR_NO_USERS_FOUND: "Bad Request: No users found",
 };

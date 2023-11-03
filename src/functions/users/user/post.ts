@@ -1,4 +1,4 @@
-/// <reference path="../../symbols.d.ts" />
+/// <reference path="../../../symbols.d.ts" />
 import "reflect-metadata";
 import { APIGatewayEvent, Context, Callback } from "aws-lambda";
 import { createUser } from "@/helpers/daos/userDao"; // Make sure this is imported
