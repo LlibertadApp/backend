@@ -1,10 +1,12 @@
 import axios from "axios";
-import { httpErrors, infraestructureErrors } from "../configs/errorConstants";
+import { infraestructureErrors } from "../configs/errorConstants";
+
+export type FirebasePublicKeysType = { [key: string]: string }
 
 export async function fetchFirebasePublicKeys(
-  cachedKeys: { [key: string]: string } | null = null,
+  cachedKeys: FirebasePublicKeysType | null = null,
   lastFetchTime: number | null = null
-): Promise<{ [key: string]: string }> {
+): Promise<FirebasePublicKeysType> {
   const firebasePublicKeyUrl = process.env.FIREBASE_PUBLIC_KEYS_URL;
   
   if (!firebasePublicKeyUrl) {
@@ -18,12 +20,12 @@ export async function fetchFirebasePublicKeys(
     lastFetchTime &&
     Date.now() - lastFetchTime < 24 * 60 * 60 * 1000
   ) {
-    return cachedKeys as { [key: string]: string };
+    return cachedKeys;
   }
 
-  const response = await axios.get(firebasePublicKeyUrl);
+  const response = await axios.get<FirebasePublicKeysType>(firebasePublicKeyUrl);
   cachedKeys = response.data;
   lastFetchTime = Date.now();
 
-  return cachedKeys as { [key: string]: string };
+  return cachedKeys;
 }

@@ -84,5 +84,6 @@ export const authorizerErrors = {
   UNDEFINED_AUTHORIZATION_HEADER: "Authorization header is Undefined",
   FIREBASE_AUTH_VERIFICATION_ERROR: "Firebase Auth Token Verify Error: ",
   UNDEFINED_FIREBASE_AUTH_PAYLOAD: "Firebase Auth Payload is Undefined",
+  UNDEFINED_PRINCIPAL_ID: "Principal Id is Undefined",
   UNEXPECTED_AUTHORIZE_ERROR: "Unexpected Authorizer Error: ",
 };
