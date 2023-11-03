@@ -106,4 +106,13 @@ functions:
           method: POST
           path: /users
           authorizer:
-            name: authorizer     
+            name: authorizer
+  get-token:
+    handler: src/functions/auth/post.handler
+    description: Generate Auth Token
+    events:
+      - httpApi:
+          method: POST
+          path: /auth
+          authorizer:
+            name: null                
