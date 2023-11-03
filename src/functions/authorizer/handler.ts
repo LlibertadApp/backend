@@ -54,7 +54,7 @@ export const handler = async (
             console.error('Firebase Auth Payload is Undefined');
             callback(null, {
               principalId: "unauthorized-user",
-              policyDocument: generatePolicyDocument("Allow", "*"),
+              policyDocument: generatePolicyDocument("Deny", "*"),
             });
           }
         }
@@ -64,7 +64,7 @@ export const handler = async (
     console.error('Authorizer Error: ', error);
     callback(null, {
       principalId: "unauthorized-user",
-      policyDocument: generatePolicyDocument("Allow", "*"),
+      policyDocument: generatePolicyDocument("Deny", "*"),
     });
   }
 };
