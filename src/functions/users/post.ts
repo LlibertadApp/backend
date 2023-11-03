@@ -1,7 +1,7 @@
 /// <reference path="../../symbols.d.ts" />
 import "reflect-metadata";
 import { APIGatewayEvent, Context, Callback } from "aws-lambda";
-import { createUser } from "@/helpers/daos/userDao"; // Make sure this is imported
+import { createUser } from "@/helpers/daos/userDao";
 import response from "@/helpers/response";
 import { User } from "@/helpers/models/entities/userEntity";
 import { v4 as uuidv4 } from "uuid";
