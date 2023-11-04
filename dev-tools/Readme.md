@@ -45,11 +45,10 @@ Deberas de ejecutar la migracion de la base de datos para que se creen las tabla
 Linux:
 ```bash
 cd dev-tools
-sh create_db.sh
+sh migration.sh
 ```
 
 Windows:
 ```bash
-cd dev-tools
-create_db.bat
+./migration.bat 5432
 ```

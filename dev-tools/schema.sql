@@ -46,6 +46,7 @@ CREATE TABLE mesas (
 CREATE INDEX idx_mesas_escuela ON mesas(escuela_id);
 CREATE INDEX idx_mesas_identificador_unico_mesa ON mesas(identificador_unico_mesa);
 
+/*
 CREATE TABLE usuarios (
     id serial primary key,
     email varchar(255) unique,
@@ -60,21 +61,19 @@ CREATE TABLE usuarios_mesas (
 );
 
 CREATE UNIQUE INDEX idx_usuarios_mesas_usuario_mesa ON usuarios_mesas(usuario_id, mesa_id);
+*/
 
 CREATE TABLE telegramas (
     id serial PRIMARY KEY,
-    mesa_id integer NOT NULL,
-    usuario_id integer NOT NULL,
-    link VARCHAR(255) NOT NULL,
-    notas VARCHAR(255)
+    mesa_id integer NOT NULL UNIQUE,
+    link VARCHAR(255) NOT NULL
 );
 
 CREATE INDEX idx_telegramas_mesa ON telegramas(mesa_id);
-CREATE INDEX idx_telegramas_usuario ON telegramas(usuario_id);
 
 CREATE TABLE resultados (
     id serial PRIMARY KEY,
-    mesa_id varchar(40),
+    mesa_id integer NOT NULL UNIQUE,
     fiscal_lla integer,
     fiscal_uxp integer,
     fiscal_blanco integer,
