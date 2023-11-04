@@ -79,9 +79,14 @@ DATABASE_SYNC=false
 DATABASE_TYPE="postgres"
 
 # Finalmente
-Una vez configurado todo se ejecuta el siguiente comando para correrlo localmente
+Una vez configurado todo se ejecuta el siguiente comando para correr la migración localmente
 ```bash
 npm run typeorm:local
+```
+
+y luego para correrlo localmente
+```bash
+npm run local
 ```
 
 NOTA: Para produccion se supone que las .env vienen preseteadas entonces usar el de typeorm nomas
