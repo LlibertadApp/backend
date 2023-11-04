@@ -14,7 +14,7 @@
     "deploy": "sls deploy",
     "remove": "sls remove",
     "typeorm": "typeorm-ts-node-commonjs -d ./ormconfig.ts",
-    "typeorm:local": "LBERTAPP_ENV=local typeorm-ts-node-commonjs -d ./ormconfig.ts"
+    "typeorm:local": "typeorm-ts-node-commonjs -d ./ormconfig.ts migration:run"
   },
   "dependencies": {
     "pg": "^8.11.3",
