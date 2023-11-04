@@ -9,13 +9,19 @@ touch .env
 echo "POSTGRES_PASSWORD=pw" >> .env
 ```
 
+# Antes de leer esto, realizar los prerequisitos, paso 1 & 2 del Readme.md ubicado en la carpeta dev-tools.
 Teniendo PG correctamente instalado y corriendo en el puerto 5432, o en el docker con el puerto forwardeado, correr:
 
-```bash
-sh create_db.sh 
+```bash (script para unix-based systems)
+sh create_db.sh 5432
 ```
-5432 es el puerto default de postgres. Pueden cambiarlo si lo necesitan. Es decir, si no tienen el ENV, van a tener que 
-pasarle el puerto tal que sh create_db.sh 5432
+
+```bash (script para windows )
+./ migration.bat 5432
+```
+
+5432 es el puerto default de postgres. Pueden cambiarlo si lo necesitan. 
+
 
 # Correr el docker-compose
 
@@ -26,6 +32,20 @@ Luego, se paran en la carpeta dev-tools. Esto es importante porque es donde est�
 # CONFIGURACION DE VARIABLES DE ENTORNO
 Para la variable LBERTAPP_ENV, van a tener que crearse una cuenta de Amazon
 
+# Correr el proyecto
+Es necesario correr este comando para instalar la dependencia serverless-offline, que permite correr el proyecto localmente.
+
+```bash
+npm install -g serverless-offline
+```
+
+Hay que instalar solo el CLI a nivel global (webpack-cli) y no como dependencia del proyecto, ya que sino no funciona.
+
+```bash
+npm install -g webpack-cli
+```
+
+Los links a los que se puede entrar son el /config y el /actas, lo demás lo crea automático
 
 
 # IMPORTANTE

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --env=node",
     "build": "tsc && tsc-alias",
-    "local": "LBERTAPP_ENV=local sls offline start --stage local",
+    "local": "sls offline start --stage local",
     "rollback": "sls rollback",
     "package": "sls package",
     "logs": "sls logs --tail",
