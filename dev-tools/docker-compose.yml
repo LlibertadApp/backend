@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+    postgres:
+        container_name: lfdc_postgres_local
+        image: "postgres:15.2-alpine"
+        user: postgres
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=la_libertad_app
+            - POSTGRES_DB=la_libertad_app
+        ports:
+        - 5432:5432
+        volumes: 
+        - postgres_data:/var/lib/postgresql/data
+        - ./update_mesas_activas.sql:/docker-entrypoint-initdb.d/update_mesas_activas.sql
+        - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+        - ./seeds/provincias.csv:/docker-entrypoint-initdb.d/provincias.csv
+        - ./seeds/secciones.csv:/docker-entrypoint-initdb.d/secciones.csv
+        - ./seeds/seccionprovinciales.csv:/docker-entrypoint-initdb.d/seccionprovinciales.csv
+        - ./seeds/circuitos.csv:/docker-entrypoint-initdb.d/circuitos.csv
+        - ./seeds/escuelas.csv:/docker-entrypoint-initdb.d/escuelas.csv
+        - ./seeds/mesas.csv:/docker-entrypoint-initdb.d/mesas.csv
+    minio:
+        image: docker.io/bitnami/minio:2023
+        container_name: lfdc_minio_local
+        environment:
+            - MINIO_ROOT_USER=la_libertad_app
+            - MINIO_ROOT_PASSWORD=la_libertad_app
+        ports:
+        - '9000:9000'
+        - '9001:9001'
+        volumes:
+        - 'minio_data:/bitnami/minio/data'
+
+volumes:
+    postgres_data:
+        driver: local
+    minio_data:
+        driver: local

@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    //"strict": true, Se lo sacamos a esto?
+    "skipLibCheck": true,
+    "preserveConstEnums": true,
+    "strictNullChecks": true,
+    "sourceMap": true,
+    "allowJs": true,
+    "outDir": ".build",
+    "moduleResolution": "node",
+    "lib": ["es2015"],
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+  },
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  },
+  "exclude": ["node_modules", "webpack.config.js"],
+  "include": ["./**/*"],
+  "typeRoots": ["./node_modules/@types"]
+}

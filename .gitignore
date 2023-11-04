@@ -130,3 +130,8 @@ dist
 .pnp.*
 
 .env
+.build
+.webpack
+.idea
+.vscode
+.code
