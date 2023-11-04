@@ -50,6 +50,5 @@ sh migration.sh
 
 Windows:
 ```bash
-cd dev-tools
-migration.bat
+./migration.bat 5432
 ```
