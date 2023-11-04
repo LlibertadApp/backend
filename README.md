@@ -79,9 +79,14 @@ DATABASE_SYNC=false
 DATABASE_TYPE="postgres"
 
 # Finalmente
-Una vez configurado todo se ejecuta el siguiente comando para correrlo localmente
+Una vez configurado todo se ejecuta el siguiente comando para correr la migración localmente
 ```bash
 npm run typeorm:local
+```
+
+y luego para correrlo localmente
+```bash
+npm run local
 ```
 
 NOTA: Para produccion se supone que las .env vienen preseteadas entonces usar el de typeorm nomas
@@ -91,8 +96,6 @@ o sea npm run typeorm
 Actualizar el dockerfile para que instale webpack, webpack-cli y serverless-offline porque los toma local y no del proyecto
 Chequear que corra las migraciones antes de deployear, o sea que lo agreguen al script original del docker-compose up / que lo hagan manualmente
 La migración se hace una sola vez 
-
-
 
 
 
