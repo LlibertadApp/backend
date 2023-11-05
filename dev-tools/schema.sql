@@ -1,100 +1,121 @@
 CREATE TABLE provincias (
-    id serial PRIMARY KEY,
-    provincia_id integer,
-    provincia_nombre varchar(255) NOT NULL
+    id SERIAL PRIMARY KEY,
+    provincia_id INTEGER,
+    provincia_nombre VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE seccionprovinciales (
-    id serial PRIMARY KEY,
-    provincia_id integer,
-    seccionprovincial_id integer,
-    seccionprovincial_nombre varchar(255)
+    id SERIAL PRIMARY KEY,
+    provincia_id INTEGER,
+    seccionprovincial_id INTEGER,
+    seccionprovincial_nombre VARCHAR(255)
 );
 CREATE INDEX idx_seccionprovinciales_provincia ON seccionprovinciales(provincia_id);
 
 CREATE TABLE secciones (
-    id serial PRIMARY KEY,
-    seccionprovincial_id integer,
-    seccion_id integer,
-    seccion_nombre varchar(255) NOT NULL
+    id SERIAL PRIMARY KEY,
+    seccionprovincial_id INTEGER,
+    seccion_id INTEGER,
+    seccion_nombre VARCHAR(255) NOT NULL
 );
 CREATE INDEX idx_secciones_seccionprovincial ON secciones(seccionprovincial_id);
 
 CREATE TABLE circuitos (
-    id serial PRIMARY KEY,
-    seccion_id integer,
-    circuito_id varchar(10),
-    circuito_nombre varchar(255)
+    id SERIAL PRIMARY KEY,
+    seccion_id INTEGER,
+    circuito_id VARCHAR(10),
+    circuito_nombre VARCHAR(255)
 );
 CREATE INDEX idx_circuitos_seccion ON circuitos(seccion_id);
 
 CREATE TABLE escuelas (
-    id serial PRIMARY KEY,
-    circuito_id integer,
-    escuela_id varchar(40),
-    escuela varchar(255) NOT NULL
+    id SERIAL PRIMARY KEY,
+    circuito_id INTEGER,
+    escuela_id VARCHAR(40),
+    escuela VARCHAR(255) NOT NULL
 );
 CREATE INDEX idx_escuelas_circuito ON escuelas(circuito_id);
 
 CREATE TABLE mesas (
-    id serial PRIMARY KEY,
-    escuela_id integer,
-    identificador_unico_mesa varchar(40),
-    mesa_id varchar(10),
+    id SERIAL PRIMARY KEY,
+    escuela_id INTEGER,
+    identificador_unico_mesa VARCHAR(40),
+    mesa_id VARCHAR(10),
     activo boolean DEFAULT false
 );
 CREATE INDEX idx_mesas_escuela ON mesas(escuela_id);
 CREATE INDEX idx_mesas_identificador_unico_mesa ON mesas(identificador_unico_mesa);
 
-/*
-CREATE TABLE usuarios (
-    id serial primary key,
-    email varchar(255) unique,
-    rol integer,
+CREATE TABLE rol (
+    id SERIAL PRIMARY KEY,
+    rol_id INTEGER,
+    rol_nombre VARCHAR(255),
+);
+
+CREATE TABLE usuarios(
+    id SERIAL PRIMARY KEY,
+    usuario_id INTEGER NOT NULL,
+    email VARCHAR(255) UNIQUE,
+    rol_id INTEGER NOT NULL,
     fecha_creacion timestamp default current_timestamp
 );
+CREATE INDEX idx_usuarios_rol_id ON usuarios(rol_id);
+
 
 CREATE TABLE usuarios_mesas (
-    id serial primary key,
-    usuario_id integer,
-    mesa_id integer
+    id SERIAL PRIMARY KEY,
+    usuario_id INTEGER NOT NULL,
+    mesa_id INTEGER NOT NULL,
+    rol_id VARCHAR(255) NOT NULL
+    CHECK (rol_id = 2)
 );
+CREATE INDEX idx_usuarios_mesas_usuario ON usuarios_mesas(usuario_id);
+CREATE INDEX idx_usuarios_mesas_mesa ON usuarios_mesas(mesa_id);
+CREATE INDEX idx_usuarios_mesas_rol_id ON usuarios_mesas(rol_id);
 
-CREATE UNIQUE INDEX idx_usuarios_mesas_usuario_mesa ON usuarios_mesas(usuario_id, mesa_id);
-*/
+CREATE TABLE usuarios_escuelas (
+    id SERIAL PRIMARY KEY,
+    usuario_id INTEGER NOT NULL,
+    escuela_id INTEGER NOT NULL,
+    rol_id INTEGER NOT NULL
+    CHECK (rol_id = 3)
+);
+CREATE INDEX idx_usuarios_escuelas_usuario ON usuarios_escuelas(usuario_id);
+CREATE INDEX idx_usuarios_escuelas_escuela ON usuarios_escuelas(escuela_id);
+CREATE INDEX idx_usuarios_escuelas_rol_id ON usuarios_escuelas(rol_id);
 
 CREATE TABLE telegramas (
-    id serial PRIMARY KEY,
-    mesa_id integer NOT NULL UNIQUE,
+    id SERIAL PRIMARY KEY,
+    mesa_id INTEGER NOT NULL UNIQUE,
     link VARCHAR(255) NOT NULL
 );
 
 CREATE INDEX idx_telegramas_mesa ON telegramas(mesa_id);
 
 CREATE TABLE resultados (
-    id serial PRIMARY KEY,
-    mesa_id integer NOT NULL UNIQUE,
-    fiscal_lla integer,
-    fiscal_uxp integer,
-    fiscal_blanco integer,
-    fiscal_comando integer,
-    fiscal_impugnado integer,
-    fiscal_nulo integer,
-    fiscal_recurrido integer,
-    api_lla integer,
-    api_uxp integer,
-    api_blanco integer,
-    api_comando integer,
-    api_impugnado integer,
-    api_nulo integer,
-    api_recurrido integer,
-    ocr_lla integer,
-    ocr_uxp integer,
-    ocr_blanco integer,
-    ocr_comando integer,
-    ocr_impugnado integer,
-    ocr_nulo integer,
-    ocr_recurrido integer
+    id SERIAL PRIMARY KEY,
+    mesa_id INTEGER NOT NULL UNIQUE,
+    fiscal_lla INTEGER,
+    fiscal_uxp INTEGER,
+    fiscal_blanco INTEGER,
+    fiscal_comando INTEGER,
+    fiscal_impugnado INTEGER,
+    fiscal_nulo INTEGER,
+    fiscal_recurrido INTEGER,
+    api_lla INTEGER,
+    api_uxp INTEGER,
+    api_blanco INTEGER,
+    api_comando INTEGER,
+    api_impugnado INTEGER,
+    api_nulo INTEGER,
+    api_recurrido INTEGER,
+    ocr_lla INTEGER,
+    ocr_uxp INTEGER,
+    ocr_blanco INTEGER,
+    ocr_comando INTEGER,
+    ocr_impugnado INTEGER,
+    ocr_nulo INTEGER,
+    ocr_recurrido INTEGER
 );
 
 \COPY provincias FROM '/docker-entrypoint-initdb.d/provincias.csv' DELIMITER ',' CSV HEADER;
