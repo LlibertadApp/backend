@@ -4,6 +4,8 @@ import * as AWS from "aws-sdk";
 import response from "@/helpers/response";
 import logger from "@/helpers/logger";
 import { object, string } from "yup";
+import { DatabaseConnection } from "@/helpers/database/connection";
+import HttpStatus from "@/helpers/enum/http";
 
 type ActasInput = {
   mesaId: string;
@@ -53,18 +55,28 @@ export const handler = async (
       Body: base64,
       ACL: "public-read",
     };
+
     const bucket = new AWS.S3();
     await bucket.putObject(opts).promise();
     log.info("telegrama subido a s3 correctamente");
-
+    const url = `https://${BUCKET_NAME}/${asset}`;
     const data: ActasResponse = {
       mesaId,
-      url: `https://${BUCKET_NAME}/${asset}`,
+      url,
     };
 
-    // @TODO: guardar en db, encolar evento para OCRs
+    const dbConnection = DatabaseConnection.getInstance();
+    const query: string = 'INSERT INTO telegramas(mesa_id, link) VALUES ( \
+      (SELECT id from mesas where identificador_unico_mesa = $1 LIMIT 1), $2) \
+      ON CONFLICT (mesa_id) DO UPDATE SET link = EXCLUDED.link';
+
+    const insertValues = [mesaId, url];
+    dbConnection.queryWrite(query, insertValues);
+
+    // @TODO: encolar evento para OCRs
     return response({
-      data,
+      code: HttpStatus.CREATED,
+      data: data,
     });
   } catch (err: any) {
     return response({ err });
