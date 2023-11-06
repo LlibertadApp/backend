@@ -78,6 +78,18 @@ DATABASE_LOGGING=false
 DATABASE_SYNC=false
 DATABASE_TYPE="postgres"
 
+# FIREBASE CONFIG
+FIREBASE_PUBLIC_KEYS_URL=https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com
+FIREBASE_PROJECT_ID=
+FIREBASE_CLIENT_EMAIL=
+FIREBASE_MESSAGING_SENDER_ID=
+FIREBASE_STORAGE_BUCKET=
+FIREBASE_PRIVATE_KEY=
+FIREBASE_SERVICE_ACCOUNT_SECRET_NAME=firebaseServiceAccount
+
+# FRONT END URL CONFIG
+FRONT_END_URL=http://localhost:3001
+
 # Finalmente
 Una vez configurado todo se ejecuta el siguiente comando para correr la migración localmente
 ```bash
@@ -96,8 +108,6 @@ o sea npm run typeorm
 Actualizar el dockerfile para que instale webpack, webpack-cli y serverless-offline porque los toma local y no del proyecto
 Chequear que corra las migraciones antes de deployear, o sea que lo agreguen al script original del docker-compose up / que lo hagan manualmente
 La migración se hace una sola vez 
-
-
 
 
 
