@@ -6,16 +6,7 @@ import logger from "@/helpers/logger";
 import { object, string } from "yup";
 import { DatabaseConnection } from "@/helpers/database/connection";
 import HttpStatus from "@/helpers/enum/http";
-
-type ActasInput = {
-  mesaId: string;
-  imagenActa: string;
-};
-
-type ActasResponse = {
-  mesaId: string;
-  url: string;
-};
+import { ActasInput, ActasResponse } from "@/types/api-types.d";
 
 /**
  * Usage
