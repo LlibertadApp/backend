@@ -135,3 +135,6 @@ dist
 .idea
 .vscode
 .code
+
+# autoswagger-plugin
+swagger/

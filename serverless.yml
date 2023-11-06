@@ -30,14 +30,24 @@ provider:
   httpApi:
     name: "LLA"
     cors: true
+    authorizers:
+      authorizer:
+        type: request
+        functionName: authorizer
+        resultTtlInSeconds: 300
+        identitySource:
+          - $request.header.Authorization
 
 plugins:
+  - serverless-auto-swagger
   - serverless-prune-plugin
   - serverless-webpack
   - serverless-dotenv-plugin
   - serverless-offline
 
 custom:
+  serverless-offline:
+    ignoreJWTSignature: true
   prune:
     automatic: true
     number: 3
@@ -46,6 +56,9 @@ custom:
     includeModules:
       forceExclude:
         - aws-sdk
+  autoswagger:
+    typefiles: ['./src/types/api-types.d.ts']
+    excludeStages: ['prd']
 
 package:
   excludeDevDependencies: true
@@ -66,7 +79,9 @@ functions:
       - httpApi:
           method: GET
           path: /config
-
+          authorizer:
+            name: authorizer
+            type: request
   post-actas:
     name: "post-actas"
     description: Guarda y procesa la imagen que suben los fiscales
@@ -75,7 +90,13 @@ functions:
       - httpApi:
           method: POST
           path: /actas
-
+          authorizer:
+            name: authorizer
+          bodyType: 'ActasInput'
+          responses:
+            default: {}
+            "200":
+              bodyType: 'ActasResponse'
   get-user:
     name: "get-user"
     description: Get user data
@@ -84,10 +105,23 @@ functions:
       - httpApi:
           method: GET
           path: /users/{id}
+          authorizer:
+            name: authorizer
   post-user:
     handler: src/functions/users/post.handler
     description: Create a new user
     events:
       - httpApi:
           method: POST
-          path: /users        
+          path: /users
+          authorizer:
+            name: authorizer
+  get-token:
+    handler: src/functions/auth/post.handler
+    description: Generate Auth Token
+    events:
+      - httpApi:
+          method: POST
+          path: /auth
+          authorizer:
+            name: null
