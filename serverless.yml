@@ -30,6 +30,13 @@ provider:
   httpApi:
     name: "LLA"
     cors: true
+    authorizers:
+      authorizer:
+        type: request
+        functionName: authorizer
+        resultTtlInSeconds: 300
+        identitySource:
+          - $request.header.Authorization
 
 plugins:
   - serverless-prune-plugin
@@ -38,6 +45,8 @@ plugins:
   - serverless-offline
 
 custom:
+  serverless-offline:
+    ignoreJWTSignature: true
   prune:
     automatic: true
     number: 3
@@ -66,7 +75,9 @@ functions:
       - httpApi:
           method: GET
           path: /config
-
+          authorizer:
+            name: authorizer
+            type: request
   post-actas:
     name: "post-actas"
     description: Guarda y procesa la imagen que suben los fiscales
@@ -75,7 +86,8 @@ functions:
       - httpApi:
           method: POST
           path: /actas
-
+          authorizer:
+            name: authorizer
   get-user:
     name: "get-user"
     description: Get user data
@@ -84,10 +96,23 @@ functions:
       - httpApi:
           method: GET
           path: /users/{id}
+          authorizer:
+            name: authorizer
   post-user:
     handler: src/functions/users/post.handler
     description: Create a new user
     events:
       - httpApi:
           method: POST
-          path: /users        
+          path: /users
+          authorizer:
+            name: authorizer
+  get-token:
+    handler: src/functions/auth/post.handler
+    description: Generate Auth Token
+    events:
+      - httpApi:
+          method: POST
+          path: /auth
+          authorizer:
+            name: null                
