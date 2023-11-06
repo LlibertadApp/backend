@@ -1,5 +1,5 @@
 import EnumEnv from "@/helpers/enum/environments";
-import { initializeAdminDev } from "./firebase-admin-dev-";
+import { initializeAdminDev } from "./firebase-admin-dev";
 import { initializeApp } from "./firebase-admin-prod";
 
 export const initializeFirebaseAdminApp = async (): Promise<any> => {
