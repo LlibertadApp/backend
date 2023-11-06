@@ -3,9 +3,11 @@
 import "reflect-metadata";
 import { APIGatewayEvent, Callback, Context } from "aws-lambda";
 import response from "@/helpers/response";
-import { httpStatusCodes } from "@/helpers/configs/errorConstants";
-import * as admin from 'firebase-admin';
-import { initializeFirebaseAdminApp } from "@/helpers/firebase/firebase-admin";
+import * as admin from "firebase-admin";
+import { v4 as uuidv4 } from "uuid";
+import { isValidMesasResponse } from "@/_domain/validators/mesa/mesa.validator";
+import { httpErrors, httpStatusCodes } from "@/_core/configs/errorConstants";
+import { initializeFirebaseAdminApp } from "@/_core/firebase/firebase-admin";
 
 export const handler = async (
   event: APIGatewayEvent,
@@ -15,27 +17,38 @@ export const handler = async (
   global.cb = callback;
   const userId = event.queryStringParameters?.userId;
 
-  await initializeFirebaseAdminApp();
-
-  if (!userId) {
+  if (!userId || !event.body) {
     return response({
       code: httpStatusCodes.BAD_REQUEST,
-      err: 'Missing userId query parameter',
+      err: httpErrors.BAD_REQUEST_ERROR_NO_DATA_PROVIDED,
     });
   }
 
+  await initializeFirebaseAdminApp();
+
   try {
-    const customToken = await admin.auth().createCustomToken(userId);
+    const mesasBody: MesasBody = JSON.parse(event.body);
+
+    if (!isValidMesasResponse(mesasBody)) {
+      return response({
+        code: httpStatusCodes.BAD_REQUEST,
+        err: httpErrors.BAD_REQUEST_ERROR_INVALID_PAYLOAD,
+      });
+    }
+
+    const customToken = await admin.auth().createCustomToken(uuidv4(), mesasBody);
 
     return response({
       code: httpStatusCodes.OK,
-      data: { customToken },
+      data: {
+        oneTimeLinkAuthLink: `${process.env.FRONT_END_URL}/?authToken=${customToken}`,
+      },
     });
   } catch (error) {
-    console.error('Error creating custom token:', error);
+    console.error(httpErrors.BAD_REQUEST_ERROR_CREATING_CUSTOM_TOKEN, error);
     return response({
       code: httpStatusCodes.INTERNAL_SERVER_ERROR,
-      err: 'Error creating custom token',
+      err: httpErrors.BAD_REQUEST_ERROR_CREATING_CUSTOM_TOKEN,
     });
   }
 };

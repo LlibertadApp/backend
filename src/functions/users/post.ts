@@ -5,7 +5,7 @@ import { createUser } from "@/helpers/daos/userDao";
 import response from "@/helpers/response";
 import { User } from "@/helpers/models/entities/userEntity";
 import { v4 as uuidv4 } from "uuid";
-import { httpErrors, httpStatusCodes } from "@/helpers/configs/errorConstants";
+import { httpErrors, httpStatusCodes } from "@/_core/configs/errorConstants";
 
 export const handler = async (
   event: APIGatewayEvent,

@@ -1,4 +1,4 @@
-import EnumEnv from "../enum/environments";
+import EnumEnv from "@/helpers/enum/environments";
 import { initializeAdminDev } from "./firebase-admin-dev-";
 import { initializeApp } from "./firebase-admin-prod";
 

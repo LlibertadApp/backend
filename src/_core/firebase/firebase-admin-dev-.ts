@@ -40,7 +40,5 @@ export async function initializeAdminDev() {
 		privateKey: process.env.FIREBASE_PRIVATE_KEY!,
 	};
 
-	console.log('Firebase Admin Params:', params);
-
 	return createFirebaseAdminApp(params);
 }

@@ -1,11 +1,11 @@
 import { DataSource } from 'typeorm';
 import * as Dotenv from 'dotenv';
 import * as path from 'path';
-import { EnvironmentSelector } from '@/helpers/configs/environmentSelector';
 import { User } from '@/helpers/models/entities/userEntity';
 import { GenericTable } from '@/helpers/models/entities/genericTable';
 import { Role } from '@/helpers/models/entities/roleEntity';
 import { FirstMigration1698943496462 } from '@/helpers/migrations/1698943496462-firstMigration';
+import { EnvironmentSelector } from '@/_core/configs/environmentSelector';
 
 Dotenv.config({
 	path: `${path.join(__dirname)}/${EnvironmentSelector()}`,

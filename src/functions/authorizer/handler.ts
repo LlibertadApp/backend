@@ -3,18 +3,12 @@ import {
   APIGatewayAuthorizerResult,
   Context,
 } from "aws-lambda";
-import {
-  FirebasePublicKeysType,
-  fetchFirebasePublicKeys,
-} from "@/helpers/auth/fetch-firebase-public-keys";
-import { authorizerErrors } from "@/helpers/configs/errorConstants";
-import {
-  generateAuthorizeOutput,
-  unauthorizedPrincipalId,
-} from "@/helpers/auth/generate-autorize-output";
-import { verifyFirebaseIdToken } from "@/helpers/auth/verify-firebase-id-token";
-import { PolicyEffect } from "@/helpers/auth/policy-document";
-import { primitives } from "@/helpers/configs/common";
+import { primitives } from "@/_core/configs/common";
+import { FirebasePublicKeysType, fetchFirebasePublicKeys } from "@/_core/auth/fetch-firebase-public-keys";
+import { authorizerErrors } from "@/_core/configs/errorConstants";
+import { generateAuthorizeOutput, unauthorizedPrincipalId } from "@/_core/auth/generate-autorize-output";
+import { PolicyEffect } from "@/_core/auth/policy-document";
+import { verifyFirebaseIdToken } from "@/_core/auth/verify-firebase-id-token";
 
 let cachedKeys: FirebasePublicKeysType | null = null;
 let lastFetchTime: number | null = null;

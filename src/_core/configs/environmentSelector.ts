@@ -1,4 +1,4 @@
-import EnumEnv from "../enum/environments";
+import EnumEnv from "../../helpers/enum/environments";
 
 export const EnvironmentSelector = (): string => {
     console.log(`Entorno - ${process.env.LBERTAPP_ENV}`);

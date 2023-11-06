@@ -4,7 +4,7 @@ import "reflect-metadata";
 import { APIGatewayEvent, Callback, Context } from "aws-lambda";
 import { findUserByUuid } from "@/helpers/daos/userDao";
 import response from "@/helpers/response";
-import { httpStatusCodes } from "@/helpers/configs/errorConstants";
+import { httpStatusCodes } from "@/_core/configs/errorConstants";
 
 export const handler = async (
   event: APIGatewayEvent,
