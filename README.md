@@ -56,6 +56,7 @@ Por esto mismo se usa docker para levantar la DB.
 
 # Así quedaría el .env (de la rama del ORM, sino, simplemente dejen la linea 64 y la de POSTGRES_PASSWORD=pw)
 
+```bash
 POSTGRES_PASSWORD=la_libertad_app
 NODE_OPTIONS=--enable-source-maps
 BUCKET_NAME=lla.api
@@ -89,6 +90,7 @@ FIREBASE_SERVICE_ACCOUNT_SECRET_NAME=firebaseServiceAccount
 
 # FRONT END URL CONFIG
 FRONT_END_URL=http://localhost:3001
+```
 
 # Finalmente
 Una vez configurado todo se ejecuta el siguiente comando para correr la migración localmente
