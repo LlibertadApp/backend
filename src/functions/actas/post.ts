@@ -1,12 +1,12 @@
 /// <reference path="../../symbols.d.ts" />
 import { APIGatewayEvent, Callback, Context } from "aws-lambda";
-import * as AWS from "aws-sdk";
+import { S3Client, PutObjectCommand  } from "@aws-sdk/client-s3";
 import response from "@/helpers/response";
 import logger from "@/helpers/logger";
-import { object, string } from "yup";
-import { DatabaseConnection } from "@/helpers/database/connection";
+import { object, string, number, array } from "yup";
 import HttpStatus from "@/helpers/enum/http";
-import { ActasInput, ActasResponse } from "@/types/api-types.d";
+import { ActasResponse } from "@/types/api-types.d";
+import parser from "lambda-multipart-parser";
 
 /**
  * Usage
@@ -21,50 +21,95 @@ export const handler = async (
   callback: Callback
 ) => {
   global.cb = callback;
-  const { BUCKET_NAME } = process.env;
-  const payload = JSON.parse(event.body!) as ActasInput;
+
+  const {
+    S3_ENDPOINT,
+    BUCKET_IMAGES_NAME,
+    BUCKET_PAYLOADS_NAME,
+    AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY,
+  } = process.env;
+
+  const payload = await parser.parse(event);
+  // const payload = JSON.parse(event.body!) as ActasInput;
+
   try {
     const schema = object({
       mesaId: string().required(),
-      imagenActa: string().required(),
+      conteoLla: number().required().positive().integer(),
+      conteoUp: number().required().positive().integer(),
+      votosImpugnados: number().required().positive().integer(),
+      votosNulos: number().required().positive().integer(),
+      votosEnBlanco: number().required().positive().integer(),
+      votosRecurridos: number().required().positive().integer(),
+      votosEnTotal: number().required().positive().integer(),
+      userId: string().required(),
+      files: array().required(),
     });
 
-    // valida
-    const { imagenActa, mesaId } = payload;
+    // @TODO: Validar formato de imagen
+    // @TODO: Validar tamaño de imagen
+
+    // Validamos el payload
     await schema.validate(payload);
 
-    // manda acta a S3
-    const base64 = Buffer.from(
-      imagenActa.replace(/^data:image\/\w+;base64,/, ""),
-      "base64"
+    const { mesaId } = payload;
+
+    // Generamos instancia del cliente de S3
+    const s3 = new S3Client({
+       credentials: {
+           accessKeyId: AWS_ACCESS_KEY_ID || '',
+           secretAccessKey: AWS_SECRET_ACCESS_KEY || '',
+       },
+       endpoint: S3_ENDPOINT || '',
+       forcePathStyle: true,
+    });
+
+    // Guardamos la imagen en el bucket correspondiente
+    const imagePath = `actas/${mesaId}.jpg`;
+    await s3.send(
+        new PutObjectCommand({
+            Bucket: BUCKET_IMAGES_NAME,
+            Key: imagePath,
+            Body: payload.files[0].content,
+            ContentType: "image/jpeg",
+            ACL: "public-read",
+        })
     );
-    const asset = `actas/${mesaId}.jpeg`;
-    const opts: AWS.S3.PutObjectRequest = {
-      Bucket: BUCKET_NAME!,
-      Key: asset,
-      ContentEncoding: "base64",
-      Body: base64,
-      ACL: "public-read",
+
+    log.info("telegrama subido a s3 correctamente");
+    const url = `${S3_ENDPOINT}/${imagePath}`;
+
+    const payloadToSave = {
+      mesaId: payload.mesaId,
+      conteoLla: payload.conteoLla,
+      conteoUp: payload.conteoUp,
+      votosImpugnados: payload.votosImpugnados,
+      votosNulos: payload.votosNulos,
+      votosEnBlanco: payload.votosEnBlanco,
+      votosRecurridos: payload.votosRecurridos,
+      votosEnTotal: payload.votosEnTotal,
+      userId: payload.userId,
     };
 
-    const bucket = new AWS.S3();
-    await bucket.putObject(opts).promise();
-    log.info("telegrama subido a s3 correctamente");
-    const url = `https://${BUCKET_NAME}/${asset}`;
+    // Guardar payload en el bucket correspondiente
+    const payloadPath = `payloads/${mesaId}.json`;
+    await s3.send(
+        new PutObjectCommand({
+            Bucket: BUCKET_PAYLOADS_NAME,
+            Key: payloadPath,
+            Body: JSON.stringify(payloadToSave),
+            ContentType: "application/json",
+            ACL: "public-read",
+        })
+    );
+
     const data: ActasResponse = {
       mesaId,
       url,
     };
 
-    const dbConnection = DatabaseConnection.getInstance();
-    const query: string = 'INSERT INTO telegramas(mesa_id, link) VALUES ( \
-      (SELECT id from mesas where identificador_unico_mesa = $1 LIMIT 1), $2) \
-      ON CONFLICT (mesa_id) DO UPDATE SET link = EXCLUDED.link';
-
-    const insertValues = [mesaId, url];
-    dbConnection.queryWrite(query, insertValues);
-
-    // @TODO: encolar evento para OCRs
+    // 201 CREATED
     return response({
       code: HttpStatus.CREATED,
       data: data,
