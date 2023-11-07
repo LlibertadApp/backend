@@ -1,12 +1,14 @@
 /// <reference path="../../symbols.d.ts" />
 import { APIGatewayEvent, Callback, Context } from "aws-lambda";
 import { S3Client, PutObjectCommand  } from "@aws-sdk/client-s3";
+import { object, string, number, array } from "yup";
+import { jwtDecode } from "jwt-decode";
+import parser from "lambda-multipart-parser";
+
 import response from "@/helpers/response";
 import logger from "@/helpers/logger";
-import { object, string, number, array } from "yup";
-import HttpStatus from "@/helpers/enum/http";
-import { ActasResponse } from "@/types/api-types.d";
-import parser from "lambda-multipart-parser";
+import { httpErrors, httpStatusCodes } from "@/_core/configs/errorConstants";
+import { ActasResponse, UserToken } from "@/types/api-types.d";
 
 /**
  * Usage
@@ -36,13 +38,13 @@ export const handler = async (
   try {
     const schema = object({
       mesaId: string().required(),
-      conteoLla: number().required().positive().integer(),
-      conteoUp: number().required().positive().integer(),
-      votosImpugnados: number().required().positive().integer(),
-      votosNulos: number().required().positive().integer(),
-      votosEnBlanco: number().required().positive().integer(),
-      votosRecurridos: number().required().positive().integer(),
-      votosEnTotal: number().required().positive().integer(),
+      conteoLla: number().required().min(0).integer(),
+      conteoUp: number().required().min(0).integer(),
+      votosImpugnados: number().required().min(0).integer(),
+      votosNulos: number().required().min(0).integer(),
+      votosEnBlanco: number().required().min(0).integer(),
+      votosRecurridos: number().required().min(0).integer(),
+      votosEnTotal: number().required().min(0).integer(),
       userId: string().required(),
       files: array().required(),
     });
@@ -54,6 +56,22 @@ export const handler = async (
     await schema.validate(payload);
 
     const { mesaId } = payload;
+
+    // Si llegamos hasta acá es porque hay un Bearer válidado
+    const token = event.headers.authorization!.split(" ")[1];
+    const decoded = jwtDecode<UserToken>(token);
+    const userId = decoded.uid;
+
+    // Validamos que el usuario tenga permisos para la mesa indicada
+    const found = decoded.claims.mesas.filter(i => i.mesaId == mesaId);
+
+    if (found.length == 0) {
+      // El usuario no tiene acceso a la mesa
+      return response({
+        code: httpStatusCodes.FORBIDDEN,
+        err: httpErrors.FORBIDDEN,
+      });
+    }
 
     // Generamos instancia del cliente de S3
     const s3 = new S3Client({
@@ -89,7 +107,7 @@ export const handler = async (
       votosEnBlanco: payload.votosEnBlanco,
       votosRecurridos: payload.votosRecurridos,
       votosEnTotal: payload.votosEnTotal,
-      userId: payload.userId,
+      userId,
     };
 
     // Guardar payload en el bucket correspondiente
@@ -111,7 +129,7 @@ export const handler = async (
 
     // 201 CREATED
     return response({
-      code: HttpStatus.CREATED,
+      code: httpStatusCodes.CREATED,
       data: data,
     });
   } catch (err: any) {

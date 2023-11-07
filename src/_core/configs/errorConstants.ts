@@ -74,6 +74,7 @@ export const httpErrors = {
   BAD_REQUEST_ERROR_INVALID_PAYLOAD: "Bad Request: Request payload is invalid",
   BAD_REQUEST_ERROR_CREATING_CUSTOM_TOKEN: "Error creating custom token",
   UNAUTHORIZED: "Unauthorized",
+  FORBIDDEN: "Forbidden",
 };
 
 export const infraestructureErrors = {

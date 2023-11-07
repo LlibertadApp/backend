@@ -24,6 +24,7 @@
     "@aws-sdk/util-dynamodb": "^3.441.0",
     "axios": "^1.6.0",
     "firebase-admin": "^11.11.0",
+    "jwt-decode": "^4.0.0",
     "lambda-multipart-parser": "^1.0.1",
     "pg": "^8.11.3",
     "pino": "^8.16.1",

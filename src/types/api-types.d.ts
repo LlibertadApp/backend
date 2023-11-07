@@ -16,3 +16,19 @@ export type ActasResponse = {
   mesaId: string;
   url: string;
 };
+
+export interface IdentificadorMesa {
+  mesaId: string;
+}
+
+export interface UserToken {
+  aud: string;
+  iat: number;
+  exp: number;
+  iss: string;
+  sub: string;
+  uid: string;
+  claims: {
+    mesas: IdentificadorMesa[];
+  };
+}
