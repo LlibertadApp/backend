@@ -56,6 +56,7 @@ Por esto mismo se usa docker para levantar la DB.
 
 # Así quedaría el .env (de la rama del ORM, sino, simplemente dejen la linea 64 y la de POSTGRES_PASSWORD=pw)
 
+```bash
 POSTGRES_PASSWORD=la_libertad_app
 NODE_OPTIONS=--enable-source-maps
 BUCKET_NAME=lla.api
@@ -78,6 +79,19 @@ DATABASE_LOGGING=false
 DATABASE_SYNC=false
 DATABASE_TYPE="postgres"
 
+# FIREBASE CONFIG
+FIREBASE_PUBLIC_KEYS_URL=https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com
+FIREBASE_PROJECT_ID=
+FIREBASE_CLIENT_EMAIL=
+FIREBASE_MESSAGING_SENDER_ID=
+FIREBASE_STORAGE_BUCKET=
+FIREBASE_PRIVATE_KEY=
+FIREBASE_SERVICE_ACCOUNT_SECRET_NAME=firebaseServiceAccount
+
+# FRONT END URL CONFIG
+FRONT_END_URL=http://localhost:3001
+```
+
 # Finalmente
 Una vez configurado todo se ejecuta el siguiente comando para correr la migración localmente
 ```bash
@@ -97,5 +111,10 @@ Actualizar el dockerfile para que instale webpack, webpack-cli y serverless-offl
 Chequear que corra las migraciones antes de deployear, o sea que lo agreguen al script original del docker-compose up / que lo hagan manualmente
 La migración se hace una sola vez 
 
+# Documentacion
+Update tema contratos de APIs, se avanzó implementando una herramienta que auto genera la documetacion bajo la spec OAS 2.0 y expone un Swagger UI (Ver https://github.com/LlibertadApp/backend/issues/42 https://github.com/LlibertadApp/backend/pull/50)
 
+En cuanto a como accederlo, se esta avanzando con @[PM - INFRA|SEG] Alelb22  para la integración de CI/CD para el pipeline del stack serverless que estamos manejando. (Ver https://github.com/LlibertadApp/backend/issues/52 https://github.com/LlibertadApp/backend/pull/53)
+Aplicado esto se podrá acceder a la documentación a traves de /swagger, aqui econtraran el front end, y el crudo en spec OAS 2 en /swagger.json.
+La idea es que cada vez que se pushean cambios a la rama de desarrollo, se dispararia un evento en Github actions que generaria la documentación automatica y la expone. (ESTO NO APLICA AL STAGE prd).
 
