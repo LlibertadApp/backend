@@ -4,7 +4,7 @@ frameworkVersion: "3"
 provider:
   name: aws
   deploymentMethod: direct
-  region: us-east-1
+  region: us-east-2
   runtime: nodejs18.x
   logRetentionInDays: 30
   iam:
