@@ -83,7 +83,6 @@ export const handler = async (
     );
 
     log.info("telegrama subido a s3 correctamente");
-    const url = `${S3_ENDPOINT}/${imagePath}`;
 
     const payloadToSave = {
       mesaId: payload.mesaId,
@@ -95,6 +94,9 @@ export const handler = async (
       votosRecurridos: payload.votosRecurridos,
       votosEnTotal: payload.votosEnTotal,
       userId,
+      imagenActa: {
+        path: imagePath,
+      }
     };
 
     // Guardar payload en el bucket correspondiente
