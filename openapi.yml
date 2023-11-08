@@ -1,0 +1,146 @@
+swagger: '2.0'
+info:
+  title: lla-api
+  version: '1'
+
+securityDefinitions:
+  bearerAuth:
+    type: apiKey
+    name: Authorization
+    in: header
+    description: "JWT Authorization header"
+
+paths:
+  "/config":
+    get:
+      summary: get-config
+      description: ''
+      operationId: get-config.get./config
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        '200':
+          description: 200 response
+  "/actas":
+    post:
+      summary: post-actas
+      description: ''
+      operationId: post-actas.post./actas
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      parameters:
+      - in: formData
+        name: imagenActa
+        required: true
+        type: file
+        description: Imagen a subir
+      - in: formData
+        name: mesaId
+        required: true
+        type: string
+      - in: formData
+        name: conteoLla
+        required: true
+        type: integer
+        minimum: 0
+      - in: formData
+        name: conteoUp
+        required: true
+        type: integer
+        minimum: 0
+      - in: formData
+        name: votosImpugnados
+        required: true
+        type: integer
+        minimum: 0
+      - in: formData
+        name: votosNulos
+        required: true
+        type: integer
+        minimum: 0
+      - in: formData
+        name: votosEnBlanco
+        required: true
+        type: integer
+        minimum: 0
+      - in: formData
+        name: votosRecurridos
+        required: true
+        type: integer
+        minimum: 0
+      - in: formData
+        name: votosEnTotal
+        required: true
+        type: integer
+        minimum: 0
+      responses:
+        '201':
+          description: Documento aceptado
+          schema:
+            "$ref": "#/definitions/ActasResponse"
+  "/users/{id}":
+    get:
+      summary: get-user
+      description: ''
+      operationId: get-user.get./users/{id}
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        '200':
+          description: 200 response
+  "/users":
+    post:
+      summary: post-user
+      description: ''
+      operationId: post-user.post./users
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        '200':
+          description: 200 response
+  "/auth":
+    post:
+      summary: get-token
+      description: ''
+      operationId: get-token.post./auth
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        '200':
+          description: 200 response
+definitions:
+  ActasResponse:
+    properties:
+      mesaId:
+        title: ActasResponse.mesaId
+        type: string
+      url:
+        title: ActasResponse.url
+        type: string
+    required:
+    - mesaId
+    - url
+    additionalProperties: false
+    title: ActasResponse
+    type: object
+
+security:
+  - bearerAuth: []

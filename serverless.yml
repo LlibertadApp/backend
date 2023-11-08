@@ -92,11 +92,14 @@ functions:
           path: /actas
           authorizer:
             name: authorizer
-          bodyType: 'ActasInput'
+          consumes:
+            - "multipart/form-data"
+          bodyType: "ActasRequest"
           responses:
             default: {}
-            "200":
-              bodyType: 'ActasResponse'
+            "201":
+              name: "Content Accepted"
+              bodyType: "ActasResponse"
   get-user:
     name: "get-user"
     description: Get user data
