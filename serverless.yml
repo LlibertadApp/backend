@@ -31,9 +31,13 @@ provider:
     name: "LLA"
     cors: true
     authorizers:
-      authorizer:
-        type: request
-        functionName: authorizer
+      jwtAuthorizer:
+        type: jwt
+        name: jwtAuthorizer
+        functionName: jwtAuthorizer
+        issuerUrl: https://securetoken.google.com/e-commerce-ebd01
+        audience:
+          - e-commerce-ebd01
         resultTtlInSeconds: 300
         identitySource:
           - $request.header.Authorization
@@ -68,7 +72,7 @@ package:
     - ./src/**.ts
 
 functions:
-  authorizer:
+  jwtAuthorizer:
     handler: src/functions/authorizer/handler.handler
     description: Authorizer for JWT integration using Firebase
   get-config:
@@ -80,8 +84,8 @@ functions:
           method: GET
           path: /config
           authorizer:
-            name: authorizer
-            type: request
+            name: jwtAuthorizer
+            type: jwt
   post-actas:
     name: "post-actas"
     description: Guarda y procesa la imagen que suben los fiscales
@@ -91,7 +95,8 @@ functions:
           method: POST
           path: /actas
           authorizer:
-            name: authorizer
+            name: jwtAuthorizer
+            type: jwt
           consumes:
             - "multipart/form-data"
           bodyType: "ActasRequest"
@@ -109,7 +114,8 @@ functions:
           method: GET
           path: /users/{id}
           authorizer:
-            name: authorizer
+            name: jwtAuthorizer
+            type: jwt
   post-user:
     handler: src/functions/users/post.handler
     description: Create a new user
@@ -118,7 +124,8 @@ functions:
           method: POST
           path: /users
           authorizer:
-            name: authorizer
+            name: jwtAuthorizer
+            type: jwt
   get-token:
     handler: src/functions/auth/post.handler
     description: Generate Auth Token
@@ -126,5 +133,3 @@ functions:
       - httpApi:
           method: POST
           path: /auth
-          authorizer:
-            name: null
