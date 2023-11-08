@@ -3,7 +3,7 @@ name: Deploy develop branch
 on:
   push:
     branches:
-      - cicd_test_ale
+      - develop
 
 permissions:
   id-token: write   # This is required for requesting the JWT
@@ -54,6 +54,7 @@ jobs:
         role-session-name: ${{ vars.ROLE_SESSION_NAME }}
         aws-region: ${{ secrets.AWS_REGION }}
 
-    - name: serverless deploy --stage dev
+    - name: Deploy with Serverless Framework
       uses: serverless/github-action@v3.2
-
+      with:
+        args: deploy --stage=dev
