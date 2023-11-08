@@ -43,6 +43,7 @@ provider:
           - $request.header.Authorization
 
 plugins:
+  - serverless-auto-swagger
   - serverless-prune-plugin
   - serverless-webpack
   - serverless-dotenv-plugin
@@ -59,6 +60,9 @@ custom:
     includeModules:
       forceExclude:
         - aws-sdk
+  autoswagger:
+    typefiles: ['./src/types/api-types.d.ts']
+    excludeStages: ['prd']
 
 package:
   excludeDevDependencies: true
@@ -92,6 +96,14 @@ functions:
           path: /actas
           authorizer:
             name: jwtAuthorizer
+          consumes:
+            - "multipart/form-data"
+          bodyType: "ActasRequest"
+          responses:
+            default: {}
+            "201":
+              name: "Content Accepted"
+              bodyType: "ActasResponse"
   get-user:
     name: "get-user"
     description: Get user data
@@ -119,4 +131,4 @@ functions:
           method: POST
           path: /auth
           authorizer:
-            name: null                
+            name: null
