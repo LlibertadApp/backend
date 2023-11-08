@@ -113,7 +113,7 @@ export const handler = async (
 
     const data: ActasResponse = {
       mesaId,
-      url,
+      imagePath,
     };
 
     // 201 CREATED
