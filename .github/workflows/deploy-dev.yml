@@ -17,12 +17,13 @@ jobs:
       matrix:
         node-version: [18.x]
     steps:
-    - uses: actions/checkout@v3
+    - name: Git clone the repository
+      uses: actions/checkout@v3
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm ci
 
     - name: Build .env with Python
       run: |
@@ -42,6 +43,9 @@ jobs:
         }'
         python3 dotEnvGenerator.py "$VARIABLES_JSON"
         cat .env
+
+    - name: Perform a Clean Install
+      run: npm ci
 
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@v4
