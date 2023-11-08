@@ -3,7 +3,11 @@ name: Deploy develop branch
 on:
   push:
     branches:
-      - develop
+      - develop_ale
+
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
 
 jobs:
   deploy:
@@ -19,12 +23,14 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
+
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/${{vars.ROLE_TO_ASSUME}}
+        role-session-name: ${{ vars.ROLE_SESSION_NAME }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
     - name: serverless deploy --stage dev
       uses: serverless/github-action@v3.2
-      with:
-        args: deploy
-      env:
-        SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
-        # or if using AWS credentials directly
-        # AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        # AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
