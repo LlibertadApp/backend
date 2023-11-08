@@ -1,0 +1,47 @@
+name: Deploy develop branch
+
+on:
+  push:
+    branches:
+      - cicd_test_ale
+
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+
+jobs:
+  probando:
+    name: probando
+    runs-on: ubuntu-latest
+    steps:
+    - name: Git clone the repository
+      uses: actions/checkout@v3
+
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/${{vars.ROLE_TO_ASSUME}}
+        role-session-name: ${{ vars.ROLE_SESSION_NAME }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Tumbering con python
+      run: |
+        VARIABLES_JSON='{
+          "BUCKET_IMAGES_NAME": "${{ vars.BUCKET_IMAGES_NAME }}",
+          "BUCKET_NAME": "${{ vars.BUCKET_NAME }}",
+          "BUCKET_PAYLOADS_NAME": "${{ vars.BUCKET_PAYLOADS_NAME }}",
+          "FIREBASE_CLIENT_EMAIL": "${{ vars.FIREBASE_CLIENT_EMAIL }}",
+          "FIREBASE_MESSAGING_SENDER_ID": "${{ vars.FIREBASE_MESSAGING_SENDER_ID }}",
+          "FIREBASE_PRIVATE_KEY": "${{ secrets.FIREBASE_PRIVATE_KEY }}",
+          "FIREBASE_PROJECT_ID": "${{ vars.FIREBASE_PROJECT_ID }}",
+          "FIREBASE_PUBLIC_KEYS_URL": "${{ vars.FIREBASE_PUBLIC_KEYS_URL }}",
+          "FIREBASE_SERVICE_ACCOUNT_SECRET_NAME": "${{ vars.FIREBASE_SERVICE_ACCOUNT_SECRET_NAME }}",
+          "FIREBASE_STORAGE_BUCKET": "${{ vars.FIREBASE_STORAGE_BUCKET }}",
+          "FRONT_END_URL": "${{ vars.FRONT_END_URL }}",
+          "LBERTAPP_ENV": "${{ vars.LBERTAPP_ENV }}"
+        }'
+        python3 script.py "$VARIABLES_JSON"
+        wc -l .env
+        cat .env
+        timestamp=$(date +"%Y%m%d_%H%M%S")
+        aws s3 cp .env s3://libertapp-test-bucket-dev/env/env_${timestamp}.txt
