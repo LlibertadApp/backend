@@ -31,9 +31,13 @@ provider:
     name: "LLA"
     cors: true
     authorizers:
-      authorizer:
-        type: request
-        functionName: authorizer
+      jwtAuthorizer:
+        type: jwt
+        name: jwtAuthorizer
+        functionName: jwtAuthorizer
+        issuerUrl: https://securetoken.google.com/e-commerce-ebd01
+        audience:
+          - e-commerce-ebd01
         resultTtlInSeconds: 300
         identitySource:
           - $request.header.Authorization
@@ -64,7 +68,7 @@ package:
     - ./src/**.ts
 
 functions:
-  authorizer:
+  jwtAuthorizer:
     handler: src/functions/authorizer/handler.handler
     description: Authorizer for JWT integration using Firebase
   get-config:
@@ -76,7 +80,7 @@ functions:
           method: GET
           path: /config
           authorizer:
-            name: authorizer
+            name: jwtAuthorizer
             type: request
   post-actas:
     name: "post-actas"
@@ -87,7 +91,7 @@ functions:
           method: POST
           path: /actas
           authorizer:
-            name: authorizer
+            name: jwtAuthorizer
   get-user:
     name: "get-user"
     description: Get user data
@@ -97,7 +101,7 @@ functions:
           method: GET
           path: /users/{id}
           authorizer:
-            name: authorizer
+            name: jwtAuthorizer
   post-user:
     handler: src/functions/users/post.handler
     description: Create a new user
@@ -106,7 +110,7 @@ functions:
           method: POST
           path: /users
           authorizer:
-            name: authorizer
+            name: jwtAuthorizer
   get-token:
     handler: src/functions/auth/post.handler
     description: Generate Auth Token
