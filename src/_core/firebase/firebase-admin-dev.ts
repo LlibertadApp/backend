@@ -1,4 +1,5 @@
 import admin from 'firebase-admin';
+import { Buffer } from 'buffer';
 
 interface FirebaseAdminAppParams {
 	projectId: string;
@@ -7,7 +8,8 @@ interface FirebaseAdminAppParams {
 	privateKey: string;
 }
 
-function formatFirebasePrivateKey(key: string) {
+function formatFirebasePrivateKey(base64Key: string) {
+	const key = Buffer.from(base64Key, 'base64').toString('ascii');
 	return key.replace(/\\n/g, '\n');
 }
 
@@ -35,9 +37,8 @@ export async function initializeAdminDev() {
 	const params = {
 		projectId: process.env.FIREBASE_PROJECT_ID!,
 		clientEmail: process.env.FIREBASE_CLIENT_EMAIL!,
-		messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID!,
 		storageBucket: process.env.FIREBASE_STORAGE_BUCKET!,
-		privateKey: process.env.FIREBASE_PRIVATE_KEY!,
+		privateKey: process.env.FIREBASE_PRIVATE_KEY!,  // This should be base64 encoded
 	};
 
 	return createFirebaseAdminApp(params);

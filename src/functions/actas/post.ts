@@ -24,13 +24,7 @@ export const handler = async (
 ) => {
   global.cb = callback;
 
-  const {
-    S3_ENDPOINT,
-    BUCKET_IMAGES_NAME,
-    BUCKET_PAYLOADS_NAME,
-    AWS_ACCESS_KEY_ID,
-    AWS_SECRET_ACCESS_KEY,
-  } = process.env;
+  const { BUCKET_NAME } = process.env;
 
   const payload = await parser.parse(event);
   // const payload = JSON.parse(event.body!) as ActasInput;
@@ -58,12 +52,12 @@ export const handler = async (
     const { mesaId } = payload;
 
     // Si llegamos hasta acá es porque hay un Bearer válidado
-    const token = event.headers.authorization!.split(" ")[1];
+    const token = event.headers.authorization!;
     const decoded = jwtDecode<UserToken>(token);
-    const userId = decoded.uid;
+    const userId = decoded.user_id;
 
     // Validamos que el usuario tenga permisos para la mesa indicada
-    const found = decoded.claims.mesas.filter(i => i.mesaId == mesaId);
+    const found = decoded.mesas.filter(i => i.mesaId == mesaId);
 
     if (found.length == 0) {
       // El usuario no tiene acceso a la mesa
@@ -74,29 +68,20 @@ export const handler = async (
     }
 
     // Generamos instancia del cliente de S3
-    const s3 = new S3Client({
-       credentials: {
-           accessKeyId: AWS_ACCESS_KEY_ID || '',
-           secretAccessKey: AWS_SECRET_ACCESS_KEY || '',
-       },
-       endpoint: S3_ENDPOINT || '',
-       forcePathStyle: true,
-    });
+    const s3 = new S3Client();
 
     // Guardamos la imagen en el bucket correspondiente
     const imagePath = `actas/${mesaId}.jpg`;
     await s3.send(
         new PutObjectCommand({
-            Bucket: BUCKET_IMAGES_NAME,
+            Bucket: BUCKET_NAME,
             Key: imagePath,
             Body: payload.files[0].content,
             ContentType: "image/jpeg",
-            ACL: "public-read",
         })
     );
 
     log.info("telegrama subido a s3 correctamente");
-    const url = `${S3_ENDPOINT}/${imagePath}`;
 
     const payloadToSave = {
       mesaId: payload.mesaId,
@@ -108,23 +93,25 @@ export const handler = async (
       votosRecurridos: payload.votosRecurridos,
       votosEnTotal: payload.votosEnTotal,
       userId,
+      imagenActa: {
+        path: imagePath,
+      }
     };
 
     // Guardar payload en el bucket correspondiente
     const payloadPath = `payloads/${mesaId}.json`;
     await s3.send(
         new PutObjectCommand({
-            Bucket: BUCKET_PAYLOADS_NAME,
+            Bucket: BUCKET_NAME,
             Key: payloadPath,
             Body: JSON.stringify(payloadToSave),
             ContentType: "application/json",
-            ACL: "public-read",
         })
     );
 
     const data: ActasResponse = {
-      mesaId,
-      url,
+      mesaId: mesaId,
+      url: imagePath,
     };
 
     // 201 CREATED
