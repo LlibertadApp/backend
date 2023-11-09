@@ -78,7 +78,6 @@ export const handler = async (
             Key: imagePath,
             Body: payload.files[0].content,
             ContentType: "image/jpeg",
-            ACL: "public-read",
         })
     );
 
@@ -107,7 +106,6 @@ export const handler = async (
             Key: payloadPath,
             Body: JSON.stringify(payloadToSave),
             ContentType: "application/json",
-            ACL: "public-read",
         })
     );
 
