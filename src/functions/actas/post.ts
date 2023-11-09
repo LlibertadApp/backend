@@ -52,7 +52,7 @@ export const handler = async (
     const { mesaId } = payload;
 
     // Si llegamos hasta acá es porque hay un Bearer válidado
-    const token = event.headers.authorization!.split(" ")[1];
+    const token = event.headers.authorization!;
     const decoded = jwtDecode<UserToken>(token);
     const userId = decoded.uid;
 
