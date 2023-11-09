@@ -22,13 +22,8 @@ export interface IdentificadorMesa {
 }
 
 export interface UserToken {
-  aud: string;
   iat: number;
   exp: number;
-  iss: string;
-  sub: string;
-  uid: string;
-  claims: {
-    mesas: IdentificadorMesa[];
-  };
+  user_id: string;
+  mesas: IdentificadorMesa[];
 }

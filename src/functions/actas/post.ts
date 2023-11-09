@@ -54,10 +54,10 @@ export const handler = async (
     // Si llegamos hasta acá es porque hay un Bearer válidado
     const token = event.headers.authorization!;
     const decoded = jwtDecode<UserToken>(token);
-    const userId = decoded.uid;
+    const userId = decoded.user_id;
 
     // Validamos que el usuario tenga permisos para la mesa indicada
-    const found = decoded.claims.mesas.filter(i => i.mesaId == mesaId);
+    const found = decoded.mesas.filter(i => i.mesaId == mesaId);
 
     if (found.length == 0) {
       // El usuario no tiene acceso a la mesa
