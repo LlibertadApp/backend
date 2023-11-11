@@ -2,6 +2,7 @@ import { SQSEvent } from 'aws-lambda';
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
 import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb';
 import { infraestructureErrors } from '@/_core/configs/errorConstants';
+import { streamToString } from '@/_core/utils/stream-to-string';
 
 const s3Client = new S3Client({});
 const dynamoDBClient = new DynamoDBClient({});
@@ -30,16 +31,6 @@ export const handler = async (event: SQSEvent): Promise<void> => {
 		const jsonS3Object = await s3Client.send(getObjectCommand);
 
 		if (jsonS3Object.Body) {
-			const streamToString = (stream: any) =>
-				new Promise<string>((resolve, reject) => {
-					const chunks: Uint8Array[] = [];
-					stream.on('data', (chunk: Uint8Array) => chunks.push(chunk));
-					stream.once('end', () =>
-						resolve(Buffer.concat(chunks).toString('utf-8'))
-					);
-					stream.once('error', reject);
-				});
-
 			const jsonContent = await streamToString(jsonS3Object.Body);
 			const payload = JSON.parse(jsonContent);
 
