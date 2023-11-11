@@ -1,14 +1,19 @@
 import { SQSEvent } from 'aws-lambda';
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
 import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb';
-import { infraestructureErrors } from '@/_core/configs/errorConstants';
+import {
+	InfraestructureErrorsEnum,
+	infraestructureErrors,
+} from '@/_core/configs/errorConstants';
 import { streamToString } from '@/_core/utils/stream-to-string';
+import {
+	SQS_OCRS_IMAGES_FOLDER_PATH,
+	SQS_OCRS_JSON_FOLDER_PATH,
+	primitives,
+} from '@/_core/configs/common';
 
 const s3Client = new S3Client({});
 const dynamoDBClient = new DynamoDBClient({});
-
-const jsonFolderPath = 'json/';
-const imagesFolderPath = 'images/';
 
 export const handler = async (event: SQSEvent): Promise<void> => {
 	const dynamoTableName = process.env.AWS_TABLA_DYNAMO_SQS_OCRS;
@@ -16,7 +21,7 @@ export const handler = async (event: SQSEvent): Promise<void> => {
 	if (!dynamoTableName) {
 		throw new Error(
 			infraestructureErrors.ENVIRONMENT_VARIABLE_NOT_FOUND(
-				'AWS_TABLA_DYNAMO_SQS_OCRS'
+				InfraestructureErrorsEnum.AWS_TABLA_DYNAMO_SQS_OCRS
 			)
 		);
 	}
@@ -24,8 +29,8 @@ export const handler = async (event: SQSEvent): Promise<void> => {
 	for (const record of event.Records) {
 		const { bucket, baseKey } = JSON.parse(record.body);
 
-		const jsonKey = `${jsonFolderPath}/${baseKey}.json`;
-		const imageKey = `${imagesFolderPath}/${baseKey}.jpg`;
+		const imageKey = `${SQS_OCRS_IMAGES_FOLDER_PATH}/${baseKey}.${primitives.jpg}`;
+		const jsonKey = `${SQS_OCRS_JSON_FOLDER_PATH}/${baseKey}.${primitives.json}`;
 
 		const getObjectCommand = new GetObjectCommand({
 			Bucket: bucket,
