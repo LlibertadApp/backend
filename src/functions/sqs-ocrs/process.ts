@@ -7,6 +7,9 @@ import { streamToString } from '@/_core/utils/stream-to-string';
 const s3Client = new S3Client({});
 const dynamoDBClient = new DynamoDBClient({});
 
+const jsonFolderPath = 'json/';
+const imagesFolderPath = 'images/';
+
 export const handler = async (event: SQSEvent): Promise<void> => {
 	const dynamoTableName = process.env.AWS_TABLA_DYNAMO_SQS_OCRS;
 
@@ -21,8 +24,8 @@ export const handler = async (event: SQSEvent): Promise<void> => {
 	for (const record of event.Records) {
 		const { bucket, baseKey } = JSON.parse(record.body);
 
-		const jsonKey = `json/${baseKey}.json`;
-		const imageKey = `images/${baseKey}.jpg`;
+		const jsonKey = `${jsonFolderPath}/${baseKey}.json`;
+		const imageKey = `${imagesFolderPath}/${baseKey}.jpg`;
 
 		const getObjectCommand = new GetObjectCommand({
 			Bucket: bucket,
