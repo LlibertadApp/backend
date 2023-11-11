@@ -67,11 +67,15 @@ export const handler = async (
       });
     }
 
+    // Generamos el nombre de los recursos
+    const d = new Date();
+    const filename = `${mesaId}_${d.toISOString().slice(0, 10).split("-").join("")}-${d.getUTCHours()}${d.getUTCMinutes()}${d.getUTCSeconds()}_${(+d).toString(16).slice(-8)}`;
+
     // Generamos instancia del cliente de S3
     const s3 = new S3Client();
 
     // Guardamos la imagen en el bucket correspondiente
-    const imagePath = `actas/${mesaId}.jpg`;
+    const imagePath = `actas/${filename}.jpg`;
     await s3.send(
         new PutObjectCommand({
             Bucket: BUCKET_NAME,
@@ -99,7 +103,7 @@ export const handler = async (
     };
 
     // Guardar payload en el bucket correspondiente
-    const payloadPath = `payloads/${mesaId}.json`;
+    const payloadPath = `payloads/${filename}.json`;
     await s3.send(
         new PutObjectCommand({
             Bucket: BUCKET_NAME,
