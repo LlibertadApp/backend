@@ -1,5 +1,5 @@
 service: lla-api
-frameworkVersion: "3"
+frameworkVersion: '3'
 
 provider:
   name: aws
@@ -13,22 +13,22 @@ provider:
       statements:
         - Effect: Allow
           Action:
-            - "s3:*"
-          Resource: "*"
+            - 's3:*'
+          Resource: '*'
         - Effect: Allow
           Action:
-            - "cloudwatch:*"
-            - "logs:*"
-          Resource: "*"
+            - 'cloudwatch:*'
+            - 'logs:*'
+          Resource: '*'
         - Effect: Allow
           Action:
-            - "lambda:InvokeFunction"
-          Resource: "*"
+            - 'lambda:InvokeFunction'
+          Resource: '*'
   deploymentBucket:
     blockPublicAccess: true
     serverSideEncryption: AES256
   httpApi:
-    name: "LLA"
+    name: 'LLA'
     cors: true
     authorizers:
       jwtAuthorizer:
@@ -76,7 +76,7 @@ functions:
     handler: src/functions/authorizer/handler.handler
     description: Authorizer for JWT integration using Firebase
   get-config:
-    name: "get-config"
+    name: 'get-config'
     description: Get initial app config
     handler: src/functions/config/get.handler
     events:
@@ -87,7 +87,7 @@ functions:
             name: jwtAuthorizer
             type: jwt
   post-actas:
-    name: "post-actas"
+    name: 'post-actas'
     description: Guarda y procesa la imagen que suben los fiscales
     handler: src/functions/actas/post.handler
     events:
@@ -98,15 +98,15 @@ functions:
             name: jwtAuthorizer
             type: jwt
           consumes:
-            - "multipart/form-data"
-          bodyType: "ActasRequest"
+            - 'multipart/form-data'
+          bodyType: 'ActasRequest'
           responses:
             default: {}
-            "201":
-              name: "Content Accepted"
-              bodyType: "ActasResponse"
+            '201':
+              name: 'Content Accepted'
+              bodyType: 'ActasResponse'
   get-user:
-    name: "get-user"
+    name: 'get-user'
     description: Get user data
     handler: src/functions/users/get.handler
     events:
@@ -133,3 +133,10 @@ functions:
       - httpApi:
           method: POST
           path: /auth
+  process-sqs-ocr:
+    handler: src/functions/sqs-ocrs/process.handler
+    description: Process telegramas from SQS and updates DynamoDB
+    events:
+      - sqs:
+          arn: 'arn:aws:sqs:us-east-1:123456789012:queue-name' # Remplazar "queue-name" por el SQS ARN
+          batchSize: 10
