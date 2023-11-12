@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev
+      - feat_devops-43_cicd-environments
 
 permissions:
   id-token: write   # This is required for requesting the JWT
@@ -13,6 +14,7 @@ jobs:
   deploy:
     name: deploy
     runs-on: ubuntu-latest
+    environment: dev
     strategy:
       matrix:
         node-version: [18.x]
