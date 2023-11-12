@@ -27,3 +27,19 @@ export interface UserToken {
   user_id: string;
   mesas: IdentificadorMesa[];
 }
+
+export interface EscrutinioMesa {
+  userId: string;
+  imagenPath: string;
+  conteoLla: number;
+  conteoUp: number;
+  votosImpugnados: number;
+  votosNulos: number;
+  votosEnBlanco: number;
+  votosRecurridos: number;
+  votosEnTotal: number;
+}
+
+export interface EscrutionioMesaResponse {
+  data: EscrutinioMesa;
+}

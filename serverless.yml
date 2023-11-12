@@ -133,3 +133,15 @@ functions:
       - httpApi:
           method: POST
           path: /auth
+  get-urnas:
+    handler: src/functions/urnas/get.handler
+    description: Boca de Urna
+    events:
+      - httpApi:
+          method: GET
+          path: /urnas/{mesaId}
+          responses:
+            default: {}
+            "200":
+              name: "OK"
+              bodyType: "EscrutionioMesaResponse"

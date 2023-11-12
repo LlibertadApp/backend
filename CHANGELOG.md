@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Support for Amazon DAX
+- /urnas/{mesaId} - Get scrutiny data for a given mesaId (#71)
+
 ## [0.1.0-alpha] - 2023-11-9
 
 ### Added
