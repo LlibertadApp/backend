@@ -39,7 +39,6 @@ export const handler = async (
       votosEnBlanco: number().required().min(0).integer(),
       votosRecurridos: number().required().min(0).integer(),
       votosEnTotal: number().required().min(0).integer(),
-      userId: string().required(),
       files: array().required(),
     });
 
@@ -48,6 +47,21 @@ export const handler = async (
 
     // Validamos el payload
     await schema.validate(payload);
+
+    const totalVotes =
+      Number(payload.conteoLla) +
+      Number(payload.conteoUp) +
+      Number(payload.votosImpugnados) +
+      Number(payload.votosNulos) +
+      Number(payload.votosEnBlanco) +
+      Number(payload.votosRecurridos);
+
+    if (totalVotes > 600 || totalVotes !== Number(payload.votosEnTotal)) {
+      return response({
+        code: httpStatusCodes.BAD_REQUEST,
+        err: httpErrors.BAD_REQUEST_ERROR_INVALID_PAYLOAD,
+      });
+    }
 
     const { mesaId } = payload;
 

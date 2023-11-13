@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Support for Amazon DAX
 - /urnas/{mesaId} - Get scrutiny data for a given mesaId (#71)
+- Verify total envelopes vs scrutiny data
 
 ### Removed
 
