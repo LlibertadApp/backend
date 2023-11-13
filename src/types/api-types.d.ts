@@ -43,3 +43,7 @@ export interface EscrutinioMesa {
 export interface EscrutionioMesaResponse {
   data: EscrutinioMesa;
 }
+
+ export interface ListActasResponse {
+   data: Array<EscrutinioMesa>;
+ }

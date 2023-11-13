@@ -82,7 +82,7 @@ functions:
     events:
       - httpApi:
           method: POST
-          path: /actas
+          path: /v1/actas
           authorizer:
             name: jwtAuthorizer
             type: jwt
@@ -101,7 +101,7 @@ functions:
     events:
       - httpApi:
           method: GET
-          path: /users/{id}
+          path: /v1/users/{id}
           authorizer:
             name: jwtAuthorizer
             type: jwt
@@ -111,7 +111,7 @@ functions:
     events:
       - httpApi:
           method: POST
-          path: /users
+          path: /v1/users
           authorizer:
             name: jwtAuthorizer
             type: jwt
@@ -121,16 +121,35 @@ functions:
     events:
       - httpApi:
           method: POST
-          path: /auth
-  get-urnas:
-    handler: src/functions/urnas/get.handler
-    description: Boca de Urna
+          path: /v1/auth
+  list-actas:
+    handler: src/functions/actas/list.handler
+    description: Ver actas cargadas por el usuario
     events:
       - httpApi:
           method: GET
-          path: /urnas/{mesaId}
+          path: /v1/actas
+          authorizer:
+            name: jwtAuthorizer
+            type: jwt
+          responses:
+            default: {}
+            "200":
+              name: "OK"
+              bodyType: "ListActasResponse"
+  get-actas:
+    handler: src/functions/actas/get.handler
+    description: Ver informacion del acta para la mesa
+    events:
+      - httpApi:
+          method: GET
+          path: /v1/actas/{mesaId}
+          authorizer:
+            name: jwtAuthorizer
+            type: jwt
           responses:
             default: {}
             "200":
               name: "OK"
               bodyType: "EscrutionioMesaResponse"
+

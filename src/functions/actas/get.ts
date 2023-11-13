@@ -2,21 +2,19 @@
 import { APIGatewayEvent, Callback, Context } from "aws-lambda";
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
-import { object, string, number, array } from "yup";
 import { jwtDecode } from "jwt-decode";
 import AmazonDaxClient from "amazon-dax-client";
 
 import response from "@/helpers/response";
-import logger from "@/helpers/logger";
 import { httpErrors, httpStatusCodes } from "@/_core/configs/errorConstants";
 import { ActasResponse, UserToken } from "@/types/api-types.d";
 
-// Defined globally, so we can reuse between lambda executions
+// Defined at file level, so we can reuse between lambda executions
 var dynamodb;
 
 /**
 * Usage
-* GET /urnas/{mesaId}
+* GET /actas/{mesaId}
 * @param mesaId ID de la mesa a consultar
 */
 export const handler = async (
@@ -36,6 +34,22 @@ export const handler = async (
   }
 
   try {
+    // Si llegamos hasta acá es porque hay un Bearer válidado
+    const token = event.headers.authorization!;
+    const decoded = jwtDecode<UserToken>(token);
+    const userId = decoded.user_id;
+
+    // Validamos que el usuario tenga permisos para la mesa indicada
+    const found = decoded.mesas.filter(i => i.mesaId == mesaId);
+
+    if (found.length == 0) {
+      // El usuario no tiene acceso a la mesa
+      return response({
+        code: httpStatusCodes.FORBIDDEN,
+        err: httpErrors.FORBIDDEN,
+      });
+    }
+
     if (!dynamodb) {
       if (process.env.DAX_ENDPOINT) {
         console.log('Using DAX endpoint', process.env.DAX_ENDPOINT);
@@ -59,6 +73,7 @@ export const handler = async (
       TableName: process.env.DDB_TABLE,
       Key: {
         mesaId: mesaId,
+        userId: userId,
       },
     });
 
