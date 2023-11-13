@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - dev
-      - feat_devops-43_cicd-environments
 
 permissions:
   id-token: write   # This is required for requesting the JWT
