@@ -39,6 +39,8 @@ jobs:
           "FIREBASE_PUBLIC_KEYS_URL": "${{ vars.FIREBASE_PUBLIC_KEYS_URL }}",
           "FIREBASE_SERVICE_ACCOUNT_SECRET_NAME": "${{ vars.FIREBASE_SERVICE_ACCOUNT_SECRET_NAME }}",
           "FIREBASE_STORAGE_BUCKET": "${{ vars.FIREBASE_STORAGE_BUCKET }}",
+          "FIREBASE_ISSUER_URL": "${{ vars.FIREBASE_ISSUER_URL }}",
+          "FIREBASE_AUDIENCE": "${{ vars.FIREBASE_AUDIENCE }}",
           "FRONT_END_URL": "${{ vars.FRONT_END_URL }}",
           "LBERTAPP_ENV": "${{ vars.LBERTAPP_ENV }}"
         }'
@@ -59,3 +61,6 @@ jobs:
       uses: serverless/github-action@v3.2
       with:
         args: deploy --stage=uat
+      env:
+        FIREBASE_ISSUER_URL: ${{ vars.FIREBASE_ISSUER_URL }}
+        FIREBASE_AUDIENCE: ${{ vars.FIREBASE_AUDIENCE }}
