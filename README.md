@@ -90,6 +90,9 @@ FIREBASE_SERVICE_ACCOUNT_SECRET_NAME=firebaseServiceAccount
 
 # FRONT END URL CONFIG
 FRONT_END_URL=http://localhost:3001
+
+DDB_LOCAL=true
+DDB_TABLE=prueba1
 ```
 
 # Finalmente

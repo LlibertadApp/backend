@@ -11,7 +11,7 @@ services:
             - POSTGRES_DB=la_libertad_app
         ports:
         - 5432:5432
-        volumes: 
+        volumes:
         - postgres_data:/var/lib/postgresql/data
         - ./update_mesas_activas.sql:/docker-entrypoint-initdb.d/update_mesas_activas.sql
         - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
@@ -32,6 +32,15 @@ services:
         - '9001:9001'
         volumes:
         - 'minio_data:/bitnami/minio/data'
+    dynamodb:
+      command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+      image: "amazon/dynamodb-local:latest"
+      container_name: dynamodb-local
+      ports:
+        - "8000:8000"
+      volumes:
+        - "./docker/dynamodb:/home/dynamodblocal/data"
+      working_dir: /home/dynamodblocal
 
 volumes:
     postgres_data:

@@ -75,17 +75,6 @@ functions:
   jwtAuthorizer:
     handler: src/functions/authorizer/handler.handler
     description: Authorizer for JWT integration using Firebase
-  get-config:
-    name: "get-config"
-    description: Get initial app config
-    handler: src/functions/config/get.handler
-    events:
-      - httpApi:
-          method: GET
-          path: /config
-          authorizer:
-            name: jwtAuthorizer
-            type: jwt
   post-actas:
     name: "post-actas"
     description: Guarda y procesa la imagen que suben los fiscales
@@ -93,7 +82,7 @@ functions:
     events:
       - httpApi:
           method: POST
-          path: /actas
+          path: /v1/actas
           authorizer:
             name: jwtAuthorizer
             type: jwt
@@ -112,7 +101,7 @@ functions:
     events:
       - httpApi:
           method: GET
-          path: /users/{id}
+          path: /v1/users/{id}
           authorizer:
             name: jwtAuthorizer
             type: jwt
@@ -122,7 +111,7 @@ functions:
     events:
       - httpApi:
           method: POST
-          path: /users
+          path: /v1/users
           authorizer:
             name: jwtAuthorizer
             type: jwt
@@ -132,4 +121,35 @@ functions:
     events:
       - httpApi:
           method: POST
-          path: /auth
+          path: /v1/auth
+  list-actas:
+    handler: src/functions/actas/list.handler
+    description: Ver actas cargadas por el usuario
+    events:
+      - httpApi:
+          method: GET
+          path: /v1/actas
+          authorizer:
+            name: jwtAuthorizer
+            type: jwt
+          responses:
+            default: {}
+            "200":
+              name: "OK"
+              bodyType: "ListActasResponse"
+  get-actas:
+    handler: src/functions/actas/get.handler
+    description: Ver informacion del acta para la mesa
+    events:
+      - httpApi:
+          method: GET
+          path: /v1/actas/{mesaId}
+          authorizer:
+            name: jwtAuthorizer
+            type: jwt
+          responses:
+            default: {}
+            "200":
+              name: "OK"
+              bodyType: "EscrutionioMesaResponse"
+
