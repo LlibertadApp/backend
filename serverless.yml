@@ -35,9 +35,9 @@ provider:
         type: jwt
         name: jwtAuthorizer
         functionName: jwtAuthorizer
-        issuerUrl: https://securetoken.google.com/e-commerce-ebd01
+        issuerUrl: ${env:FIREBASE_ISSUER_URL}
         audience:
-          - e-commerce-ebd01
+          - ${env:FIREBASE_AUDIENCE}
         resultTtlInSeconds: 300
         identitySource:
           - $request.header.Authorization

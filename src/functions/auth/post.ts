@@ -4,7 +4,6 @@ import "reflect-metadata";
 import { APIGatewayEvent, Callback, Context } from "aws-lambda";
 import response from "@/helpers/response";
 import * as admin from "firebase-admin";
-import { v4 as uuidv4 } from "uuid";
 import { isValidMesasResponse } from "@/_domain/validators/mesa/mesa.validator";
 import { httpErrors, httpStatusCodes } from "@/_core/configs/errorConstants";
 import { initializeFirebaseAdminApp } from "@/_core/firebase/firebase-admin";
@@ -36,7 +35,7 @@ export const handler = async (
       });
     }
 
-    const customToken = await admin.auth().createCustomToken(uuidv4(), mesasBody);
+    const customToken = await admin.auth().createCustomToken(userId, mesasBody);
 
     return response({
       code: httpStatusCodes.OK,
