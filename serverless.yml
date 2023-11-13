@@ -75,17 +75,6 @@ functions:
   jwtAuthorizer:
     handler: src/functions/authorizer/handler.handler
     description: Authorizer for JWT integration using Firebase
-  get-config:
-    name: "get-config"
-    description: Get initial app config
-    handler: src/functions/config/get.handler
-    events:
-      - httpApi:
-          method: GET
-          path: /config
-          authorizer:
-            name: jwtAuthorizer
-            type: jwt
   post-actas:
     name: "post-actas"
     description: Guarda y procesa la imagen que suben los fiscales
