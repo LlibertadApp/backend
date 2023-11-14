@@ -4,7 +4,9 @@ import * as path from 'path';
 import { User } from '@/helpers/models/entities/userEntity';
 import { GenericTable } from '@/helpers/models/entities/genericTable';
 import { Role } from '@/helpers/models/entities/roleEntity';
+import { Scrutiny } from '@/helpers/models/entities/scrutinyEntity';
 import { FirstMigration1698943496462 } from '@/helpers/migrations/1698943496462-firstMigration';
+import { TablaActas1699999228781 } from '@/helpers/migrations/1699999228781-tablaActas';
 import { EnvironmentSelector } from '@/_core/configs/environmentSelector';
 
 Dotenv.config({
@@ -27,9 +29,11 @@ export const ConnectionSource = new DataSource({
 	entities: [
         User,
         GenericTable,
-        Role
+        Role,
+				Scrutiny,
 	],
 	migrations: [
-        FirstMigration1698943496462
+        FirstMigration1698943496462,
+				TablaActas1699999228781,
 	],
 });
