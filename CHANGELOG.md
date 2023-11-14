@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Moving from DynamoDB to PostgreSQL
+
 ### Added
 - Support for Amazon DAX
 - API Version path prefix (`/v1`)
