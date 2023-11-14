@@ -62,7 +62,7 @@ custom:
         - aws-sdk
   autoswagger:
     typefiles: ['./src/types/api-types.d.ts']
-    excludeStages: ['prd']
+    excludeStages: ['prd', 'uat']
 
 package:
   excludeDevDependencies: true

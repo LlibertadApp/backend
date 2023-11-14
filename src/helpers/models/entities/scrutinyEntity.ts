@@ -1,0 +1,40 @@
+import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+import { GenericTable } from "./genericTable";
+
+@Entity({ name: 'Actas' })
+export class Scrutiny extends GenericTable {
+    @PrimaryGeneratedColumn("uuid")
+    public id: string;
+
+    @Index()
+    @Column({ nullable: false })
+    private mesaId: string;
+
+    @Index()
+    @Column({ nullable: false })
+    private userId: string;
+
+    @Column({ nullable: false })
+    private conteoLla: number;
+
+    @Column({ nullable: false })
+    private conteoUp: number;
+
+    @Column({ nullable: false })
+    private votosImpugnados: number;
+
+    @Column({ nullable: false })
+    private votosNulos: number;
+
+    @Column({ nullable: false })
+    private votosEnBlanco: number;
+
+    @Column({ nullable: false })
+    private votosRecurridos: number;
+
+    @Column({ nullable: false })
+    private votosEnTotal: number;
+
+    @Column({ nullable: false })
+    private imagenActa: string;
+}

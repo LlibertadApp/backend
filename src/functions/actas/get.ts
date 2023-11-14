@@ -1,13 +1,11 @@
 /// <reference path="../../symbols.d.ts" />
 import { APIGatewayEvent, Callback, Context } from "aws-lambda";
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
 import { jwtDecode } from "jwt-decode";
-import AmazonDaxClient from "amazon-dax-client";
 
 import response from "@/helpers/response";
 import { httpErrors, httpStatusCodes } from "@/_core/configs/errorConstants";
-import { ActasResponse, UserToken } from "@/types/api-types.d";
+import { UserToken } from "@/types/api-types.d";
+import { findScrutiniesByMesaId} from "@/helpers/daos/scrutinyDao";
 
 // Defined at file level, so we can reuse between lambda executions
 var dynamodb;
@@ -50,47 +48,12 @@ export const handler = async (
       });
     }
 
-    if (!dynamodb) {
-      if (process.env.DAX_ENDPOINT) {
-        console.log('Using DAX endpoint', process.env.DAX_ENDPOINT);
-        dynamodb = new AmazonDaxClient({endpoints: [process.env.DAX_ENDPOINT]});
-      } else {
-        // DDB_LOCAL can be set if using lambda-local with dynamodb-local or another local
-        // testing environment
-        if (process.env.DDB_LOCAL) {
-          console.log('Using DynamoDB local');
-          dynamodb = new DynamoDBClient({endpoint: 'http://localhost:8000', region: 'ddblocal'});
-        } else {
-          console.log('Using DynamoDB');
-          dynamodb = new DynamoDBClient({});
-        }
-      }
-    }
+    const scrutinies = await findScrutiniesByMesaId(mesaId);
 
-    const docClient = DynamoDBDocumentClient.from(dynamodb);
-
-    const command = new GetCommand({
-      TableName: process.env.DDB_TABLE,
-      Key: {
-        mesaId: mesaId,
-        userId: userId,
-      },
-    });
-
-    const doc = await docClient.send(command);
-
-    if (doc.Item) {
-      // 200 OK
-      return response({
-        code: httpStatusCodes.OK,
-        data: doc.Item,
-      });
-    }
-
-    // Document not found
+    // 200 OK
     return response({
-      code: httpStatusCodes.NOT_FOUND,
-      err: httpErrors.NOT_FOUND,
+      code: httpStatusCodes.OK,
+      data: scrutinies,
     });
 
   } catch (err: any) {
