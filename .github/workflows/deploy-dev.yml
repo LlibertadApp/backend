@@ -68,7 +68,7 @@ jobs:
     - name: Deploy with Serverless Framework
       uses: serverless/github-action@v3.2
       with:
-        args: deploy --stage=dev
+        args: deploy --stage=dev --force
       env:
         FIREBASE_ISSUER_URL: ${{ vars.FIREBASE_ISSUER_URL }}
         FIREBASE_AUDIENCE: ${{ vars.FIREBASE_AUDIENCE }}
