@@ -7,9 +7,6 @@ import { httpErrors, httpStatusCodes } from "@/_core/configs/errorConstants";
 import { UserToken } from "@/types/api-types.d";
 import { findScrutiniesByMesaId} from "@/helpers/daos/scrutinyDao";
 
-// Defined at file level, so we can reuse between lambda executions
-var dynamodb;
-
 /**
 * Usage
 * GET /actas/{mesaId}

@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - Endpoint GET /config
+- DynamoDB support
 
 ## [0.1.0-alpha] - 2023-11-9
 
