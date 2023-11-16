@@ -44,6 +44,6 @@ export interface EscrutionioMesaResponse {
   data: EscrutinioMesa;
 }
 
- export interface ListActasResponse {
-   data: Array<EscrutinioMesa>;
- }
+export interface ListActasResponse {
+  data: Array<EscrutinioMesa>;
+}

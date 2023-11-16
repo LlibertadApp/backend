@@ -7,6 +7,7 @@ import { Role } from '@/helpers/models/entities/roleEntity';
 import { Scrutiny } from '@/helpers/models/entities/scrutinyEntity';
 import { FirstMigration1698943496462 } from '@/helpers/migrations/1698943496462-firstMigration';
 import { TablaActas1699999228781 } from '@/helpers/migrations/1699999228781-tablaActas';
+import { AgregarEstadoDeMesa1700096458578 } from '@/helpers/migrations/1700096458578-agregarEstadoDeMesa';
 import { EnvironmentSelector } from '@/_core/configs/environmentSelector';
 
 Dotenv.config({
@@ -43,5 +44,6 @@ export const ConnectionSource = new DataSource({
 	migrations: [
         FirstMigration1698943496462,
 				TablaActas1699999228781,
+				AgregarEstadoDeMesa1700096458578,
 	],
 });
