@@ -9,6 +9,7 @@ import response from "@/helpers/response";
 import logger from "@/helpers/logger";
 import { httpErrors, httpStatusCodes } from "@/_core/configs/errorConstants";
 import { ActasResponse, UserToken } from "@/types/api-types.d";
+import { EscrutinioMesaEstado } from "@/helpers/models/entities/scrutinyEntity";
 
 /**
  * Usage
@@ -47,21 +48,6 @@ export const handler = async (
 
     // Validamos el payload
     await schema.validate(payload);
-
-    const totalVotes =
-      Number(payload.conteoLla) +
-      Number(payload.conteoUp) +
-      Number(payload.votosImpugnados) +
-      Number(payload.votosNulos) +
-      Number(payload.votosEnBlanco) +
-      Number(payload.votosRecurridos);
-
-    if (totalVotes > 600 || totalVotes !== Number(payload.votosEnTotal)) {
-      return response({
-        code: httpStatusCodes.BAD_REQUEST,
-        err: httpErrors.BAD_REQUEST_ERROR_INVALID_PAYLOAD,
-      });
-    }
 
     const { mesaId } = payload;
 
@@ -113,8 +99,21 @@ export const handler = async (
       userId,
       imagenActa: {
         path: imagePath,
-      }
+      },
+      estado: EscrutinioMesaEstado.ENVIADO,
     };
+
+    const totalVotes =
+      Number(payload.conteoLla) +
+      Number(payload.conteoUp) +
+      Number(payload.votosImpugnados) +
+      Number(payload.votosNulos) +
+      Number(payload.votosEnBlanco) +
+      Number(payload.votosRecurridos);
+
+    if (totalVotes > 600 || totalVotes !== Number(payload.votosEnTotal)) {
+      payloadToSave.estado = EscrutinioMesaEstado.ANOMALIA;
+    }
 
     // Guardar payload en el bucket correspondiente
     const payloadPath = `payloads/${filename}.json`;
