@@ -26,6 +26,14 @@ export const ConnectionSource = new DataSource({
 	database: process.env.DATABASE_DB,
 	logging: process.env.DATABASE_LOGGING === 'true',
 	synchronize: process.env.DATABASE_SYNC === 'true',
+
+  ssl: true,
+  extra: {
+    ssl: {
+      rejectUnauthorized: false
+    }
+  },
+
 	entities: [
         User,
         GenericTable,
