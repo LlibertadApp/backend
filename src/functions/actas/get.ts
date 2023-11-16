@@ -19,6 +19,9 @@ export const handler = async (
 ) => {
   global.cb = callback;
 
+  // This enables Lambda function to complete
+  context.callbackWaitsForEmptyEventLoop = false
+
   const mesaId = event.pathParameters?.mesaId;
 
   if (!mesaId) {
