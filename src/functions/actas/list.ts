@@ -20,6 +20,9 @@ export const handler = async (
 ) => {
   global.cb = callback;
 
+  // This enables Lambda function to complete
+  context.callbackWaitsForEmptyEventLoop = false
+
   try {
     // Si llegamos hasta acá es porque hay un Bearer válidado
     const token = event.headers.authorization!;
