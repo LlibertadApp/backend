@@ -16,7 +16,6 @@ export const findUserByUuid = async (uuid: string): Promise<User | null> => {
         const query = await userRepository.createQueryBuilder('user')
             .where('user.uuid = :uuid', { uuid: uuid })
             .getOne();
-        
         return query;
 
     } catch (error) {

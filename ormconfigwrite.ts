@@ -27,14 +27,6 @@ export const ConnectionSourceWrite = new DataSource({
 	database: process.env.DATABASE_DB,
 	logging: process.env.DATABASE_LOGGING === 'true',
 	synchronize: process.env.DATABASE_SYNC === 'true',
-
-  ssl: true,
-  extra: {
-    ssl: {
-      rejectUnauthorized: false
-    }
-  },
-
 	entities: [
         User,
         GenericTable,
@@ -46,4 +38,10 @@ export const ConnectionSourceWrite = new DataSource({
 				TablaActas1699999228781,
 				AgregarEstadoDeMesa1700096458578,
 	],
+	extra: {
+		connectionTimeoutMillis: 20000,
+		ssl: {
+      rejectUnauthorized: false
+    },
+	},
 });
