@@ -27,14 +27,6 @@ const createConnection = (databaseHost: string) => new DataSource({
 	database: process.env.DATABASE_DB,
 	logging: process.env.DATABASE_LOGGING === 'true',
 	synchronize: process.env.DATABASE_SYNC === 'true',
-
-  ssl: true,
-  extra: {
-    ssl: {
-      rejectUnauthorized: false
-    }
-  },
-
 	entities: [
         User,
         GenericTable,
@@ -48,5 +40,5 @@ const createConnection = (databaseHost: string) => new DataSource({
 	],
 });
 
-export const ConnectionSourceRead = createConnection(process.env.DATABASE_RO_HOST);
-export const ConnectionSourceWrite = createConnection(process.env.DATABASE_RW_HOST);
+export const ConnectionSourceRead = createConnection(process.env.DATABASE_RO_HOST!);
+export const ConnectionSourceWrite = createConnection(process.env.DATABASE_RW_HOST!);
