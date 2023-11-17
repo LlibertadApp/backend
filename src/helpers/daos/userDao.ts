@@ -1,16 +1,17 @@
 import 'reflect-metadata';
 import { User } from "@/helpers/models/entities/userEntity";
 import { Repository } from "typeorm";
-import { ConnectionSource } from '../../../ormconfig';
+import { ConnectionSourceRead } from '../../../ormconfig';
+import { ConnectionSourceWrite } from '../../../ormconfig';
 
 export const findUserByUuid = async (uuid: string): Promise<User | null> => {
     try {
-        if (!ConnectionSource.isInitialized) {
-            await ConnectionSource.initialize();
+        if (!ConnectionSourceRead.isInitialized) {
+            await ConnectionSourceRead.initialize();
             console.log('Database connected');
         }
 
-        const userRepository: Repository<User> = ConnectionSource.getRepository(User);
+        const userRepository: Repository<User> = ConnectionSourceRead.getRepository(User);
 
         const query = await userRepository.createQueryBuilder('user')
             .where('user.uuid = :uuid', { uuid: uuid })
@@ -26,12 +27,12 @@ export const findUserByUuid = async (uuid: string): Promise<User | null> => {
 
 export const createUser = async (userData: Partial<User>): Promise<User | null> => {
     try {
-        if (!ConnectionSource.isInitialized) {
-            await ConnectionSource.initialize();
+        if (!ConnectionSourceWrite.isInitialized) {
+            await ConnectionSourceWrite.initialize();
             console.log('Database connected');
         }
 
-        const userRepository: Repository<User> = ConnectionSource.getRepository(User);
+        const userRepository: Repository<User> = ConnectionSourceWrite.getRepository(User);
 
         const user = userRepository.create(userData);
 
