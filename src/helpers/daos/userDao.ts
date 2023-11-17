@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { User } from "@/helpers/models/entities/userEntity";
 import { Repository } from "typeorm";
-import { ConnectionSourceRead } from '../../../ormconfig';
-import { ConnectionSourceWrite } from '../../../ormconfig';
+import { ConnectionSourceRead } from '../../../ormconfigread';
+import { ConnectionSourceWrite } from '../../../ormconfigwrite';
 
 export const findUserByUuid = async (uuid: string): Promise<User | null> => {
     try {

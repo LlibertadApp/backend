@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - dev
-      - test-cicd-ale
+      - fix_dual_orm_ro-rw
 
 permissions:
   id-token: write   # This is required for requesting the JWT

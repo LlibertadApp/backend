@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { Scrutiny } from "@/helpers/models/entities/scrutinyEntity";
 import { Repository } from "typeorm";
-import { ConnectionSourceRead } from '../../../ormconfig';
-import { ConnectionSourceWrite } from '../../../ormconfig';
+import { ConnectionSourceRead } from '../../../ormconfigread';
+import { ConnectionSourceWrite } from '../../../ormconfigwrite';
 
 export const findScrutiniesByUserId = async (userId: string): Promise<Scrutiny[] | null> => {
     try {

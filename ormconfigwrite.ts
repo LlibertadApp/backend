@@ -17,10 +17,10 @@ console.log(
 	`TYPEORM ENVIRONMENT: ${process.env.LBERTAPP_ENV}\nDATABASE CONNECTION: ${process.env.DATABASE_HOST}`
 );
 
-const createConnection = (databaseHost: string | undefined) => new DataSource({
+export const ConnectionSourceWrite = new DataSource({
 	migrationsTableName: 'migrations',
 	type: process.env.DATABASE_TYPE as any,
-	host: databaseHost,
+	host: process.env.DATABASE_RW_HOST,
 	port: Number(process.env.DATABASE_PORT),
 	username: process.env.DATABASE_USER,
 	password: process.env.DATABASE_PASS,
@@ -42,11 +42,8 @@ const createConnection = (databaseHost: string | undefined) => new DataSource({
 				Scrutiny,
 	],
 	migrations: [
-        FirstMigration1698943496462,
+        // FirstMigration1698943496462,
 				TablaActas1699999228781,
 				AgregarEstadoDeMesa1700096458578,
 	],
 });
-
-export const ConnectionSourceRead = createConnection(process.env.DATABASE_RO_HOST);
-export const ConnectionSourceWrite = createConnection(process.env.DATABASE_RW_HOST);
