@@ -38,4 +38,10 @@ export const ConnectionSource = new DataSource({
 				TablaActas1699999228781,
 				AgregarEstadoDeMesa1700096458578,
 	],
+	extra: {
+		connectionTimeoutMillis: 20000,
+		ssl: {
+      rejectUnauthorized: false
+    },
+	},
 });
