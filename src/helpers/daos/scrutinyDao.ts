@@ -1,17 +1,16 @@
 import 'reflect-metadata';
 import { Scrutiny } from "@/helpers/models/entities/scrutinyEntity";
 import { Repository } from "typeorm";
-import { ConnectionSourceRead } from '../../../ormconfig';
-import { ConnectionSourceWrite } from '../../../ormconfig';
+import { ConnectionSource } from '../../../ormconfig';
 
 export const findScrutiniesByUserId = async (userId: string): Promise<Scrutiny[] | null> => {
     try {
-        if (!ConnectionSourceRead.isInitialized) {
-            await ConnectionSourceRead.initialize();
+        if (!ConnectionSource.isInitialized) {
+            await ConnectionSource.initialize();
             console.log('Database connected');
         }
 
-        const scrutinyRepository: Repository<Scrutiny> = ConnectionSourceRead.getRepository(Scrutiny);
+        const scrutinyRepository: Repository<Scrutiny> = ConnectionSource.getRepository(Scrutiny);
 
         const query = await scrutinyRepository.createQueryBuilder('Actas')
             .where('Actas.userId = :userId', { userId: userId })
@@ -27,12 +26,12 @@ export const findScrutiniesByUserId = async (userId: string): Promise<Scrutiny[]
 
 export const findScrutiniesByMesaId = async (mesaId: string): Promise<Scrutiny[] | null> => {
     try {
-        if (!ConnectionSourceRead.isInitialized) {
-            await ConnectionSourceRead.initialize();
+        if (!ConnectionSource.isInitialized) {
+            await ConnectionSource.initialize();
             console.log('Database connected');
         }
 
-        const scrutinyRepository: Repository<Scrutiny> = ConnectionSourceRead.getRepository(Scrutiny);
+        const scrutinyRepository: Repository<Scrutiny> = ConnectionSource.getRepository(Scrutiny);
 
         const query = await scrutinyRepository.createQueryBuilder('Actas')
             .where('Actas.mesaId = :mesaId', { mesaId: mesaId })
@@ -48,12 +47,12 @@ export const findScrutiniesByMesaId = async (mesaId: string): Promise<Scrutiny[]
 
 export const createScutiny = async (scrutinyData: Partial<Scrutiny>): Promise<Scrutiny | null> => {
     try {
-        if (!ConnectionSourceWrite.isInitialized) {
-            await ConnectionSourceWrite.initialize();
+        if (!ConnectionSource.isInitialized) {
+            await ConnectionSource.initialize();
             console.log('Database connected');
         }
 
-        const scrutinyRepository: Repository<Scrutiny> = ConnectionSourceWrite.getRepository(Scrutiny);
+        const scrutinyRepository: Repository<Scrutiny> = ConnectionSource.getRepository(Scrutiny);
 
         const scrutiny = scrutinyRepository.create(scrutinyData);
 
