@@ -17,7 +17,7 @@ console.log(
 	`TYPEORM ENVIRONMENT: ${process.env.LBERTAPP_ENV}\nDATABASE CONNECTION: ${process.env.DATABASE_HOST}`
 );
 
-const createConnection = (databaseHost: string) => new DataSource({
+const createConnection = (databaseHost: string | undefined) => new DataSource({
 	migrationsTableName: 'migrations',
 	type: process.env.DATABASE_TYPE as any,
 	host: databaseHost,

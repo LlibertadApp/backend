@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev
+      - test-cicd-ale
 
 permissions:
   id-token: write   # This is required for requesting the JWT
