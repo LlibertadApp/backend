@@ -32,7 +32,8 @@ jobs:
           "BUCKET_IMAGES_NAME": "${{ vars.BUCKET_IMAGES_NAME }}",
           "BUCKET_NAME": "${{ vars.BUCKET_NAME }}",
           "BUCKET_PAYLOADS_NAME": "${{ vars.BUCKET_PAYLOADS_NAME }}",
-          "DATABASE_HOST": "${{ vars.DATABASE_HOST }}",
+          "DATABASE_RO_HOST": "${{ vars.DATABASE_RO_HOST }}",
+          "DATABASE_RW_HOST": "${{ vars.DATABASE_RW_HOST }}",
           "DATABASE_PORT": "${{ vars.DATABASE_PORT }}",
           "DATABASE_USER": "${{ vars.DATABASE_USER }}",
           "DATABASE_PASS": "${{ secrets.DATABASE_PASS }}",
@@ -68,7 +69,7 @@ jobs:
     - name: Deploy with Serverless Framework
       uses: serverless/github-action@v3.2
       with:
-        args: deploy --stage=dev --force
+        args: deploy --stage=${{ vars.ENVIRONMENT }}
       env:
         FIREBASE_ISSUER_URL: ${{ vars.FIREBASE_ISSUER_URL }}
         FIREBASE_AUDIENCE: ${{ vars.FIREBASE_AUDIENCE }}

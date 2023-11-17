@@ -20,21 +20,13 @@ console.log(
 export const ConnectionSource = new DataSource({
 	migrationsTableName: 'migrations',
 	type: process.env.DATABASE_TYPE as any,
-	host: process.env.DATABASE_HOST,
+	host: process.env.DATABASE_RO_HOST,
 	port: Number(process.env.DATABASE_PORT),
 	username: process.env.DATABASE_USER,
 	password: process.env.DATABASE_PASS,
 	database: process.env.DATABASE_DB,
 	logging: process.env.DATABASE_LOGGING === 'true',
 	synchronize: process.env.DATABASE_SYNC === 'true',
-
-  ssl: true,
-  extra: {
-    ssl: {
-      rejectUnauthorized: false
-    }
-  },
-
 	entities: [
         User,
         GenericTable,
