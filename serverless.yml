@@ -186,10 +186,3 @@ functions:
           arn: !GetAtt MainQueue.Arn
           batchSize: 1
           maximumConcurrency: 2
-    vpc:
-      securityGroupIds:
-        - ${env:SECURITY_GROUP_ID_1}
-      subnetIds:
-        - ${env:SUBNET_ID_1}
-        - ${env:SUBNET_ID_2}
-        - ${env:SUBNET_ID_3}
