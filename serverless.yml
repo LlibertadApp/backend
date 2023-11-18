@@ -169,5 +169,3 @@ functions:
             - prefix: payloads/
             - suffix: .json
           existing: true
-          batchSize: 1
-          maximumConcurrency: 2
