@@ -3,9 +3,12 @@ frameworkVersion: "3"
 
 provider:
   name: aws
-  deploymentMethod: direct
-  region: us-east-2
-  runtime: nodejs16.x
+  region: ${env:AWS_REGION}
+  deploymentBucket:
+    name: libertapp-serverless-deployments-${self:custom.stageName}
+  tags:
+    stage: ${self:custom.stageName}
+  runtime: nodejs18.x
   logRetentionInDays: 30
   iam:
     role:
@@ -24,9 +27,6 @@ provider:
           Action:
             - "lambda:InvokeFunction"
           Resource: "*"
-  deploymentBucket:
-    blockPublicAccess: true
-    serverSideEncryption: AES256
   httpApi:
     name: "LLA"
     cors: true
@@ -70,6 +70,37 @@ package:
     - ./**
   include:
     - ./src/**.ts
+
+resources:
+  Resources:
+    MainQueue:
+      Type: AWS::SQS::Queue
+      DependsOn: "DeadLetterQueue"
+      Properties:
+        QueueName: ${self:service}-${self:custom.stageName}-main
+        DelaySeconds: 0
+        MessageRetentionPeriod: 345600 # 4 days
+        VisibilityTimeout: 90
+        RedrivePolicy:
+          deadLetterTargetArn:
+            Fn::GetAtt:
+              - "DeadLetterQueue"
+              - "Arn"
+          maxReceiveCount: 2 #   2 means send it twice (1 retry and on 2nd failure, send it to DLQ)
+    DeadLetterQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${self:service}-${self:custom.stageName}-dlq
+
+  Outputs:
+    sqsArn:
+      Value: !GetAtt MainQueue.Arn
+    sqsUrl:
+      Value: !GetAtt MainQueue.QueueUrl
+    dlqArn:
+      Value: !GetAtt DeadLetterQueue.Arn
+    dlqUrl:
+      Value: !GetAtt DeadLetterQueue.QueueUrl
 
 functions:
   jwtAuthorizer:
