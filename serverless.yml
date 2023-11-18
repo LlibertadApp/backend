@@ -4,8 +4,10 @@ frameworkVersion: "3"
 provider:
   name: aws
   region: ${env:AWS_REGION}
+  deploymentMethod: direct
   deploymentBucket:
-    name: libertapp-serverless-deployments-${self:custom.stageName}
+    blockPublicAccess: true
+    serverSideEncryption: AES256
   tags:
     stage: ${self:custom.stageName}
   runtime: nodejs18.x
