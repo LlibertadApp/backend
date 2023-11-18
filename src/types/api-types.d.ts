@@ -28,7 +28,7 @@ export interface UserToken {
   mesas: IdentificadorMesa[];
 }
 
-export interface EscrutinioMesa {
+export interface Scrutiny {
   userId: string;
   imagenPath: string;
   conteoLla: number;
@@ -41,9 +41,9 @@ export interface EscrutinioMesa {
 }
 
 export interface EscrutionioMesaResponse {
-  data: EscrutinioMesa;
+  data: Scrutiny;
 }
 
 export interface ListActasResponse {
-  data: Array<EscrutinioMesa>;
+  data: Array<Scrutiny>;
 }

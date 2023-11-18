@@ -9,7 +9,7 @@ import response from "@/helpers/response";
 import logger from "@/helpers/logger";
 import { httpErrors, httpStatusCodes } from "@/_core/configs/errorConstants";
 import { ActasResponse, UserToken } from "@/types/api-types.d";
-import { EscrutinioMesaEstado } from "@/helpers/models/entities/scrutinyEntity";
+import { ScrutinyStatus } from "@/helpers/models/entities/scrutinyEntity";
 
 /**
  * Usage
@@ -100,7 +100,7 @@ export const handler = async (
       imagenActa: {
         path: imagePath,
       },
-      estado: EscrutinioMesaEstado.ENVIADO,
+      estado: ScrutinyStatus.ENVIADO,
     };
 
     const totalVotes =
@@ -112,7 +112,7 @@ export const handler = async (
       Number(payload.votosRecurridos);
 
     if (totalVotes > 600 || totalVotes !== Number(payload.votosEnTotal)) {
-      payloadToSave.estado = EscrutinioMesaEstado.ANOMALIA;
+      payloadToSave.estado = ScrutinyStatus.ANOMALIA;
     }
 
     // Guardar payload en el bucket correspondiente

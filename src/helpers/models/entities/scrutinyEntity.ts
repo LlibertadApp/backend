@@ -1,7 +1,7 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 import { GenericTable } from "./genericTable";
 
-export enum EscrutinioMesaEstado {
+export enum ScrutinyStatus {
   ENVIADO = "ENVIADO",
   ANOMALIA = "ANOMALIA",
   OK = "OK",
@@ -46,8 +46,8 @@ export class Scrutiny extends GenericTable {
 
     @Column({
         type: "enum",
-        enum: EscrutinioMesaEstado,
-        default: EscrutinioMesaEstado.ENVIADO,
+        enum: ScrutinyStatus,
+        default: ScrutinyStatus.ENVIADO,
     })
-    private estado: EscrutinioMesaEstado;
+    private estado: ScrutinyStatus;
 }
