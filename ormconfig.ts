@@ -3,8 +3,7 @@ import * as Dotenv from 'dotenv';
 import * as path from 'path';
 import { GenericTable } from '@/helpers/models/entities/genericTable';
 import { Scrutiny } from '@/helpers/models/entities/scrutinyEntity';
-// import { TablaActas1699999228781 } from '@/helpers/migrations/1699999228781-tablaActas';
-// import { AgregarEstadoDeMesa1700096458578 } from '@/helpers/migrations/1700096458578-agregarEstadoDeMesa';
+import { Initial1700293882848 } from '@/helpers/migrations/1700293882848-initial';
 import { EnvironmentSelector } from '@/_core/configs/environmentSelector';
 
 Dotenv.config({
@@ -29,8 +28,7 @@ export const ConnectionSource = new DataSource({
 				Scrutiny,
 	],
 	migrations: [
-				// TablaActas1699999228781,
-				// AgregarEstadoDeMesa1700096458578,
+				Initial1700293882848,
 	],
 	extra: {
 		ssl: {

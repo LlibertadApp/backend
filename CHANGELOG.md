@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Data processing worker
+
 ### Changed
 
 - Moving from DynamoDB to PostgreSQL

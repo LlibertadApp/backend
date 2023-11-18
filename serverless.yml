@@ -124,4 +124,11 @@ functions:
             "200":
               name: "OK"
               bodyType: "EscrutionioMesaResponse"
-
+  data-processing-worker:
+    handler: src/functions/data-processing/worker.handler
+    description: Events worker
+    events:
+      - sqs:
+          arn: !GetAtt MainQueue.Arn
+          batchSize: 1
+          maximumConcurrency: 2
