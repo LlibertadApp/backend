@@ -158,11 +158,16 @@ functions:
             "200":
               name: "OK"
               bodyType: "EscrutionioMesaResponse"
-  data-processing-worker:
-    handler: src/functions/data-processing/worker.handler
-    description: Events worker
+  data-processing-splitter:
+    handler: src/functions/data-processing/splitter.handler
+    description: Events splitter
     events:
-      - sqs:
-          arn: !GetAtt MainQueue.Arn
+      - s3:
+          bucket: ${env:BUCKET_NAME}
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: payloads/
+            - suffix: .json
+          existing: true
           batchSize: 1
           maximumConcurrency: 2

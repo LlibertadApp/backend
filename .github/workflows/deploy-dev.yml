@@ -71,5 +71,6 @@ jobs:
       with:
         args: deploy --stage=${{ vars.ENVIRONMENT }}
       env:
+        BUCKET_NAME: ${{ vars.BUCKET_NAME }}
         FIREBASE_ISSUER_URL: ${{ vars.FIREBASE_ISSUER_URL }}
         FIREBASE_AUDIENCE: ${{ vars.FIREBASE_AUDIENCE }}
