@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Moving from DynamoDB to PostgreSQL
+- Changed token claims format
 
 ### Added
 - Support for Amazon DAX

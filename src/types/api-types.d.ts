@@ -17,15 +17,12 @@ export type ActasResponse = {
   url: string;
 };
 
-export interface IdentificadorMesa {
-  mesaId: string;
-}
-
 export interface UserToken {
   iat: number;
   exp: number;
   user_id: string;
-  mesas: IdentificadorMesa[];
+  fullName: string;
+  votingTables: string[];
 }
 
 export interface Scrutiny {
