@@ -50,6 +50,7 @@ plugins:
   - serverless-offline
 
 custom:
+  stageName: ${opt:stage, 'dev'}
   serverless-offline:
     ignoreJWTSignature: true
   prune:
