@@ -76,34 +76,61 @@ package:
 
 resources:
   Resources:
-    MainQueue:
+    BackendMainQueue:
       Type: AWS::SQS::Queue
       DependsOn: "DeadLetterQueue"
       Properties:
-        QueueName: ${self:service}-${self:custom.stageName}-main
+        QueueName: ${self:service}-${self:custom.stageName}-backend-main
         DelaySeconds: 0
         MessageRetentionPeriod: 345600 # 4 days
         VisibilityTimeout: 90
         RedrivePolicy:
           deadLetterTargetArn:
             Fn::GetAtt:
-              - "DeadLetterQueue"
+              - "BackendDeadLetterQueue"
               - "Arn"
           maxReceiveCount: 2 #   2 means send it twice (1 retry and on 2nd failure, send it to DLQ)
-    DeadLetterQueue:
+    BackendDeadLetterQueue:
       Type: AWS::SQS::Queue
       Properties:
-        QueueName: ${self:service}-${self:custom.stageName}-dlq
+        QueueName: ${self:service}-${self:custom.stageName}-backend-dlq
+
+    PublicMainQueue:
+      Type: AWS::SQS::Queue
+      DependsOn: "DeadLetterQueue"
+      Properties:
+        QueueName: ${self:service}-${self:custom.stageName}-public-main
+        DelaySeconds: 0
+        MessageRetentionPeriod: 345600 # 4 days
+        VisibilityTimeout: 90
+        RedrivePolicy:
+          deadLetterTargetArn:
+            Fn::GetAtt:
+              - "PublicDeadLetterQueue"
+              - "Arn"
+          maxReceiveCount: 2 #   2 means send it twice (1 retry and on 2nd failure, send it to DLQ)
+    PublicDeadLetterQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${self:service}-${self:custom.stageName}-public-dlq
 
   Outputs:
-    sqsArn:
-      Value: !GetAtt MainQueue.Arn
-    sqsUrl:
-      Value: !GetAtt MainQueue.QueueUrl
-    dlqArn:
-      Value: !GetAtt DeadLetterQueue.Arn
-    dlqUrl:
-      Value: !GetAtt DeadLetterQueue.QueueUrl
+    backendSqsArn:
+      Value: !GetAtt BackendMainQueue.Arn
+    backendSqsUrl:
+      Value: !GetAtt BackendMainQueue.QueueUrl
+    backendDlqArn:
+      Value: !GetAtt BackendDeadLetterQueue.Arn
+    backendDlqUrl:
+      Value: !GetAtt BackendDeadLetterQueue.QueueUrl
+    publicSqsArn:
+      Value: !GetAtt PublicMainQueue.Arn
+    publicSqsUrl:
+      Value: !GetAtt PublicMainQueue.QueueUrl
+    publicDlqArn:
+      Value: !GetAtt PublicDeadLetterQueue.Arn
+    publicDlqUrl:
+      Value: !GetAtt PublicDeadLetterQueue.QueueUrl
 
 functions:
   jwtAuthorizer:
@@ -178,11 +205,14 @@ functions:
         - ${env:SUBNET_ID_1}
         - ${env:SUBNET_ID_2}
         - ${env:SUBNET_ID_3}
-  data-processing-worker:
-    handler: src/functions/data-processing/worker.handler
-    description: Events worker
+  data-processing-splitter:
+    handler: src/functions/data-processing/splitter.handler
+    description: Events splitter
     events:
-      - sqs:
-          arn: !GetAtt MainQueue.Arn
-          batchSize: 1
-          maximumConcurrency: 2
+      - s3:
+          bucket: ${env:BUCKET_NAME}
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: payloads/
+            - suffix: .json
+          existing: true

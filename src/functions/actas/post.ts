@@ -57,7 +57,7 @@ export const handler = async (
     const userId = decoded.user_id;
 
     // Validamos que el usuario tenga permisos para la mesa indicada
-    const found = decoded.mesas.filter(i => i.mesaId == mesaId);
+    const found = decoded.votingTables.filter(i => i == mesaId);
 
     if (found.length == 0) {
       // El usuario no tiene acceso a la mesa
