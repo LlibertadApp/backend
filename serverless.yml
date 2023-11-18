@@ -94,34 +94,6 @@ functions:
             "201":
               name: "Content Accepted"
               bodyType: "ActasResponse"
-  get-user:
-    name: "get-user"
-    description: Get user data
-    handler: src/functions/users/get.handler
-    events:
-      - httpApi:
-          method: GET
-          path: /v1/users/{id}
-          authorizer:
-            name: jwtAuthorizer
-            type: jwt
-  post-user:
-    handler: src/functions/users/post.handler
-    description: Create a new user
-    events:
-      - httpApi:
-          method: POST
-          path: /v1/users
-          authorizer:
-            name: jwtAuthorizer
-            type: jwt
-  get-token:
-    handler: src/functions/auth/post.handler
-    description: Generate Auth Token
-    events:
-      - httpApi:
-          method: POST
-          path: /v1/auth
   list-actas:
     handler: src/functions/actas/list.handler
     description: Ver actas cargadas por el usuario
