@@ -210,7 +210,11 @@ functions:
     description: Events splitter
     environment:
       BACKEND_QUEUE_NAME: !GetAtt BackendMainQueue.QueueName
+      BACKEND_QUEUE_ARN: !GetAtt BackendMainQueue.Arn
+      BACKEND_QUEUE_URL: !GetAtt BackendMainQueue.QueueUrl
       PUBLIC_QUEUE_NAME: !GetAtt PublicMainQueue.QueueName
+      PUBLIC_QUEUE_ARN: !GetAtt PublicMainQueue.Arn
+      PUBLIC_QUEUE_URL: !GetAtt PublicMainQueue.QueueUrl
     events:
       - s3:
           bucket: ${env:BUCKET_NAME}
