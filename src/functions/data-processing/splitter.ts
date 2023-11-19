@@ -1,7 +1,11 @@
 import { S3Event } from 'aws-lambda';
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
 
 const s3Client = new S3Client({});
+const sqsClient = new SQSClient({});
+const BACKEND_QUEUE_URL = process.env.BACKEND_QUEUE_URL!;
+const PUBLIC_QUEUE_URL = process.env.PUBLIC_QUEUE_URL;
 
 const streamToString = (stream: any) =>
 	new Promise<string>((resolve, reject) => {
@@ -49,7 +53,7 @@ const streamToString = (stream: any) =>
 */
 
 export const handler = async (event: S3Event): Promise<void> => {
-	console.log('S3EVENT', event);
+	console.log('event', event);
 	for (const record of event.Records) {
 		const bucketName = record.s3.bucket.name
 		const objectKey = record.s3.object.key
@@ -64,7 +68,11 @@ export const handler = async (event: S3Event): Promise<void> => {
 		if (response.Body) {
 			const jsonContent = await streamToString(response.Body);
 			const payload = JSON.parse(jsonContent);
-			console.log('DATOSSS', payload)
+			console.log('payload', payload)
+			const command = new SendMessageCommand({
+		    QueueUrl: BACKEND_QUEUE_URL,
+		    MessageBody: JSON.stringify(payload),
+		  });
 		}
 	}
 };
