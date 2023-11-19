@@ -70,15 +70,13 @@ export const handler = async (event: S3Event): Promise<void> => {
 			const payload = JSON.parse(jsonContent);
 			console.log('payload', payload)
 
-			const command = new SendMessageCommand({
+			const sendMessageCommand = new SendMessageCommand({
 		    QueueUrl: BACKEND_QUEUE_URL,
 		    MessageBody: JSON.stringify(payload),
 		  });
 
-			const res = await client.send(command);
+			const res = await sqsClient.send(sendMessageCommand);
 		  console.log(res);
-
-		  return res;
 		}
 	}
 };
