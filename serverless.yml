@@ -78,7 +78,7 @@ resources:
   Resources:
     BackendMainQueue:
       Type: AWS::SQS::Queue
-      DependsOn: "DeadLetterQueue"
+      DependsOn: "BackendDeadLetterQueue"
       Properties:
         QueueName: ${self:service}-${self:custom.stageName}-backend-main
         DelaySeconds: 0
@@ -97,7 +97,7 @@ resources:
 
     PublicMainQueue:
       Type: AWS::SQS::Queue
-      DependsOn: "DeadLetterQueue"
+      DependsOn: "PublicDeadLetterQueue"
       Properties:
         QueueName: ${self:service}-${self:custom.stageName}-public-main
         DelaySeconds: 0
