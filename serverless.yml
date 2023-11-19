@@ -223,3 +223,11 @@ functions:
             - prefix: payloads/
             - suffix: .json
           existing: true
+  data-processing-worker:
+    handler: src/functions/data-processing/worker.handler
+    description: DB Writer Worker
+    events:
+      - sqs:
+          arn: !GetAtt BackendMainQueue.Arn
+          batchSize: 1
+          maximumConcurrency: 2
