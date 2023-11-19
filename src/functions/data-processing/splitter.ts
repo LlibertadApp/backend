@@ -75,10 +75,10 @@ export const handler = async (event: S3Event): Promise<void> => {
 		    MessageBody: JSON.stringify(payload),
 		  });
 
-			const response = await client.send(command);
-		  console.log(response);
+			const res = await client.send(command);
+		  console.log(res);
 
-		  return response;
+		  return res;
 		}
 	}
 };
