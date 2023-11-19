@@ -208,6 +208,9 @@ functions:
   data-processing-splitter:
     handler: src/functions/data-processing/splitter.handler
     description: Events splitter
+    environment:
+      BACKEND_QUEUE_NAME: Value: !GetAtt BackendMainQueue.QueueName
+      PUBLIC_QUEUE_NAME: Value: !GetAtt PublicMainQueue.QueueName
     events:
       - s3:
           bucket: ${env:BUCKET_NAME}
