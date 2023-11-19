@@ -1,9 +1,9 @@
-name: Deploy develop branch
+name: Deploy uat branch
 
 on:
   push:
     branches:
-      - dev
+      - uat
 
 permissions:
   id-token: write   # This is required for requesting the JWT
@@ -13,7 +13,7 @@ jobs:
   deploy:
     name: deploy
     runs-on: ubuntu-latest
-    environment: dev
+    environment: uat
     strategy:
       matrix:
         node-version: [18.x]

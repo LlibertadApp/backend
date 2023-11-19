@@ -75,6 +75,7 @@ export const httpErrors = {
   BAD_REQUEST_ERROR_CREATING_CUSTOM_TOKEN: "Error creating custom token",
   UNAUTHORIZED: "Unauthorized",
   FORBIDDEN: "Forbidden",
+  NOT_FOUND: "Not found",
 };
 
 export const infraestructureErrors = {

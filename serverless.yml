@@ -3,9 +3,14 @@ frameworkVersion: "3"
 
 provider:
   name: aws
+  region: ${env:AWS_REGION}
   deploymentMethod: direct
-  region: us-east-2
-  runtime: nodejs16.x
+  deploymentBucket:
+    blockPublicAccess: true
+    serverSideEncryption: AES256
+  tags:
+    stage: ${self:custom.stageName}
+  runtime: nodejs18.x
   logRetentionInDays: 30
   iam:
     role:
@@ -24,9 +29,6 @@ provider:
           Action:
             - "lambda:InvokeFunction"
           Resource: "*"
-  deploymentBucket:
-    blockPublicAccess: true
-    serverSideEncryption: AES256
   httpApi:
     name: "LLA"
     cors: true
@@ -35,9 +37,9 @@ provider:
         type: jwt
         name: jwtAuthorizer
         functionName: jwtAuthorizer
-        issuerUrl: https://securetoken.google.com/e-commerce-ebd01
+        issuerUrl: ${env:FIREBASE_ISSUER_URL}
         audience:
-          - e-commerce-ebd01
+          - ${env:FIREBASE_AUDIENCE}
         resultTtlInSeconds: 300
         identitySource:
           - $request.header.Authorization
@@ -50,6 +52,7 @@ plugins:
   - serverless-offline
 
 custom:
+  stageName: ${opt:stage, 'dev'}
   serverless-offline:
     ignoreJWTSignature: true
   prune:
@@ -62,7 +65,7 @@ custom:
         - aws-sdk
   autoswagger:
     typefiles: ['./src/types/api-types.d.ts']
-    excludeStages: ['prd']
+    excludeStages: ['prd', 'uat']
 
 package:
   excludeDevDependencies: true
@@ -71,29 +74,75 @@ package:
   include:
     - ./src/**.ts
 
+resources:
+  Resources:
+    BackendMainQueue:
+      Type: AWS::SQS::Queue
+      DependsOn: "BackendDeadLetterQueue"
+      Properties:
+        QueueName: ${self:service}-${self:custom.stageName}-backend-main
+        DelaySeconds: 0
+        MessageRetentionPeriod: 345600 # 4 days
+        VisibilityTimeout: 90
+        RedrivePolicy:
+          deadLetterTargetArn:
+            Fn::GetAtt:
+              - "BackendDeadLetterQueue"
+              - "Arn"
+          maxReceiveCount: 2 #   2 means send it twice (1 retry and on 2nd failure, send it to DLQ)
+    BackendDeadLetterQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${self:service}-${self:custom.stageName}-backend-dlq
+
+    PublicMainQueue:
+      Type: AWS::SQS::Queue
+      DependsOn: "PublicDeadLetterQueue"
+      Properties:
+        QueueName: ${self:service}-${self:custom.stageName}-public-main
+        DelaySeconds: 0
+        MessageRetentionPeriod: 345600 # 4 days
+        VisibilityTimeout: 90
+        RedrivePolicy:
+          deadLetterTargetArn:
+            Fn::GetAtt:
+              - "PublicDeadLetterQueue"
+              - "Arn"
+          maxReceiveCount: 2 #   2 means send it twice (1 retry and on 2nd failure, send it to DLQ)
+    PublicDeadLetterQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${self:service}-${self:custom.stageName}-public-dlq
+
+  Outputs:
+    backendSqsArn:
+      Value: !GetAtt BackendMainQueue.Arn
+    backendSqsUrl:
+      Value: !GetAtt BackendMainQueue.QueueUrl
+    backendDlqArn:
+      Value: !GetAtt BackendDeadLetterQueue.Arn
+    backendDlqUrl:
+      Value: !GetAtt BackendDeadLetterQueue.QueueUrl
+    publicSqsArn:
+      Value: !GetAtt PublicMainQueue.Arn
+    publicSqsUrl:
+      Value: !GetAtt PublicMainQueue.QueueUrl
+    publicDlqArn:
+      Value: !GetAtt PublicDeadLetterQueue.Arn
+    publicDlqUrl:
+      Value: !GetAtt PublicDeadLetterQueue.QueueUrl
+
 functions:
   jwtAuthorizer:
     handler: src/functions/authorizer/handler.handler
     description: Authorizer for JWT integration using Firebase
-  get-config:
-    name: "get-config"
-    description: Get initial app config
-    handler: src/functions/config/get.handler
-    events:
-      - httpApi:
-          method: GET
-          path: /config
-          authorizer:
-            name: jwtAuthorizer
-            type: jwt
   post-actas:
-    name: "post-actas"
     description: Guarda y procesa la imagen que suben los fiscales
     handler: src/functions/actas/post.handler
     events:
       - httpApi:
           method: POST
-          path: /actas
+          path: /v1/actas
           authorizer:
             name: jwtAuthorizer
             type: jwt
@@ -105,31 +154,87 @@ functions:
             "201":
               name: "Content Accepted"
               bodyType: "ActasResponse"
-  get-user:
-    name: "get-user"
-    description: Get user data
-    handler: src/functions/users/get.handler
+    vpc:
+      securityGroupIds:
+        - ${env:SECURITY_GROUP_ID_1}
+      subnetIds:
+        - ${env:SUBNET_ID_1}
+        - ${env:SUBNET_ID_2}
+        - ${env:SUBNET_ID_3}
+  list-actas:
+    handler: src/functions/actas/list.handler
+    description: Ver actas cargadas por el usuario
     events:
       - httpApi:
           method: GET
-          path: /users/{id}
+          path: /v1/actas
           authorizer:
             name: jwtAuthorizer
             type: jwt
-  post-user:
-    handler: src/functions/users/post.handler
-    description: Create a new user
+          responses:
+            default: {}
+            "200":
+              name: "OK"
+              bodyType: "ListActasResponse"
+    vpc:
+      securityGroupIds:
+        - ${env:SECURITY_GROUP_ID_1}
+      subnetIds:
+        - ${env:SUBNET_ID_1}
+        - ${env:SUBNET_ID_2}
+        - ${env:SUBNET_ID_3}
+  get-actas:
+    handler: src/functions/actas/get.handler
+    description: Ver informacion del acta para la mesa
     events:
       - httpApi:
-          method: POST
-          path: /users
+          method: GET
+          path: /v1/actas/{mesaId}
           authorizer:
             name: jwtAuthorizer
             type: jwt
-  get-token:
-    handler: src/functions/auth/post.handler
-    description: Generate Auth Token
+          responses:
+            default: {}
+            "200":
+              name: "OK"
+              bodyType: "EscrutionioMesaResponse"
+    vpc:
+      securityGroupIds:
+        - ${env:SECURITY_GROUP_ID_1}
+      subnetIds:
+        - ${env:SUBNET_ID_1}
+        - ${env:SUBNET_ID_2}
+        - ${env:SUBNET_ID_3}
+  data-processing-splitter:
+    handler: src/functions/data-processing/splitter.handler
+    description: Events splitter
+    environment:
+      BACKEND_QUEUE_NAME: !GetAtt BackendMainQueue.QueueName
+      BACKEND_QUEUE_ARN: !GetAtt BackendMainQueue.Arn
+      BACKEND_QUEUE_URL: !GetAtt BackendMainQueue.QueueUrl
+      PUBLIC_QUEUE_NAME: !GetAtt PublicMainQueue.QueueName
+      PUBLIC_QUEUE_ARN: !GetAtt PublicMainQueue.Arn
+      PUBLIC_QUEUE_URL: !GetAtt PublicMainQueue.QueueUrl
     events:
-      - httpApi:
-          method: POST
-          path: /auth
+      - s3:
+          bucket: ${env:BUCKET_NAME}
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: payloads/
+            - suffix: .json
+          existing: true
+  data-processing-worker:
+    handler: src/functions/data-processing/worker.handler
+    description: DB Writer Worker
+    vpc:
+      securityGroupIds:
+        - ${env:SECURITY_GROUP_ID_1}
+      subnetIds:
+        - ${env:SUBNET_ID_1}
+        - ${env:SUBNET_ID_2}
+        - ${env:SUBNET_ID_3}
+    events:
+      - sqs:
+          arn: !GetAtt BackendMainQueue.Arn
+          batchSize: 1
+          maximumConcurrency: 2

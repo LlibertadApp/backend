@@ -5,26 +5,76 @@ on:
     branches:
       - main
 
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+
 jobs:
   deploy:
     name: deploy
     runs-on: ubuntu-latest
+    environment: prd
     strategy:
       matrix:
         node-version: [18.x]
     steps:
-    - uses: actions/checkout@v3
+    - name: Git clone the repository
+      uses: actions/checkout@v3
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - name: serverless deploy --stage prd
+
+    - name: Build .env with Python
+      run: |
+        VARIABLES_JSON='{
+          "BUCKET_IMAGES_NAME": "${{ vars.BUCKET_IMAGES_NAME }}",
+          "BUCKET_NAME": "${{ vars.BUCKET_NAME }}",
+          "BUCKET_PAYLOADS_NAME": "${{ vars.BUCKET_PAYLOADS_NAME }}",
+          "DATABASE_RO_HOST": "${{ vars.DATABASE_RO_HOST }}",
+          "DATABASE_RW_HOST": "${{ vars.DATABASE_RW_HOST }}",
+          "DATABASE_PORT": "${{ vars.DATABASE_PORT }}",
+          "DATABASE_USER": "${{ vars.DATABASE_USER }}",
+          "DATABASE_PASS": "${{ secrets.DATABASE_PASS }}",
+          "DATABASE_DB": "${{ vars.DATABASE_DB }}",
+          "DATABASE_LOGGING": "${{ vars.DATABASE_LOGGING }}",
+          "DATABASE_SYNC": "${{ vars.DATABASE_SYNC }}",
+          "DATABASE_TYPE": "${{ vars.DATABASE_TYPE }}",
+          "FIREBASE_CLIENT_EMAIL": "${{ vars.FIREBASE_CLIENT_EMAIL }}",
+          "FIREBASE_MESSAGING_SENDER_ID": "${{ vars.FIREBASE_MESSAGING_SENDER_ID }}",
+          "FIREBASE_PRIVATE_KEY": "${{ secrets.FIREBASE_PRIVATE_KEY }}",
+          "FIREBASE_PROJECT_ID": "${{ vars.FIREBASE_PROJECT_ID }}",
+          "FIREBASE_PUBLIC_KEYS_URL": "${{ vars.FIREBASE_PUBLIC_KEYS_URL }}",
+          "FIREBASE_SERVICE_ACCOUNT_SECRET_NAME": "${{ vars.FIREBASE_SERVICE_ACCOUNT_SECRET_NAME }}",
+          "FIREBASE_STORAGE_BUCKET": "${{ vars.FIREBASE_STORAGE_BUCKET }}",
+          "FIREBASE_ISSUER_URL": "${{ vars.FIREBASE_ISSUER_URL }}",
+          "FIREBASE_AUDIENCE": "${{ vars.FIREBASE_AUDIENCE }}",
+          "FRONT_END_URL": "${{ vars.FRONT_END_URL }}",
+          "LBERTAPP_ENV": "${{ vars.LBERTAPP_ENV }}"
+        }'
+        python3 dotEnvGenerator.py "$VARIABLES_JSON"
+        cat .env
+
+    - name: Perform a Clean Install
+      run: npm ci
+
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::${{secrets.AWS_ACCOUNT_ID}}:role/${{vars.ROLE_TO_ASSUME}}
+        role-session-name: ${{ vars.ROLE_SESSION_NAME }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Deploy with Serverless Framework
       uses: serverless/github-action@v3.2
       with:
-        args: deploy
+        args: deploy --stage=${{ vars.ENVIRONMENT }}
       env:
-        SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
-        # or if using AWS credentials directly
-        # AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        # AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        BUCKET_NAME: ${{ vars.BUCKET_NAME }}
+        FIREBASE_ISSUER_URL: ${{ vars.FIREBASE_ISSUER_URL }}
+        FIREBASE_AUDIENCE: ${{ vars.FIREBASE_AUDIENCE }}
+        SECURITY_GROUP_ID_1: ${{ vars.SECURITY_GROUP_ID_1}}
+        SUBNET_ID_1: ${{ vars.SUBNET_ID_1}}
+        SUBNET_ID_2: ${{ vars.SUBNET_ID_2}}
+        SUBNET_ID_3: ${{ vars.SUBNET_ID_3}}

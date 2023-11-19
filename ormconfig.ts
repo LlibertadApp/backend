@@ -1,23 +1,22 @@
 import { DataSource } from 'typeorm';
 import * as Dotenv from 'dotenv';
 import * as path from 'path';
-import { User } from '@/helpers/models/entities/userEntity';
 import { GenericTable } from '@/helpers/models/entities/genericTable';
-import { Role } from '@/helpers/models/entities/roleEntity';
-import { FirstMigration1698943496462 } from '@/helpers/migrations/1698943496462-firstMigration';
+import { Scrutiny } from '@/helpers/models/entities/scrutinyEntity';
+import { Initial1700293882848 } from '@/helpers/migrations/1700293882848-initial';
 import { EnvironmentSelector } from '@/_core/configs/environmentSelector';
 
 Dotenv.config({
 	path: `${path.join(__dirname)}/${EnvironmentSelector()}`,
 }).parsed;
 console.log(
-	`TYPEORM ENVIRONMENT: ${process.env.LBERTAPP_ENV}\nDATABASE CONNECTION: ${process.env.DATABASE_HOST}`
+	`TYPEORM ENVIRONMENT: ${process.env.LBERTAPP_ENV}\nDATABASE CONNECTION: ${process.env.DATABASE_RW_HOST}`
 );
 
 export const ConnectionSource = new DataSource({
 	migrationsTableName: 'migrations',
 	type: process.env.DATABASE_TYPE as any,
-	host: process.env.DATABASE_HOST,
+	host: process.env.DATABASE_RW_HOST,
 	port: Number(process.env.DATABASE_PORT),
 	username: process.env.DATABASE_USER,
 	password: process.env.DATABASE_PASS,
@@ -25,11 +24,15 @@ export const ConnectionSource = new DataSource({
 	logging: process.env.DATABASE_LOGGING === 'true',
 	synchronize: process.env.DATABASE_SYNC === 'true',
 	entities: [
-        User,
         GenericTable,
-        Role
+				Scrutiny,
 	],
 	migrations: [
-        FirstMigration1698943496462
+				Initial1700293882848,
 	],
+	extra: {
+		ssl: {
+      rejectUnauthorized: false
+    },
+	},
 });

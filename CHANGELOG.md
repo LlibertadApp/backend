@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Data processing worker
+
+### Changed
+
+- Moving from DynamoDB to PostgreSQL
+- Changed token claims format
+
+### Added
+- Support for Amazon DAX
+- API Version path prefix (`/v1`)
+- GET /v1/actas/{mesaId} - Get scrutiny data for a given mesaId (#71)
+- GET /v1/actas - Get uploaded scrutunies by the user (#71)
+- Verify total envelopes vs scrutiny data
+
+### Removed
+
+- Endpoint GET /config
+- DynamoDB support
+
 ## [0.1.0-alpha] - 2023-11-9
 
 ### Added

@@ -3,7 +3,6 @@ import {
   APIGatewayAuthorizerResult,
   Context,
 } from "aws-lambda";
-import { primitives } from "@/_core/configs/common";
 import { FirebasePublicKeysType, fetchFirebasePublicKeys } from "@/_core/auth/fetch-firebase-public-keys";
 import { authorizerErrors } from "@/_core/configs/errorConstants";
 import { generateAuthorizeOutput, unauthorizedPrincipalId } from "@/_core/auth/generate-autorize-output";
@@ -28,7 +27,7 @@ export const handler = async (
       );
     }
 
-    const token = event.headers[primitives.Authorization];
+    const token = event.headers['Authorization'];
 
     if (!token) {
       console.error(authorizerErrors.UNDEFINED_AUTHORIZATION_HEADER);
@@ -40,9 +39,9 @@ export const handler = async (
     }
 
     const publicKeys = await fetchFirebasePublicKeys(cachedKeys, lastFetchTime);
-    const header64 = token.split(primitives.splitDot)[0];
+    const header64 = token.split('.')[0];
     const header = JSON.parse(
-      Buffer.from(header64, primitives.base64).toString(primitives.ascii)
+      Buffer.from(header64, 'base64').toString('ascii')
     );
 
     const verifyIdTokenResult = await verifyFirebaseIdToken(

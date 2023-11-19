@@ -9,6 +9,7 @@ import response from "@/helpers/response";
 import logger from "@/helpers/logger";
 import { httpErrors, httpStatusCodes } from "@/_core/configs/errorConstants";
 import { ActasResponse, UserToken } from "@/types/api-types.d";
+import { ScrutinyStatus } from "@/helpers/models/entities/scrutinyEntity";
 
 /**
  * Usage
@@ -39,7 +40,6 @@ export const handler = async (
       votosEnBlanco: number().required().min(0).integer(),
       votosRecurridos: number().required().min(0).integer(),
       votosEnTotal: number().required().min(0).integer(),
-      userId: string().required(),
       files: array().required(),
     });
 
@@ -57,7 +57,7 @@ export const handler = async (
     const userId = decoded.user_id;
 
     // Validamos que el usuario tenga permisos para la mesa indicada
-    const found = decoded.mesas.filter(i => i.mesaId == mesaId);
+    const found = decoded.votingTables.filter(i => i == mesaId);
 
     if (found.length == 0) {
       // El usuario no tiene acceso a la mesa
@@ -67,11 +67,15 @@ export const handler = async (
       });
     }
 
+    // Generamos el nombre de los recursos
+    const d = new Date();
+    const filename = `${mesaId}_${d.toISOString().slice(0, 10).split("-").join("")}-${d.getUTCHours()}${d.getUTCMinutes()}${d.getUTCSeconds()}_${(+d).toString(16).slice(-8)}`;
+
     // Generamos instancia del cliente de S3
     const s3 = new S3Client();
 
     // Guardamos la imagen en el bucket correspondiente
-    const imagePath = `actas/${mesaId}.jpg`;
+    const imagePath = `actas/${filename}.jpg`;
     await s3.send(
         new PutObjectCommand({
             Bucket: BUCKET_NAME,
@@ -93,13 +97,24 @@ export const handler = async (
       votosRecurridos: payload.votosRecurridos,
       votosEnTotal: payload.votosEnTotal,
       userId,
-      imagenActa: {
-        path: imagePath,
-      }
+      imagenActa: imagePath,
+      estado: ScrutinyStatus.ENVIADO,
     };
 
+    const totalVotes =
+      Number(payload.conteoLla) +
+      Number(payload.conteoUp) +
+      Number(payload.votosImpugnados) +
+      Number(payload.votosNulos) +
+      Number(payload.votosEnBlanco) +
+      Number(payload.votosRecurridos);
+
+    if (totalVotes > 600 || totalVotes !== Number(payload.votosEnTotal)) {
+      payloadToSave.estado = ScrutinyStatus.ANOMALIA;
+    }
+
     // Guardar payload en el bucket correspondiente
-    const payloadPath = `payloads/${mesaId}.json`;
+    const payloadPath = `payloads/${filename}.json`;
     await s3.send(
         new PutObjectCommand({
             Bucket: BUCKET_NAME,
