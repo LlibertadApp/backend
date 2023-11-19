@@ -3,6 +3,14 @@ import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
 
 const s3Client = new S3Client({});
 
+const streamToString = (stream: any) =>
+	new Promise<string>((resolve, reject) => {
+		const chunks: Uint8Array[] = [];
+		stream.on('data', (chunk: Uint8Array) => chunks.push(chunk));
+		stream.once('end', () => resolve(Buffer.concat(chunks).toString('utf-8')));
+		stream.once('error', reject);
+	});
+
 /**
 {
 	"eventVersion":"2.1",
@@ -54,9 +62,9 @@ export const handler = async (event: S3Event): Promise<void> => {
 		const response = await s3Client.send(getObjectCommand)
 
 		if (response.Body) {
-			const objectData = response.Body.toString('utf-8');
-			const obj = JSON.parse(objectData)
-			console.log('DATOSSS', obj)
+			const jsonContent = await streamToString(response.Body);
+			const payload = JSON.parse(jsonContent);
+			console.log('DATOSSS', payload)
 		}
 	}
 };
