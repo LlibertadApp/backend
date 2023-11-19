@@ -41,6 +41,12 @@ export class Scrutiny extends GenericTable {
     @Column({ nullable: false })
     private votosEnTotal: number;
 
+    @Column({ nullable: false })
+    private sobres: number;
+
+    @Column({ nullable: false })
+    private electores: number;
+
     @Column({ nullable: false, select: false })
     private imagenActa: string;
 

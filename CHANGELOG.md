@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2023-11-19
+
 ### Added
 
 - Data processing worker
@@ -35,5 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Authentication Endpoint.
 - Upload Endpoint.
 
-[unreleased]: https://github.com/olivierlacan/keep-a-changelog/compare/v0.1.0-alpha...HEAD
-[0.1.0-alpha]: https://github.com/olivierlacan/keep-a-changelog/releases/tag/v0.1.0-alpha
+[unreleased]: https://github.com/LlibertadApp/backend/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/LlibertadApp/backend/compare/v0.1.0-alpha...v1.0.0
+[0.1.0-alpha]: https://github.com/LlibertadApp/backend/releases/tag/v0.1.0-alpha
