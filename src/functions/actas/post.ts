@@ -40,6 +40,8 @@ export const handler = async (
       votosEnBlanco: number().required().min(0).integer(),
       votosRecurridos: number().required().min(0).integer(),
       votosEnTotal: number().required().min(0).integer(),
+      votantes: number().required().min(0).integer(),
+      sobres: number().required().min(0).integer(),
       files: array().required(),
     });
 
@@ -96,6 +98,8 @@ export const handler = async (
       votosEnBlanco: payload.votosEnBlanco,
       votosRecurridos: payload.votosRecurridos,
       votosEnTotal: payload.votosEnTotal,
+      sobres: payload.sobres,
+      votantes: payload.votantes,
       userId,
       imagenActa: imagePath,
       estado: ScrutinyStatus.ENVIADO,
