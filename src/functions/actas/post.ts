@@ -97,9 +97,7 @@ export const handler = async (
       votosRecurridos: payload.votosRecurridos,
       votosEnTotal: payload.votosEnTotal,
       userId,
-      imagenActa: {
-        path: imagePath,
-      },
+      imagenActa: imagePath,
       estado: ScrutinyStatus.ENVIADO,
     };
 
