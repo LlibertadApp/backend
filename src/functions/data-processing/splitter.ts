@@ -69,10 +69,16 @@ export const handler = async (event: S3Event): Promise<void> => {
 			const jsonContent = await streamToString(response.Body);
 			const payload = JSON.parse(jsonContent);
 			console.log('payload', payload)
+
 			const command = new SendMessageCommand({
 		    QueueUrl: BACKEND_QUEUE_URL,
 		    MessageBody: JSON.stringify(payload),
 		  });
+
+			const response = await client.send(command);
+		  console.log(response);
+
+		  return response;
 		}
 	}
 };
