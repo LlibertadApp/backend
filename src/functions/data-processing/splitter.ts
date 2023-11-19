@@ -46,12 +46,12 @@ export const handler = async (event: S3Event): Promise<void> => {
 		const bucketName = record.s3.bucket.name
 		const objectKey = record.s3.object.key
 
-		const getObjectCommand = new GetObjectCommand({ 
+		const getObjectCommand = new GetObjectCommand({
 			Bucket: bucketName,
 			Key: objectKey
 		})
 
-		const response = await client.send(getObjectCommand)
+		const response = await s3Client.send(getObjectCommand)
 
 		if (response.Body) {
 			const objectData = response.Body.toString('utf-8');
