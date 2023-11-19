@@ -24,7 +24,7 @@ export const handler = async (event: SQSEvent): Promise<void> => {
 	for (const record of event.Records) {
 		const data = JSON.parse(record.body)
 		try {
-			const scrutiny = createScutiny(data)
+			const scrutiny = await createScutiny(data)
 			console.log(scrutiny)
 		} catch (err) {
 			console.error(err)
