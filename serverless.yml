@@ -226,6 +226,13 @@ functions:
   data-processing-worker:
     handler: src/functions/data-processing/worker.handler
     description: DB Writer Worker
+    vpc:
+      securityGroupIds:
+        - ${env:SECURITY_GROUP_ID_1}
+      subnetIds:
+        - ${env:SUBNET_ID_1}
+        - ${env:SUBNET_ID_2}
+        - ${env:SUBNET_ID_3}
     events:
       - sqs:
           arn: !GetAtt BackendMainQueue.Arn
